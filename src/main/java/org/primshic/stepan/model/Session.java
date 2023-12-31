@@ -1,6 +1,9 @@
 package org.primshic.stepan.model;
 
-import org.checkerframework.checker.units.qual.C;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -9,6 +12,10 @@ import java.time.LocalDateTime;
 
 @Entity()
 @Table(name="Sessions")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Session {
     @Id
     @Column(name="ID")
