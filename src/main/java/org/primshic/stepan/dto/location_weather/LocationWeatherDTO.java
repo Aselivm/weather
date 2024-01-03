@@ -1,4 +1,4 @@
-package org.primshic.stepan.dto;
+package org.primshic.stepan.dto.location_weather;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.primshic.stepan.dto.weather_info.*;
+import org.primshic.stepan.dto.location_weather.weather_info.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({

@@ -1,4 +1,4 @@
-package org.primshic.stepan.dto.weather_info;
+package org.primshic.stepan.dto.location_weather.weather_info;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

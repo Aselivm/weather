@@ -1,4 +1,4 @@
-package org.primshic.stepan.dto.weather_info;
+package org.primshic.stepan.dto.location_weather.weather_info;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -13,24 +13,50 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "all"
+        "speed",
+        "deg",
+        "gust"
 })
 @Generated("jsonschema2pojo")
-public class Clouds {
+public class Wind {
 
-    @JsonProperty("all")
-    private Integer all;
+    @JsonProperty("speed")
+    private Double speed;
+    @JsonProperty("deg")
+    private Integer deg;
+    @JsonProperty("gust")
+    private Double gust;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new LinkedHashMap<String, Object>();
 
-    @JsonProperty("all")
-    public Integer getAll() {
-        return all;
+    @JsonProperty("speed")
+    public Double getSpeed() {
+        return speed;
     }
 
-    @JsonProperty("all")
-    public void setAll(Integer all) {
-        this.all = all;
+    @JsonProperty("speed")
+    public void setSpeed(Double speed) {
+        this.speed = speed;
+    }
+
+    @JsonProperty("deg")
+    public Integer getDeg() {
+        return deg;
+    }
+
+    @JsonProperty("deg")
+    public void setDeg(Integer deg) {
+        this.deg = deg;
+    }
+
+    @JsonProperty("gust")
+    public Double getGust() {
+        return gust;
+    }
+
+    @JsonProperty("gust")
+    public void setGust(Double gust) {
+        this.gust = gust;
     }
 
     @JsonAnyGetter

@@ -3,9 +3,9 @@ package org.primshic.stepan.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.primshic.stepan.dto.LocationDTO;
+import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.model.Location;
-import org.primshic.stepan.dto.LocationWeatherDTO;
+import org.primshic.stepan.dto.location_weather.LocationWeatherDTO;
 import org.primshic.stepan.util.PropertyReaderUtil;
 
 import java.net.URI;
