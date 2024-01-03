@@ -25,8 +25,8 @@
         <property name="hibernate.connection.autocommit">true</property>
 
         <!-- Add your entity mappings here -->
-        <mapping class="org.primshic.stepan.model.Location"/>
-        <mapping class="org.primshic.stepan.model.Session"/>
-        <mapping class="org.primshic.stepan.model.User"/>
+        <mapping class="org.primshic.stepan.model.location_weather.Location"/>
+        <mapping class="org.primshic.stepan.model.location_weather.Session"/>
+        <mapping class="org.primshic.stepan.model.location_weather.User"/>
     </session-factory>
 </hibernate-configuration>

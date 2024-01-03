@@ -1,7 +1,9 @@
 package org.primshic.stepan.services;
 
-import org.primshic.stepan.dto.LocationResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.primshic.stepan.model.Location;
+import org.primshic.stepan.model.LocationWeather;
 import org.primshic.stepan.util.PropertyReaderUtil;
 
 import java.net.URI;
@@ -11,21 +13,30 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class WeatherAPIService {
+/*    public static void main(String[] args) {
+        WeatherAPIService weatherAPIService = new WeatherAPIService();
+        weatherAPIService.getWeather(null);
+    }*/
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public LocationResponse getWeather(Location location){
-
-          double lat = location.getLatitude();
-          double lon = location.getLongitude();
+    public LocationWeather getWeather(Location location){
+        LocationWeather locationWeather;
+        double lat = location.getLatitude();
+        double lon = location.getLongitude();
 /*        double lat = 44.34;
         double lon = 10.99;*/
-          String appid = getWeatherAPIProperty("APIKey");
-          String lang = getWeatherAPIProperty("lang");
-          String units = getWeatherAPIProperty("units");
-          String url = getWeatherAPIProperty("url");
+        String appid = getWeatherAPIProperty("APIKey");
+        String lang = getWeatherAPIProperty("lang");
+        String units = getWeatherAPIProperty("units");
+        String url = getWeatherAPIProperty("url");
 
-         String result = getRequest(lat,lon,url,appid,lang,units);
-         System.out.println(result);
-          return null;
+        String result = getRequest(lat,lon,url,appid,lang,units);
+        try {
+           locationWeather = objectMapper.readValue(result, LocationWeather.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);//todo добавить эксепшн
+        }
+        return locationWeather;
     }
 
     private String getWeatherAPIProperty(String key){
@@ -45,7 +56,6 @@ public class WeatherAPIService {
                     .build();
 
             String requestUrl = request.uri().toString();
-            System.out.println("Created URL: " + requestUrl);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
