@@ -1,4 +1,4 @@
-package org.primshic.stepan.model;
+package org.primshic.stepan.dto;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.primshic.stepan.model.weather_info.*;
+import org.primshic.stepan.dto.weather_info.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -30,8 +30,7 @@ import org.primshic.stepan.model.weather_info.*;
         "cod"
 })
 @Generated("jsonschema2pojo")
-public class LocationWeather {
-
+public class LocationWeatherDTO {
     @JsonProperty("coord")
     private Coord coord;
     @JsonProperty("weather_info")
