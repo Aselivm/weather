@@ -16,10 +16,10 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 public class WeatherAPIService {
-/*    public static void main(String[] args) {
+    public static void main(String[] args) {
         WeatherAPIService weatherAPIService = new WeatherAPIService();
         weatherAPIService.getLocationListByName("Москва");
-    }*/
+    }
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public List<LocationDTO> getLocationListByName(String name){
@@ -33,7 +33,7 @@ public class WeatherAPIService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);//todo добавить эксепшн
         }
-        System.out.println(locationList);
+        System.out.println(locationList);//todo логгирование
         return locationList;
     }
 
