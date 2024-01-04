@@ -16,7 +16,7 @@ import org.primshic.stepan.dto.location_weather.weather_info.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "coord",
-        "weather_info",
+        "weather",
         "base",
         "main",
         "visibility",
@@ -33,7 +33,7 @@ import org.primshic.stepan.dto.location_weather.weather_info.*;
 public class LocationWeatherDTO {
     @JsonProperty("coord")
     private Coord coord;
-    @JsonProperty("weather_info")
+    @JsonProperty("weather")
     private List<Weather> weather;
     @JsonProperty("base")
     private String base;
@@ -70,12 +70,12 @@ public class LocationWeatherDTO {
         this.coord = coord;
     }
 
-    @JsonProperty("weather_info")
+    @JsonProperty("weather")
     public List<Weather> getWeather() {
         return weather;
     }
 
-    @JsonProperty("weather_info")
+    @JsonProperty("weather")
     public void setWeather(List<Weather> weather) {
         this.weather = weather;
     }

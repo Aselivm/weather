@@ -3,6 +3,7 @@ package org.primshic.stepan.services;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.dto.location_weather.LocationWeatherDTO;
@@ -14,14 +15,17 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.util.logging.Logger;
+
 
 public class WeatherAPIService {
+    private static final Logger log = Logger.getLogger(WeatherAPIService.class.getName());
+    private final ObjectMapper objectMapper = new ObjectMapper();
+
     public static void main(String[] args) {
         WeatherAPIService weatherAPIService = new WeatherAPIService();
         weatherAPIService.getLocationListByName("Москва");
     }
-    private final ObjectMapper objectMapper = new ObjectMapper();
-
     public List<LocationDTO> getLocationListByName(String name){
         List<LocationDTO> locationList;
         String url = getWeatherAPIProperty("url_geo");
@@ -31,9 +35,10 @@ public class WeatherAPIService {
         try {
             locationList = objectMapper.readValue(result, new TypeReference<>() {});
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);//todo добавить эксепшн
+            log.warning("Error reading JSON response: "+e.getMessage());
+            throw new RuntimeException(e); // todo добавить эксепшн
         }
-        System.out.println(locationList);//todo логгирование
+        log.info("List of locations by name: "+locationList.toString());
         return locationList;
     }
 
@@ -52,8 +57,10 @@ public class WeatherAPIService {
         try {
            locationWeatherDTO = objectMapper.readValue(result, LocationWeatherDTO.class);
         } catch (JsonProcessingException e) {
+            log.warning("Error reading JSON response: "+e.getMessage());
             throw new RuntimeException(e);//todo добавить эксепшн
         }
+        log.info("Weather by location info: "+locationWeatherDTO.toString());
         return locationWeatherDTO;
     }
 
