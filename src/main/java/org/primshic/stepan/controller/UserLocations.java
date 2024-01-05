@@ -3,6 +3,7 @@ package org.primshic.stepan.controller;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.services.SessionService;
+import org.primshic.stepan.util.CookieUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,7 @@ public class UserLocations extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String sessionId = getSessionIdByCookie(req.getCookies());
+        String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
         List<Location> locationList=null;
 
             Optional<Session> userSession = sessionService.getById(sessionId);
@@ -33,7 +34,7 @@ public class UserLocations extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String sessionId = getSessionIdByCookie(req.getCookies());
+        String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
         int userId = sessionService.getById(sessionId).get().getUser().getId();
         double lat = Integer.parseInt(req.getParameter("lat"));
         double lon = Integer.parseInt(req.getParameter("lon"));
@@ -41,14 +42,4 @@ public class UserLocations extends BaseServlet {
         resp.sendRedirect(req.getContextPath()+"/main");
     }
 
-    //todo перенести
-    private String getSessionIdByCookie(Cookie[] cookies){
-        Cookie uuidCookie = null;
-        for(Cookie cookie : cookies){
-            if(Objects.equals(cookie.getName(), "uuid")) {
-                uuidCookie = cookie;
-            }
-        }
-        return uuidCookie.getValue();
-    }
 }
