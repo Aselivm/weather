@@ -22,7 +22,6 @@ public class Registration extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter("username");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
         User user = userService.persist(login,password).get();
