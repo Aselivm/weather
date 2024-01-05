@@ -36,9 +36,6 @@ public class SessionRepositoryTest {
     public void deleteExpiredSessions() {
         try(org.hibernate.Session session = sessionFactory.openSession()){
             session.beginTransaction();
-            Query rows = session.createQuery("FROM TestSession",TestSession.class);
-            TestSession testSession = (TestSession) rows.getResultList().get(0);
-            log.info(testSession.getExpiresAt().toString());
             int deletedRows = session.createQuery("delete from TestSession where expiresAt<CURRENT_TIMESTAMP ").executeUpdate();
             session.getTransaction().commit();
             log.info("Number of deleted rows: "+deletedRows);

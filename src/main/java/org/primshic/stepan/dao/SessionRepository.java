@@ -1,6 +1,7 @@
 package org.primshic.stepan.dao;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.util.HibernateUtil;
@@ -28,6 +29,16 @@ public class SessionRepository {
     public Optional<Session> getById(String uuid) {
         try(org.hibernate.Session session = sessionFactory.openSession()){
             return  Optional.of(session.get(Session.class,uuid));
+        }
+    }
+
+    public void deleteExpiredSessions() {
+        try(org.hibernate.Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.createQuery("delete from Session where expiresAt<CURRENT_TIMESTAMP ").executeUpdate();
+            session.getTransaction().commit();
+        }catch (RuntimeException e){
+            e.printStackTrace();
         }
     }
 }

@@ -1,6 +1,5 @@
 package org.primshic.stepan.controller;
 
-import org.checkerframework.checker.units.qual.C;
 import org.primshic.stepan.dto.account.UserDTO;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
@@ -11,7 +10,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.UUID;
 
 @WebServlet(urlPatterns = "/reg")
 public class Registration extends BaseServlet {

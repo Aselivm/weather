@@ -57,7 +57,6 @@ class TestDAO {
 
         TestUser userFromPersist = userServiceTest.persist(userDTO).orElseThrow();
         TestSession testSession = sessionServiceTest.startSession(userFromPersist).orElseThrow();
-        log.info("EXPIRES AT!!!"+testSession.getExpiresAt());
         CountDownLatch latch = new CountDownLatch(1);
 
         new Thread(() -> {
