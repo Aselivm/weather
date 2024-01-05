@@ -12,6 +12,13 @@
   <name>Weather</name>
   <url>http://maven.apache.org</url>
   <dependencies>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>3.24.2</version>
+      <scope>test</scope>
+    </dependency>
+
     <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
     <dependency>
       <groupId>com.h2database</groupId>
@@ -90,6 +97,12 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.10.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-junit-jupiter</artifactId>
+      <version>4.8.1</version>
       <scope>test</scope>
     </dependency>
 
