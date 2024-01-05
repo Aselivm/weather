@@ -8,7 +8,7 @@ import javax.servlet.http.Cookie;
 import java.util.Optional;
 
 public class SessionService {
-    private SessionRepository sessionRepository = new SessionRepository();
+    private final SessionRepository sessionRepository = new SessionRepository();
     public Optional<Session> startSession(User user) {
         sessionRepository.save(user);
         return sessionRepository.getByUserId(user.getId());

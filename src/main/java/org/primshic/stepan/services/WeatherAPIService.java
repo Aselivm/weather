@@ -22,10 +22,10 @@ public class WeatherAPIService {
     private static final Logger log = Logger.getLogger(WeatherAPIService.class.getName());
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         WeatherAPIService weatherAPIService = new WeatherAPIService();
         weatherAPIService.getLocationListByName("Москва");
-    }
+    }*/
     public List<LocationDTO> getLocationListByName(String name){
         List<LocationDTO> locationList;
         String url = getWeatherAPIProperty("url_geo");

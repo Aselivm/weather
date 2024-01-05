@@ -7,7 +7,7 @@ import org.primshic.stepan.model.User;
 import java.util.Optional;
 
 public class UserService {
-    private UserRepository userRepository = new UserRepository();
+    private final UserRepository userRepository = new UserRepository();
     public Optional<User> persist(String login, String password) {
         String hashpw = BCrypt.hashpw(password,BCrypt.gensalt(6));
         User user = new User();
