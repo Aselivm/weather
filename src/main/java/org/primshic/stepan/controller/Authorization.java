@@ -15,15 +15,15 @@ public class Authorization extends BaseServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //todo добавить проверку на активную сессию и запретить авторизацию если она есть
-        req.getRequestDispatcher(pathToView+"authorisation.html").forward(req,resp);
+        req.getRequestDispatcher(pathToView+"authorization.html").forward(req,resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        User user = userService.get(login,password);
-        Session userSession = sessionService.startSession(user);
+        User user = userService.get(login,password).get();
+        Session userSession = sessionService.startSession(user).get();
         String uuid = userSession.getId();
         Cookie cookie = new Cookie("uuid",uuid);
         resp.addCookie(cookie);

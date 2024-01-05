@@ -25,8 +25,8 @@ public class Registration extends BaseServlet {
         String username = req.getParameter("username");
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        User user = userService.persist(username,login,password);
-        Session userSession = sessionService.startSession(user);
+        User user = userService.persist(login,password).get();
+        Session userSession = sessionService.startSession(user).get();
         String uuid = userSession.getId();
         Cookie cookie = new Cookie("uuid",uuid);
         resp.addCookie(cookie);

@@ -4,9 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.primshic.stepan.services.SessionService;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity()
 @Table(name="Users")
@@ -26,4 +26,7 @@ public class User {
     @Column(name="Password", nullable = false)
     private String password;
 
+    @Transient
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Location> locations;
 }
