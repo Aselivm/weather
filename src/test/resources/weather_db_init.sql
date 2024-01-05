@@ -1,7 +1,7 @@
 
 create table Users(
                       ID int auto_increment primary key ,
-                      Login varchar(100) NOT NULL,
+                      Login varchar(100) NOT NULL UNIQUE ,
                       Password varchar(60) NOT NULL
 );
 create table Locations(
@@ -19,5 +19,4 @@ CREATE TABLE Sessions
 );
 
 CREATE INDEX login_idx ON users(Login);
-CREATE INDEX password_idx ON users(Password);
 CREATE INDEX expiresAt_idx ON sessions(ExpiresAt);

@@ -29,4 +29,8 @@ class TestDAO {
         TestUser userFromGet = userServiceTest.get(userDTO).orElseThrow();
         Assertions.assertEquals(userFromGet,userFromPersist);
     }
+
+    void checkUniqueLogin(){
+
+    }
 }
