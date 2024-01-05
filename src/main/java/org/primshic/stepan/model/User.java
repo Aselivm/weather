@@ -9,7 +9,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity()
-@Table(name="Users")
+@Table(name="Users", indexes = {@Index(name="login_idx",columnList = "Login"),
+        @Index(name="password_idx",columnList = "Password")})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,6 +22,7 @@ public class User {
     private int id;
 
     @Column(name="Login" , nullable = false)
+
     private String login;
 
     @Column(name="Password", nullable = false)

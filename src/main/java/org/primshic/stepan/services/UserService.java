@@ -19,15 +19,15 @@ public class UserService {
         return userRepository.get(userEntity.getLogin(),userEntity.getPassword());
     }
 
-    private String hashPassword(String password){
-       return BCrypt.hashpw(password,BCrypt.gensalt(6));
-    }
-
     private User toEntity(UserDTO userDTO){
         String hashpw = hashPassword(userDTO.getPassword());
         User user = new User();
         user.setLogin(userDTO.getLogin());
         user.setPassword(hashpw);
         return user;
+    }
+
+    private String hashPassword(String password){
+        return BCrypt.hashpw(password,BCrypt.gensalt(6));
     }
 }

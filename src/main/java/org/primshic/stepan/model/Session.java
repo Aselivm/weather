@@ -11,7 +11,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity()
-@Table(name="Sessions")
+@Table(name="Sessions", indexes = @Index(name = "expiresAt_idx",columnList = "ExpiresAt") )
 @Getter
 @Setter
 @AllArgsConstructor
