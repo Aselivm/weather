@@ -1,21 +1,19 @@
 package org.primshic.stepan.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity()
-@Table(schema = "weather_test",name="Sessions",
+@Table(name="Sessions",schema = "weather_test",
         indexes = @Index(name = "expiresAt_idx",columnList = "ExpiresAt") )
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class TestSession {
     @Id
     @Column(name="ID")
@@ -25,8 +23,8 @@ public class TestSession {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="UserId")
-    private User user;
+    private TestUser user;
 
-    @Column(name="ExpiresAt")
+    @Column(name = "ExpiresAt", columnDefinition = "DATETIME DEFAULT (CURRENT_TIMESTAMP + INTERVAL 1 HOUR)")
     private LocalDateTime expiresAt;
 }

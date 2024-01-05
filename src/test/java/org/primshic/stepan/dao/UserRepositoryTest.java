@@ -1,14 +1,16 @@
 package org.primshic.stepan.dao;
 
 import org.hibernate.SessionFactory;
+import org.primshic.stepan.model.TestUser;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.util.HibernateUtil;
+import org.primshic.stepan.util.TestHibernateUtil;
 
 import java.util.Optional;
 
-public class UserRepository {
-    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-    public Optional<User> persist(User user) {
+public class UserRepositoryTest {
+    private final SessionFactory sessionFactory = TestHibernateUtil.getSessionFactory();
+    public Optional<TestUser> persist(TestUser user) {
         try(org.hibernate.Session session = sessionFactory.openSession()){
             session.beginTransaction();
             session.persist(user);
@@ -17,10 +19,10 @@ public class UserRepository {
         return Optional.of(user);
     }
 
-    public Optional<User> get(String login) {
+    public Optional<TestUser> get(String login) {
         try(org.hibernate.Session session = sessionFactory.openSession()){
             return Optional.ofNullable(session.createQuery
-                            ("FROM User WHERE login = :login", User.class)
+                            ("FROM TestUser WHERE login = :login", TestUser.class)
                     .setParameter("login", login)
                     .uniqueResult());
         }

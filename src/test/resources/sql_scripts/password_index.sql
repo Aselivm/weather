@@ -1,0 +1,1 @@
+CREATE INDEX password_idx ON users(Password);

@@ -1,0 +1,1 @@
+CREATE INDEX login_idx ON users(Login);

@@ -4,11 +4,11 @@
 
     <session-factory>
         <!-- JDBC Database connection settings -->
+        <property name="hibernate.default_schema">weather_test</property>
         <property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mariadb://localhost:3303/weather_db</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">2816</property>
-        <property name="hibernate.hbm2ddl.auto">create</property>
         <!-- JDBC connection pool settings -->
         <property name="hibernate.connection.pool_size">10</property>
         <!-- Echo the SQL to stdout -->

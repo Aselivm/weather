@@ -16,7 +16,8 @@ public class UserService {
 
     public Optional<User> get(UserDTO userDTO) {
         User userEntity = toEntity(userDTO);
-        return userRepository.get(userEntity.getLogin(),userEntity.getPassword());
+        Optional<User> user = userRepository.get(userEntity.getLogin()); //todo CHECK PW
+        return null;
     }
 
     private User toEntity(UserDTO userDTO){

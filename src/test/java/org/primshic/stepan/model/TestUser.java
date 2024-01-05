@@ -1,21 +1,20 @@
 package org.primshic.stepan.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity()
-@Table(schema = "weather_test",name="Users",
+@Table(name="Users",schema = "weather_test" ,
         indexes = {@Index(name="login_idx",columnList = "Login"),
                 @Index(name="password_idx",columnList = "Password")})
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@EqualsAndHashCode
 public class TestUser {
     @Id
     @Column(name="ID")
@@ -31,5 +30,5 @@ public class TestUser {
 
     @Transient
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Location> locations;
+    private List<TestLocation> locations;
 }
