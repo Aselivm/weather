@@ -1,9 +1,9 @@
-package org.primshic.stepan.dao;
+package org.primshic.stepan.repo_mock.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.primshic.stepan.model.TestLocation;
-import org.primshic.stepan.util.TestHibernateUtil;
+import org.primshic.stepan.repo_mock.model.TestLocation;
+import org.primshic.stepan.repo_mock.util.TestHibernateUtil;
 
 import javax.persistence.Query;
 

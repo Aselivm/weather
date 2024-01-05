@@ -29,5 +29,5 @@ public class Session {
     private User user;
 
     @Column(name="ExpiresAt")
-    private LocalDateTime expiresAt;
+    private LocalDateTime expiresAt = LocalDateTime.now().plusSeconds(5);
 }

@@ -1,1 +1,1 @@
-DROP TABLE Locations;
+DROP TABLE IF EXISTS Locations;

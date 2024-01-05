@@ -1,10 +1,9 @@
-package org.primshic.stepan.services;
+package org.primshic.stepan.repo_mock.services;
 
 import org.mindrot.jbcrypt.BCrypt;
-import org.primshic.stepan.dao.UserRepositoryTest;
+import org.primshic.stepan.repo_mock.dao.UserRepositoryTest;
 import org.primshic.stepan.dto.account.UserDTO;
-import org.primshic.stepan.model.TestUser;
-import org.primshic.stepan.model.User;
+import org.primshic.stepan.repo_mock.model.TestUser;
 
 import java.util.Optional;
 

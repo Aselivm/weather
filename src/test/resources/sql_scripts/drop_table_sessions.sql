@@ -1,1 +1,1 @@
-DROP TABLE Sessions;
+DROP TABLE IF EXISTS Sessions;

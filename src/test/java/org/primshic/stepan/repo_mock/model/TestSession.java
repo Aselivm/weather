@@ -1,4 +1,4 @@
-package org.primshic.stepan.model;
+package org.primshic.stepan.repo_mock.model;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity()
-@Table(name="Sessions",schema = "weather_test",
+@Table(name="Sessions",
         indexes = @Index(name = "expiresAt_idx",columnList = "ExpiresAt") )
 @Getter
 @Setter
@@ -25,6 +25,6 @@ public class TestSession {
     @JoinColumn(name="UserId")
     private TestUser user;
 
-    @Column(name = "ExpiresAt", columnDefinition = "DATETIME DEFAULT (CURRENT_TIMESTAMP + INTERVAL 1 HOUR)")
-    private LocalDateTime expiresAt;
+    @Column(name = "ExpiresAt")
+    private LocalDateTime expiresAt = LocalDateTime.now().plusSeconds(5);
 }

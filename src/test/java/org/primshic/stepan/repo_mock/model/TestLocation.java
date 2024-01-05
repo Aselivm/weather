@@ -1,11 +1,11 @@
-package org.primshic.stepan.model;
+package org.primshic.stepan.repo_mock.model;
 
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity()
-@Table(name="Locations",schema = "weather_test")
+@Table(name="Locations")
 @Getter
 @Setter
 @AllArgsConstructor

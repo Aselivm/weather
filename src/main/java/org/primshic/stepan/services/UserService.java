@@ -10,7 +10,7 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository = new UserRepository();
     public Optional<User> persist(UserDTO userDTO) {
-        User userEntity = toEntity(userDTO);
+        User userEntity = toEntity(userDTO); //todo unique login check
         return userRepository.persist(userEntity);
     }
 

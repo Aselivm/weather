@@ -1,8 +1,8 @@
-package org.primshic.stepan.services;
+package org.primshic.stepan.repo_mock.services;
 
-import org.primshic.stepan.dao.LocationRepositoryTest;
-import org.primshic.stepan.model.TestLocation;
-import org.primshic.stepan.model.TestUser;
+import org.primshic.stepan.repo_mock.dao.LocationRepositoryTest;
+import org.primshic.stepan.repo_mock.model.TestLocation;
+import org.primshic.stepan.repo_mock.model.TestUser;
 
 public class LocationServiceTest {
     private final LocationRepositoryTest locationRepositoryTest = new LocationRepositoryTest();

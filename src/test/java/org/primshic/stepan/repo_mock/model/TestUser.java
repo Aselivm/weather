@@ -1,4 +1,4 @@
-package org.primshic.stepan.model;
+package org.primshic.stepan.repo_mock.model;
 
 import lombok.*;
 
@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity()
-@Table(name="Users",schema = "weather_test" ,
+@Table(name="Users",
         indexes = {@Index(name="login_idx",columnList = "Login"),
                 @Index(name="password_idx",columnList = "Password")})
 @Getter

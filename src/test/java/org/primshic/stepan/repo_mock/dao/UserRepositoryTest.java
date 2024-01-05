@@ -1,10 +1,8 @@
-package org.primshic.stepan.dao;
+package org.primshic.stepan.repo_mock.dao;
 
 import org.hibernate.SessionFactory;
-import org.primshic.stepan.model.TestUser;
-import org.primshic.stepan.model.User;
-import org.primshic.stepan.util.HibernateUtil;
-import org.primshic.stepan.util.TestHibernateUtil;
+import org.primshic.stepan.repo_mock.model.TestUser;
+import org.primshic.stepan.repo_mock.util.TestHibernateUtil;
 
 import java.util.Optional;
 
