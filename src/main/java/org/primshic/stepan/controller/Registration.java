@@ -10,11 +10,14 @@ import java.io.IOException;
 public class Registration extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        req.getRequestDispatcher(pathToView+"registration.html").forward(req,resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        String login = req.getParameter("login");
+        String username = req.getParameter("username");
+        String password = req.getParameter("password");
+        System.out.println(login+username+password);
     }
 }

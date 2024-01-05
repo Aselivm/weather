@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Authorization extends BaseServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
+        req.getRequestDispatcher(pathToView+"authorisation.html").forward(req,resp);
     }
 
     @Override
