@@ -9,10 +9,21 @@ import java.util.Optional;
 public class UserRepository {
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
     public Optional<User> persist(User user) {
-        return null;
+        try(org.hibernate.Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.persist(user);
+            session.getTransaction().commit();
+        }
+        return Optional.of(user);
     }
 
     public Optional<User> get(String login, String password) {
-        return null;
+        try(org.hibernate.Session session = sessionFactory.openSession()){
+            return Optional.ofNullable(session.createQuery
+                            ("FROM User WHERE login = :login AND password = :password", User.class)
+                    .setParameter("login", login)
+                    .setParameter("password",password)
+                    .uniqueResult());
+        }
     }
 }

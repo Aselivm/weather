@@ -10,7 +10,9 @@ import java.util.Optional;
 public class SessionService {
     private final SessionRepository sessionRepository = new SessionRepository();
     public Optional<Session> startSession(User user) {
-        sessionRepository.save(user);
+        Session session = new Session();
+        session.setUser(user);
+        sessionRepository.save(session);
         return sessionRepository.getByUserId(user.getId());
     }
 

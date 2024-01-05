@@ -9,10 +9,10 @@ import java.util.Optional;
 
 public class SessionRepository {
     private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-    public void save(User user) {
-        try(org.hibernate.Session session = sessionFactory.openSession()){
+    public void save(Session sessionEntity) {
+        try (org.hibernate.Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.persist(user);
+            session.save(sessionEntity);
             session.getTransaction().commit();
         }
     }
