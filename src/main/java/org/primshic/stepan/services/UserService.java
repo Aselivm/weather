@@ -16,8 +16,11 @@ public class UserService {
 
     public Optional<User> get(UserDTO userDTO) {
         User userEntity = toEntity(userDTO);
-        Optional<User> user = userRepository.get(userEntity.getLogin()); //todo CHECK PW
-        return null;
+        User user = userRepository.get(userEntity.getLogin()).orElseThrow();//todo add exception
+        if(!BCrypt.checkpw(userDTO.getPassword(), user.getPassword())){
+            throw new RuntimeException("Wrong password"); //todo wrong password exception
+        }
+        return Optional.of(user);
     }
 
     private User toEntity(UserDTO userDTO){
