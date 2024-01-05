@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.primshic.stepan.services.SessionService;
 
 import javax.persistence.*;
 
@@ -24,4 +25,5 @@ public class User {
 
     @Column(name="Password", nullable = false)
     private String password;
+
 }
