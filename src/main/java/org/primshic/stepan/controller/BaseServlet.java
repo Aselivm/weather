@@ -12,6 +12,5 @@ public class BaseServlet extends HttpServlet {
     protected final UserService userService = new UserService();
     protected final SessionService sessionService = new SessionService();
     protected final LocationService locationService = new LocationService();
-
     protected final WeatherAPIService weatherAPIService = new WeatherAPIService();
 }

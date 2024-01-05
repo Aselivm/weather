@@ -1,5 +1,6 @@
 package org.primshic.stepan.controller;
 
+import org.primshic.stepan.dto.account.UserDTO;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 
@@ -22,7 +23,8 @@ public class Authorization extends BaseServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        User user = userService.get(login,password).get();
+        UserDTO userDTO = new UserDTO(login,password);
+        User user = userService.get(userDTO).get();
         Session userSession = sessionService.startSession(user).get();
         String uuid = userSession.getId();
         Cookie cookie = new Cookie("uuid",uuid);

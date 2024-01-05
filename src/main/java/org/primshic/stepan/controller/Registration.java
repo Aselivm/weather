@@ -1,6 +1,7 @@
 package org.primshic.stepan.controller;
 
 import org.checkerframework.checker.units.qual.C;
+import org.primshic.stepan.dto.account.UserDTO;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 
@@ -24,7 +25,8 @@ public class Registration extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
         String password = req.getParameter("password");
-        User user = userService.persist(login,password).get();
+        UserDTO userDTO = new UserDTO(login,password);
+        User user = userService.persist(userDTO).get();
         Session userSession = sessionService.startSession(user).get();
         String uuid = userSession.getId();
         Cookie cookie = new Cookie("uuid",uuid);
