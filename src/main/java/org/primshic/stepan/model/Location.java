@@ -1,12 +1,11 @@
 package org.primshic.stepan.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
 
 @Entity()
-@Table(name="Locations")
+@Table(schema = "weather_db",name="Locations")
 @Getter
 @Setter
 @AllArgsConstructor

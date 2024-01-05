@@ -11,7 +11,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity()
-@Table(name="Sessions", indexes = @Index(name = "expiresAt_idx",columnList = "ExpiresAt") )
+@Table(schema = "weather_db",name="Sessions",
+        indexes = @Index(name = "expiresAt_idx",columnList = "ExpiresAt") )
 @Getter
 @Setter
 @AllArgsConstructor

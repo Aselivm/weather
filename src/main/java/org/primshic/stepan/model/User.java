@@ -9,7 +9,8 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity()
-@Table(name="Users", indexes = {@Index(name="login_idx",columnList = "Login"),
+@Table(schema = "weather_db",name="Users",
+        indexes = {@Index(name="login_idx",columnList = "Login"),
         @Index(name="password_idx",columnList = "Password")})
 @Getter
 @Setter
