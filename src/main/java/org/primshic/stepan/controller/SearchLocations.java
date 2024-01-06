@@ -13,9 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/search")
 public class SearchLocations extends BaseServlet {
+    private Logger log = Logger.getLogger(SearchLocations.class.getName());
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
@@ -30,18 +32,17 @@ public class SearchLocations extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
-        WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
-
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
         Session session = sessionService.getById(sessionId).get();
 
         User user = session.getUser();
         String name = req.getParameter("name");
-        double lat = Integer.parseInt(req.getParameter("lat"));
-        double lon = Integer.parseInt(req.getParameter("lon"));
+        double lat = Double.parseDouble(req.getParameter("lat"));
+        double lon = Double.parseDouble(req.getParameter("lon"));
         //todo refactor
+        log.info("Name: "+name);
+        log.info("Coord: "+lat+", "+lon);
         locationService.add(user,name,lat,lon);
-        templateEngine.process("main", ctx, resp.getWriter());
+        resp.sendRedirect(req.getContextPath()+"/main");
     }
 }

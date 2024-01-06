@@ -20,8 +20,7 @@ public class SessionService {
     public Optional<Session> startSession(User user) {
         Session session = new Session();
         session.setUser(user);
-        sessionRepository.save(session);
-        return sessionRepository.getByUserId(user.getId());
+        return sessionRepository.startSession(session);
     }
 
     public Optional<Session> getById(String uuid) {

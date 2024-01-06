@@ -39,6 +39,6 @@ public class Authorization extends BaseServlet{
         Cookie cookie = new Cookie("uuid",uuid);
 
         resp.addCookie(cookie);
-        templateEngine.process("main", ctx, resp.getWriter());
+        resp.sendRedirect(req.getContextPath()+"/main");
     }
 }

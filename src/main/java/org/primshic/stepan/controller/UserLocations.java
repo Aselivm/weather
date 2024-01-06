@@ -42,8 +42,9 @@ public class UserLocations extends BaseServlet {
                 log.info("User session is present");
                 User user = session.getUser();
                 List<Location> locationList = locationService.getUserLocations(user);
+                log.info("User locations list size: "+locationList.size());
                 List<LocationWeatherDTO> locationWeatherDTOList = WeatherUtil.getWeatherForLocations(locationList);
-
+                log.info("Locations converted to LocationWeather list size: "+locationWeatherDTOList.size());
                 populateContextVariables(ctx,userSession,locationWeatherDTOList);
             });
         }
@@ -53,15 +54,12 @@ public class UserLocations extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
-        WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
-
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
         int userId = sessionService.getById(sessionId).get().getUser().getId();
         double lat = Integer.parseInt(req.getParameter("lat"));
         double lon = Integer.parseInt(req.getParameter("lon"));
         locationService.delete(userId,lat,lon);
-        templateEngine.process("main", ctx, resp.getWriter());
+        resp.sendRedirect(req.getContextPath()+"/main");
     }
 
     private void populateContextVariables(WebContext ctx, Optional<Session> userSession, List<LocationWeatherDTO> locationWeatherDTOList) {

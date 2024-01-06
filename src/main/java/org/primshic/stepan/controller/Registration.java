@@ -35,6 +35,6 @@ public class Registration extends BaseServlet {
         String uuid = userSession.getId();
         Cookie cookie = new Cookie("uuid",uuid);
         resp.addCookie(cookie);
-        templateEngine.process("main", ctx, resp.getWriter());
+        resp.sendRedirect(req.getContextPath()+"/main");
     }
 }
