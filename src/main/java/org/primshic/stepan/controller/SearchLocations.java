@@ -4,6 +4,8 @@ import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.util.CookieUtil;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,14 +18,21 @@ import java.util.List;
 public class SearchLocations extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
+        WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
+
         String name = req.getParameter("name");
         List<LocationDTO> locationDTOList = weatherAPIService.getLocationListByName(name);
-        req.setAttribute("locationList",locationDTOList);
-        req.getRequestDispatcher("search.html").forward(req,resp);
+
+        ctx.setVariable("locationList", locationDTOList);
+        templateEngine.process("search", ctx, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
+        WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
+
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
         Session session = sessionService.getById(sessionId).get();
 
@@ -33,6 +42,6 @@ public class SearchLocations extends BaseServlet {
         double lon = Integer.parseInt(req.getParameter("lon"));
         //todo refactor
         locationService.add(user,name,lat,lon);
-        resp.sendRedirect(req.getContextPath()+"/main");
+        templateEngine.process("main", ctx, resp.getWriter());
     }
 }

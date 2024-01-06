@@ -28,7 +28,7 @@ public class SessionRepository {
 
     public Optional<Session> getById(String uuid) {
         try(org.hibernate.Session session = sessionFactory.openSession()){
-            return  Optional.of(session.get(Session.class,uuid));
+            return  Optional.ofNullable(session.get(Session.class,uuid));
         }
     }
 

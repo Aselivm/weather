@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http:thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -18,10 +18,10 @@
             <a href="main.html" style="text-decoration: none;color:white"><h1>Weather</h1></a>
         </div>
         <div class="col-sm-3 col-lg-2 text-center d-grid gap-2 mx-auto my-1">
-            <a href="authorization.html" class="btn btn-primary  btn-lg">Log in</a>
+            <a th:href="@{/auth}" class="btn btn-primary  btn-lg">Log in</a>
         </div>
         <div class="col-sm-3 col-lg-2 text-center d-grid gap-2 mx-auto my-1">
-            <a href="registration.html " class="btn btn-primary btn-lg">Sign up</a>
+            <a th:href="@{/reg}" class="btn btn-primary btn-lg">Sign up</a>
      </div>
     </div>
 </div>
