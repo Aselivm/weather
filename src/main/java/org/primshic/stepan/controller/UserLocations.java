@@ -18,10 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/main")
@@ -34,25 +31,28 @@ public class UserLocations extends BaseServlet {
         WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
 
+        Optional<Session> userSession = Optional.empty();
+        List<LocationWeatherDTO> locationWeatherDTOList = new ArrayList<>();
+
         if (sessionId != null && !sessionId.isEmpty()) {
-            log.info("Session ID is valid: {}"+sessionId);
+            log.info("Session ID is valid: {}" + sessionId);
 
-            Optional<Session> userSession = sessionService.getById(sessionId);
-
-            sessionService.getById(sessionId).ifPresent(session -> {
+            userSession = sessionService.getById(sessionId);
+            userSession.ifPresent(session -> {
                 log.info("User session is present");
                 User user = session.getUser();
                 List<Location> locationList = locationService.getUserLocations(user);
-                log.info("User locations list size: "+locationList.size());
-                if(locationList.size()!=0){
+                log.info("User locations list size: " + locationList.size());
+                if (locationList.size() != 0) {
                     log.info("First object from list latitude: " + locationList.get(0).getLat());
                 }
-                List<LocationWeatherDTO> locationWeatherDTOList = WeatherUtil.getWeatherForLocations(locationList);
-                log.info("Locations converted to LocationWeather list size: "+locationWeatherDTOList.size());
-                populateContextVariables(ctx,userSession,locationWeatherDTOList);
+                locationWeatherDTOList.addAll(WeatherUtil.getWeatherForLocations(locationList));
+                log.info("Locations converted to LocationWeather list size: " + locationWeatherDTOList.size());
             });
         }
 
+        ctx.setVariable("userSession", userSession);
+        ctx.setVariable("locationWeatherList", locationWeatherDTOList);
         templateEngine.process("main", ctx, resp.getWriter());
     }
 
@@ -64,14 +64,6 @@ public class UserLocations extends BaseServlet {
         BigDecimal lon = new BigDecimal(req.getParameter("lon"));
         locationService.delete(userId,lat,lon);
         resp.sendRedirect(req.getContextPath()+"/main");
-    }
-
-    private void populateContextVariables(WebContext ctx, Optional<Session> userSession, List<LocationWeatherDTO> locationWeatherDTOList) {
-        log.info("User session is present: "+userSession.isPresent());
-        log.info("User is present: "+(userSession.get().getUser()!=null));
-        log.info("User login: "+userSession.get().getUser().getLogin());
-        ctx.setVariable("userSession", userSession);
-        ctx.setVariable("locationWeatherList", locationWeatherDTOList);
     }
 
 }

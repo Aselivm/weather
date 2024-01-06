@@ -1,7 +1,6 @@
 package org.primshic.stepan.dao;
 
 import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.util.HibernateUtil;
@@ -59,5 +58,13 @@ public class SessionRepository {
     private void removeExistingSession(User user, org.hibernate.Session session) {
         Optional<Session> existingSession = getByUserId(user.getId(), session);
         existingSession.ifPresent(session::delete);
+    }
+
+    public void delete(Session sessionEntity) {
+        try(org.hibernate.Session session = sessionFactory.openSession()){
+            session.beginTransaction();
+            session.delete(sessionEntity);
+            session.getTransaction().commit();
+        }
     }
 }

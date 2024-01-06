@@ -1,8 +1,11 @@
 package org.primshic.stepan.controller;
 
 import org.primshic.stepan.dto.account.UserDTO;
+import org.primshic.stepan.dto.location_weather.LocationWeatherDTO;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
+import org.primshic.stepan.util.CookieUtil;
+import org.primshic.stepan.util.WeatherUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -12,17 +15,24 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @WebServlet(urlPatterns = "/auth")
 public class Authorization extends BaseServlet{
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         //todo добавить проверку на активную сессию и запретить авторизацию если она есть
         TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
         WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
 
-        ctx.setVariable("exampleAttribute", "Hello, Thymeleaf!");
+        String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
 
+        //todo убрать это
+        if (sessionId != null && !sessionId.isEmpty()) {
+            sessionService.getById(sessionId).ifPresent(sessionService::delete);
+        }
         templateEngine.process("authorization", ctx, resp.getWriter());
     }
 

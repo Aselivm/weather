@@ -23,7 +23,8 @@
                 </a>
             </div>
             <div class="col-sm-3 col-lg-2 text-center d-grid gap-2 mx-auto my-1">
-                <a th:href="@{/reg}" class="btn btn-primary btn-lg">Sign up</a>
+                <a th:if="${userSession.isEmpty()}" th:href="@{/reg}" class="btn btn-primary btn-lg">Sign up</a>
+                <a th:unless="${userSession.isEmpty()}" th:href="@{/auth}" class="btn btn-primary btn-lg">Log out</a>
          </div>
         </div>
     </div>
@@ -47,7 +48,8 @@
                     <form th:action="@{/main}" method="post">
                     <div class="card-body">
                       <h5 class="card-title" th:text="${locationWeather.getName()}">City</h5>
-                      <p class="card-text" th:text="${locationWeather.getMain().getTemp()}">Temperature</p>
+                        <h5 class="card-title" th:text="${locationWeather.getSys().getCountry()}">Country</h5>
+                      <h3 class="card-text" th:text="${locationWeather.getMain().getTemp()}">Temperature</h3>
                       <button type="submit" class="btn btn-secondary">Delete</button>
                     </div>
                     </form>
