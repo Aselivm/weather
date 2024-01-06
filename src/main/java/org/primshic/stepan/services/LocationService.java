@@ -1,10 +1,11 @@
 package org.primshic.stepan.services;
 
+import org.modelmapper.ModelMapper;
 import org.primshic.stepan.dao.LocationRepository;
+import org.primshic.stepan.dto.UserLocationDTO;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.User;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -20,16 +21,11 @@ public class LocationService {
         locationRepository.delete(databaseId);
     }
 
-    public void add(User user, String name, BigDecimal lat, BigDecimal lon) {
-        Location location = new Location();
-        location.setUser(user);
-        location.setName(name);
-        location.setLat(lat);
-        location.setLon(lon);
+    public void add(UserLocationDTO location) {
 
         log.info("Lat from entity: "+location.getLat());
         log.info("Lon from entity: "+location.getLon());
 
-        locationRepository.add(location);
+        locationRepository.add(new ModelMapper().map(location,Location.class));
     }
 }

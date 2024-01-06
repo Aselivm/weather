@@ -8,7 +8,6 @@ import org.primshic.stepan.services.WeatherAPIService;
 import javax.servlet.http.HttpServlet;
 
 public class BaseServlet extends HttpServlet {
-    protected final String pathToView = "WEB-INF/view/";
     protected final UserService userService = new UserService();
     protected final SessionService sessionService = new SessionService();
     protected final LocationService locationService = new LocationService();

@@ -3,6 +3,8 @@ package org.primshic.stepan.services;
 import org.mindrot.jbcrypt.BCrypt;
 import org.primshic.stepan.dao.UserRepository;
 import org.primshic.stepan.dto.account.UserDTO;
+import org.primshic.stepan.exception.ApplicationException;
+import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.User;
 
 import java.util.Optional;
@@ -18,7 +20,7 @@ public class UserService {
         User userEntity = toEntity(userDTO);
         User user = userRepository.get(userEntity.getLogin()).orElseThrow();//todo add exception
         if(!BCrypt.checkpw(userDTO.getPassword(), user.getPassword())){
-            throw new RuntimeException("Wrong password"); //todo wrong password exception
+            throw new ApplicationException(ErrorMessage.WRONG_PASSWORD); //todo wrong password exception
         }
         return Optional.of(user);
     }

@@ -15,6 +15,7 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -61,6 +62,22 @@ public class WeatherAPIService {
         }
         log.info("Weather by location info: "+locationWeatherDTO.toString());
         return locationWeatherDTO;
+    }
+
+    public List<LocationWeatherDTO> getWeatherForLocations(List<Location> locationList) {
+        List<LocationWeatherDTO> locationWeatherDTOList = new LinkedList<>();
+        for (Location location : locationList) {
+            try {
+                LocationWeatherDTO locationWeatherDTO = getWeatherByLocation(location);
+                int locationId = location.getId();
+                locationWeatherDTO.setDatabaseId(locationId);
+                locationWeatherDTOList.add(locationWeatherDTO);
+            } catch (RuntimeException e) {
+                //todo exception
+                log.warning("Error getting weather for location {"+location.getName()+"}: {"+e.getMessage()+"}");
+            }
+        }
+        return locationWeatherDTOList;
     }
 
     private String getWeatherAPIProperty(String key){

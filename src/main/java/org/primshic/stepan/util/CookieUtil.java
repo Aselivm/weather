@@ -2,6 +2,7 @@ package org.primshic.stepan.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.primshic.stepan.model.Session;
 
 import javax.servlet.http.Cookie;
 import java.util.Objects;
@@ -19,5 +20,9 @@ public class CookieUtil {
             }
         }
         return null;
+    }
+
+    public static Cookie createUUIDCookie(Session session){
+        return new Cookie("uuid",session.getId());
     }
 }
