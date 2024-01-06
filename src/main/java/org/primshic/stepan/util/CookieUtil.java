@@ -10,6 +10,7 @@ import java.util.Objects;
 public class CookieUtil {
 
     public static String getSessionIdByCookie(Cookie[] cookies){
+        if(cookies == null || cookies.length==0) return null;
         Cookie uuidCookie;
         for(Cookie cookie : cookies){
             if(Objects.equals(cookie.getName(), "uuid")) {

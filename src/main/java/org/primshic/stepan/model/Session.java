@@ -24,10 +24,10 @@ public class Session {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name="UserId")
     private User user;
 
     @Column(name="ExpiresAt")
-    private LocalDateTime expiresAt = LocalDateTime.now().plusSeconds(5);
+    private LocalDateTime expiresAt = LocalDateTime.now().plusHours(1);
 }

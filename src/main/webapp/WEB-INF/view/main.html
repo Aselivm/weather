@@ -17,7 +17,10 @@
             </div>
             <div class="col-sm-3 col-lg-2 text-center d-grid gap-2 mx-auto my-1">
                 <a th:if="${userSession.isEmpty()}" th:href="@{/auth}" class="btn btn-primary  btn-lg">Log in</a>
-                <!--<a th:unless="${userSession.isEmpty()}"><h6>Current user:</h6><h3 th:text="${userSession.get().getUser().getLogin()}">Aselum</h3></a>-->
+                <a th:unless="${userSession.isEmpty()}">
+                    <h6>Current user:</h6>
+                    <h3 th:text="${userSession.get().getUser().getLogin()}">Aselum</h3>
+                </a>
             </div>
             <div class="col-sm-3 col-lg-2 text-center d-grid gap-2 mx-auto my-1">
                 <a th:href="@{/reg}" class="btn btn-primary btn-lg">Sign up</a>
@@ -39,12 +42,12 @@
 </form>
     <div class="container">
         <div class="row my-5 p-3">
-            <div th:unless="${lists.isEmpty(locationList)}" th:each="location : ${locationList}" class="col-lg-2 col-md-4 col-sm-6">
+            <div th:unless="${locationList.isEmpty()}" th:each="locationWeather : ${locationWeatherList}" class="col-lg-2 col-md-4 col-sm-6">
                 <div class="card text-center">
                     <form th:action="@{/main}" method="post">
                     <div class="card-body">
-                      <h5 class="card-title" th:text="${location.name}">City</h5>
-                      <p class="card-text" th:text="${location.temp}">Temperature</p>
+                      <h5 class="card-title" th:text="${locationWeather.getName()}">City</h5>
+                      <p class="card-text" th:text="${locationWeather.getMain().getTemp()}">Temperature</p>
                       <button type="submit" class="btn btn-secondary">Delete</button>
                     </div>
                     </form>

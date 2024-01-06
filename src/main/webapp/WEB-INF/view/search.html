@@ -39,30 +39,17 @@
 </form>
     <div class="container">
         <div class="row my-5 p-3">
-            <div class="col-lg-2 col-md-4 col-sm-6">
+            <div th:unless="${locationList.isEmpty()}" th:each="location : ${locationList}" class="col-lg-2 col-md-4 col-sm-6">
                 <div class="card text-center">
                     <form th:action="@{/search}" method="post">
                     <div class="card-body">
-                      <h5 class="card-title">Moscow</h5>
-                      <p class="card-text">America</p>
-                      <button type="submit" class="btn btn-primary">Add</button>
+                      <h5 class="card-title" th:text="${location.getName()}">Moscow</h5>
+                      <p class="card-text" th:text="${location.getCountry()+', '+location.getState()}">America</p>
+                      <button type="submit" class="btn btn-primary" > Add </button>
                     </div>
                     </form>
                   </div>
             </div>
-
-            <div class="col-lg-2 col-md-4 col-sm-6">
-                <div class="card text-center">
-                    <div class="card-body">
-                      <h5 class="card-title">Moscow</h5>
-                      <p class="card-text">America</p>
-                      <button type="button" class="btn btn-primary">Add</button>
-                    </div>
-                  </div>
-            </div>
-
-
-
         </div>
     </div>
 

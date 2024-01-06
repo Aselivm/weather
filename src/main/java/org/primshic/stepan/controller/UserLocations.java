@@ -7,6 +7,7 @@ import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.util.CookieUtil;
+import org.primshic.stepan.util.WeatherUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -30,28 +31,23 @@ public class UserLocations extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
         WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
-        String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies()); //todo здесь можно понять
-        List<Location> locationList=null;
-        Optional<Session> userSession = null;
-        List<LocationWeatherDTO> locationWeatherDTOList = new LinkedList<>();
-        if(sessionId!=null&&sessionId.length()!=0){
-            log.info("session id != 0");
-            userSession = sessionService.getById(sessionId);
+        String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
 
-            if(userSession.isPresent()){
-                log.info("user session is present");
-                User user = userSession.get().getUser();
-                locationList = locationService.getUserLocations(user);
+        if (sessionId != null && !sessionId.isEmpty()) {
+            log.info("Session ID is valid: {}"+sessionId);
 
-                for(Location location : locationList){
-                    LocationWeatherDTO locationWeatherDTO =
-                            weatherAPIService.getWeatherByLocation(location);
-                    locationWeatherDTOList.add(locationWeatherDTO);
-                }
-            }
+            Optional<Session> userSession = sessionService.getById(sessionId);
+
+            sessionService.getById(sessionId).ifPresent(session -> {
+                log.info("User session is present");
+                User user = session.getUser();
+                List<Location> locationList = locationService.getUserLocations(user);
+                List<LocationWeatherDTO> locationWeatherDTOList = WeatherUtil.getWeatherForLocations(locationList);
+
+                populateContextVariables(ctx,userSession,locationWeatherDTOList);
+            });
         }
-        ctx.setVariable("userSession", userSession);
-        ctx.setVariable("locationWeatherList", locationWeatherDTOList);
+
         templateEngine.process("main", ctx, resp.getWriter());
     }
 
@@ -66,6 +62,14 @@ public class UserLocations extends BaseServlet {
         double lon = Integer.parseInt(req.getParameter("lon"));
         locationService.delete(userId,lat,lon);
         templateEngine.process("main", ctx, resp.getWriter());
+    }
+
+    private void populateContextVariables(WebContext ctx, Optional<Session> userSession, List<LocationWeatherDTO> locationWeatherDTOList) {
+        log.info("User session is present: "+userSession.isPresent());
+        log.info("User is present: "+(userSession.get().getUser()!=null));
+        log.info("User login: "+userSession.get().getUser().getLogin());
+        ctx.setVariable("userSession", userSession);
+        ctx.setVariable("locationWeatherList", locationWeatherDTOList);
     }
 
 }
