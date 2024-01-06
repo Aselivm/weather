@@ -58,10 +58,8 @@ public class UserLocations extends BaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
-        int userId = sessionService.getById(sessionId).get().getUser().getId();
         int databaseId = Integer.parseInt(req.getParameter("databaseId"));
-        locationService.delete(userId,databaseId);
+        locationService.delete(databaseId);
         resp.sendRedirect(req.getContextPath()+"/main");
     }
 

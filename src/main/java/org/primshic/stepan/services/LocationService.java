@@ -16,8 +16,8 @@ public class LocationService {
     public List<Location> getUserLocations(User user){
         return locationRepository.getUserLocations(user);
     }
-    public void delete(int userId, int databaseId) {
-        locationRepository.delete(userId,databaseId);
+    public void delete(int databaseId) {
+        locationRepository.delete(databaseId);
     }
 
     public void add(User user, String name, BigDecimal lat, BigDecimal lon) {

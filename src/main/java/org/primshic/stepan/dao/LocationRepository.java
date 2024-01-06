@@ -32,15 +32,13 @@ public class LocationRepository {
         }
     }
 
-    public void delete(int userId, int databaseId) {
+    public void delete(int databaseId) {
         try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
 
-            Location locationToDelete = session.get(Location.class, databaseId);
-            if (locationToDelete != null&&(locationToDelete.getUser().getId()==userId)) {
-                session.delete(locationToDelete);
-                session.getTransaction().commit();
-            }
+            String hql = "DELETE FROM Location WHERE id = :databaseId";
+            session.createQuery(hql).setParameter("databaseId", databaseId).executeUpdate();
+            session.getTransaction().commit();
         }
     }
 }
