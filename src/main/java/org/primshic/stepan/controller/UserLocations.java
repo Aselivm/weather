@@ -4,6 +4,7 @@ import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.dto.location_weather.LocationWeatherDTO;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.Session;
+import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.util.CookieUtil;
 import org.thymeleaf.TemplateEngine;
@@ -19,9 +20,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/main")
 public class UserLocations extends BaseServlet {
+    private Logger log = Logger.getLogger(UserLocations.class.getName());
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,12 +32,16 @@ public class UserLocations extends BaseServlet {
         WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies()); //todo здесь можно понять
         List<Location> locationList=null;
+        Optional<Session> userSession = null;
         List<LocationWeatherDTO> locationWeatherDTOList = new LinkedList<>();
         if(sessionId!=null&&sessionId.length()!=0){
-            Optional<Session> userSession = sessionService.getById(sessionId);
+            log.info("session id != 0");
+            userSession = sessionService.getById(sessionId);
 
             if(userSession.isPresent()){
-                locationList = userSession.get().getUser().getLocations();
+                log.info("user session is present");
+                User user = userSession.get().getUser();
+                locationList = locationService.getUserLocations(user);
 
                 for(Location location : locationList){
                     LocationWeatherDTO locationWeatherDTO =
@@ -43,6 +50,7 @@ public class UserLocations extends BaseServlet {
                 }
             }
         }
+        ctx.setVariable("userSession", userSession);
         ctx.setVariable("locationWeatherList", locationWeatherDTOList);
         templateEngine.process("main", ctx, resp.getWriter());
     }
