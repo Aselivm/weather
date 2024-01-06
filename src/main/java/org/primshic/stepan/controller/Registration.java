@@ -3,6 +3,8 @@ package org.primshic.stepan.controller;
 import org.primshic.stepan.dto.account.UserDTO;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
+import org.primshic.stepan.util.CookieUtil;
+import org.primshic.stepan.util.SessionUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -20,6 +22,10 @@ public class Registration extends BaseServlet {
         //todo добавить проверку на активную сессию и запретить регистрацию если она есть
         TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
         WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
+
+        String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
+        SessionUtil.deleteSessionIfPresent(sessionId);
+
         templateEngine.process("registration", ctx, resp.getWriter());
     }
 

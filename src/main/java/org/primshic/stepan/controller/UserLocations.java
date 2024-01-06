@@ -7,6 +7,7 @@ import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.util.CookieUtil;
+import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.WeatherUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -31,25 +32,24 @@ public class UserLocations extends BaseServlet {
         WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
 
-        Optional<Session> userSession = Optional.empty();
-        List<LocationWeatherDTO> locationWeatherDTOList = new ArrayList<>();
+        Optional<Session> userSession = SessionUtil.getCurrentSession(sessionId);
+        List<LocationWeatherDTO> locationWeatherDTOList = new LinkedList<>();
 
-        if (sessionId != null && !sessionId.isEmpty()) {
-            log.info("Session ID is valid: {}" + sessionId);
+        userSession.ifPresent(session -> {
+            log.info("User session is present");
+               User user = session.getUser();
+               List<Location> locationList = locationService.getUserLocations(user);
 
-            userSession = sessionService.getById(sessionId);
-            userSession.ifPresent(session -> {
-                log.info("User session is present");
-                User user = session.getUser();
-                List<Location> locationList = locationService.getUserLocations(user);
-                log.info("User locations list size: " + locationList.size());
-                if (locationList.size() != 0) {
-                    log.info("First object from list latitude: " + locationList.get(0).getLat());
-                }
-                locationWeatherDTOList.addAll(WeatherUtil.getWeatherForLocations(locationList));
-                log.info("Locations converted to LocationWeather list size: " + locationWeatherDTOList.size());
+               log.info("User locations list size: " + locationList.size());
+
+               if (locationList.size() != 0) {
+                   log.info("First object from list latitude: " + locationList.get(0).getLat());
+               }
+
+               locationWeatherDTOList.addAll(WeatherUtil.getWeatherForLocations(locationList));
+
+               log.info("Locations converted to LocationWeather list size: " + locationWeatherDTOList.size());
             });
-        }
 
         ctx.setVariable("userSession", userSession);
         ctx.setVariable("locationWeatherList", locationWeatherDTOList);
@@ -60,9 +60,8 @@ public class UserLocations extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
         int userId = sessionService.getById(sessionId).get().getUser().getId();
-        BigDecimal lat = new BigDecimal(req.getParameter("lat"));
-        BigDecimal lon = new BigDecimal(req.getParameter("lon"));
-        locationService.delete(userId,lat,lon);
+        int databaseId = Integer.parseInt(req.getParameter("databaseId"));
+        locationService.delete(userId,databaseId);
         resp.sendRedirect(req.getContextPath()+"/main");
     }
 

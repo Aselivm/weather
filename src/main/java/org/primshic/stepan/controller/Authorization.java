@@ -5,6 +5,7 @@ import org.primshic.stepan.dto.location_weather.LocationWeatherDTO;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.util.CookieUtil;
+import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.WeatherUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -28,11 +29,8 @@ public class Authorization extends BaseServlet{
         WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
 
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
+        SessionUtil.deleteSessionIfPresent(sessionId);
 
-        //todo убрать это
-        if (sessionId != null && !sessionId.isEmpty()) {
-            sessionService.getById(sessionId).ifPresent(sessionService::delete);
-        }
         templateEngine.process("authorization", ctx, resp.getWriter());
     }
 

@@ -4,6 +4,7 @@ import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.util.CookieUtil;
+import org.primshic.stepan.util.SessionUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @WebServlet(urlPatterns = "/search")
@@ -24,9 +26,13 @@ public class SearchLocations extends BaseServlet {
         TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
         WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
 
+        String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
+        Optional<Session> userSession = SessionUtil.getCurrentSession(sessionId);
+
         String name = req.getParameter("name");
         List<LocationDTO> locationDTOList = weatherAPIService.getLocationListByName(name);
 
+        ctx.setVariable("userSession", userSession);
         ctx.setVariable("locationList", locationDTOList);
         templateEngine.process("search", ctx, resp.getWriter());
     }

@@ -32,22 +32,15 @@ public class LocationRepository {
         }
     }
 
-    public void delete(int userId, BigDecimal lat, BigDecimal lon) {
-        try(Session session = sessionFactory.openSession()) {
+    public void delete(int userId, int databaseId) {
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            String jpql = "DELETE FROM Location l WHERE l.user.id = :userId " +
-                    "AND ROUND(l.lat, 4) = ROUND(:lat, 4) " +
-                    "AND ROUND(l.lon, 4) = ROUND(:lon, 4)";
 
-            Query query = session.createQuery(jpql);
-            log.info("user id: "+userId);
-            log.info("lat: "+lat);
-            log.info("lon: "+lon);
-            query.setParameter("userId", userId);
-            query.setParameter("lat", lat);
-            query.setParameter("lon", lon);
-            query.executeUpdate();
-            session.getTransaction().commit();
+            Location locationToDelete = session.get(Location.class, databaseId);
+            if (locationToDelete != null&&(locationToDelete.getUser().getId()==userId)) {
+                session.delete(locationToDelete);
+                session.getTransaction().commit();
+            }
         }
     }
 }

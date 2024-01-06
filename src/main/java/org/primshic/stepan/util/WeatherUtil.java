@@ -20,6 +20,8 @@ public class WeatherUtil {
         for (Location location : locationList) {
             try {
                 LocationWeatherDTO locationWeatherDTO = weatherAPIService.getWeatherByLocation(location);
+                int locationId = location.getId();
+                locationWeatherDTO.setDatabaseId(locationId);
                 locationWeatherDTOList.add(locationWeatherDTO);
             } catch (RuntimeException e) {
                 //todo exception
@@ -29,4 +31,5 @@ public class WeatherUtil {
         }
         return locationWeatherDTOList;
     }
+
 }

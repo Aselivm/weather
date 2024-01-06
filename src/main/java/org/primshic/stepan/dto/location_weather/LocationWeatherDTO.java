@@ -31,6 +31,8 @@ import org.primshic.stepan.dto.location_weather.weather_info.*;
 })
 @Generated("jsonschema2pojo")
 public class LocationWeatherDTO {
+
+    private int databaseId;
     @JsonProperty("coord")
     private Coord coord;
     @JsonProperty("weather")
@@ -198,6 +200,14 @@ public class LocationWeatherDTO {
     @JsonAnySetter
     public void setAdditionalProperty(String name, Object value) {
         this.additionalProperties.put(name, value);
+    }
+
+    public void setDatabaseId(int databaseId) {
+        this.databaseId = databaseId;
+    }
+
+    public int getDatabaseId() {
+        return databaseId;
     }
 
 }
