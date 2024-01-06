@@ -3,6 +3,7 @@ package org.primshic.stepan.controller;
 import org.primshic.stepan.dto.UserLocationDTO;
 import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.exception.ApplicationException;
+import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.exception.ExceptionHandler;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.Session;
@@ -28,12 +29,12 @@ public class SearchLocations extends BaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
      try{
-         Session userSession = SessionUtil.getSessionByReq(req);
+         Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
          String name = InputUtil.locationName(req);
-         List<LocationDTO> locationDTOList = PageUtil.getLocationsByName(name);
+         List<LocationDTO> locationDTOList = weatherAPIService.getLocationListByName(name);
 
          ThymeleafUtil.templateEngineProcessWithVariables("search", req, resp, new HashMap<>(){{
-             put("userSession", userSession);
+             put("userSession", optionalUserSession);
              put("locationList",locationDTOList);
          }});
      }catch (ApplicationException e){
@@ -44,9 +45,9 @@ public class SearchLocations extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try{
-            Session userSession = SessionUtil.getSessionByReq(req);
+            Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
 
-            User user = userSession.getUser();
+            User user = optionalUserSession.orElseThrow(()->new ApplicationException(ErrorMessage.INTERNAL_ERROR)).getUser();
             String name = InputUtil.locationName(req);
 
             UserLocationDTO userLocationDTO = UserLocationDTO.builder()

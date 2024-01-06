@@ -21,13 +21,13 @@ public class SessionUtil {
     private static Logger log = Logger.getLogger(SessionUtil.class.getName());
 
     private static SessionService sessionService = new SessionService();
-    public static Session getCurrentSession(String sessionId) {
+    public static Optional<Session> getCurrentSession(String sessionId) {
         Optional<Session> userSession = Optional.empty();
         if (validSessionId(sessionId)) {
             log.info("Session ID is valid: {}" + sessionId);
             userSession = sessionService.getById(sessionId);
         }
-        return userSession.orElseThrow(()->new ApplicationException(ErrorMessage.INTERNAL_ERROR));
+        return userSession;
     }
 
     public static void deleteSessionIfPresent(String sessionId){
@@ -36,7 +36,7 @@ public class SessionUtil {
         }
     }
 
-    public static Session getSessionByReq(HttpServletRequest req){
+    public static Optional<Session> getSessionByReq(HttpServletRequest req){
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
         return SessionUtil.getCurrentSession(sessionId);
     }

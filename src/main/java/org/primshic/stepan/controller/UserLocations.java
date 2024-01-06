@@ -24,10 +24,17 @@ public class UserLocations extends BaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<LocationWeatherDTO> locationWeatherDTOList = new LinkedList<>();
         try {
-            Session userSession = SessionUtil.getSessionByReq(req);
-            PageUtil.processUserPage(userSession, locationWeatherDTOList);
-            ThymeleafUtil.templateEngineProcessWithVariables("search", req, resp, new HashMap<>(){{
-                put("userSession", userSession);
+            Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
+
+
+            if(optionalUserSession.isPresent()){
+                User user = optionalUserSession.get().getUser();
+                List<Location> locationList = locationService.getUserLocations(user);
+                locationWeatherDTOList.addAll(weatherAPIService.getWeatherForLocations(locationList));
+            }
+
+            ThymeleafUtil.templateEngineProcessWithVariables("main", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
                 put("locationWeatherList",locationWeatherDTOList);
             }});
         } catch (ApplicationException e) {
