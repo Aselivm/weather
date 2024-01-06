@@ -17,6 +17,7 @@ import org.primshic.stepan.services.WeatherAPIService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -45,8 +46,8 @@ class TestAPI {
     @Test
     void locationWeather(){
         LocationWeatherDTO locationWeatherDTO1;
-        final double lat = 37.1289771;
-        final double lon = -84.0832646;
+        final BigDecimal lat = new BigDecimal(37.1289771);
+        final BigDecimal lon = new BigDecimal(-84.0832646);
         final Location location = new Location();
         location.setLat(lat);
         location.setLon(lon);
@@ -66,8 +67,8 @@ class TestAPI {
 
     @Test
     void containsExpectedLocation() {
-        final double lat = 37.1289771;
-        final double lon = -84.0832646;
+        final BigDecimal lat = new BigDecimal(37.1289771);
+        final BigDecimal lon = new BigDecimal(-84.0832646);
         final Location loc = new Location();
         loc.setLat(lat);
         loc.setLon(lon);
@@ -82,8 +83,13 @@ class TestAPI {
             throw new RuntimeException(e);
         }
         Mockito.when(weatherAPIService.getLocationListByName(LONDON)).thenReturn(locationDTOList1);
+
+        BigDecimal epsilon = BigDecimal.valueOf(0.000001);
+
         assertThat(weatherAPIService.getLocationListByName(LONDON)).anyMatch(location ->
-                Double.compare(location.getLat(), lat) == 0 && Double.compare(location.getLon(), lon) == 0);
+                location.getLat() - lat.doubleValue() <= epsilon.doubleValue() &&
+                        location.getLon() - lon.doubleValue() <= epsilon.doubleValue()
+        );
     }
 
     //todo В случай ошибки (статусы 4xx, 5xx) от OpenWeather API сервис выбрасывает ожидаемый тип исключения

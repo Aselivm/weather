@@ -9,6 +9,7 @@ import org.primshic.stepan.model.Location;
 import org.primshic.stepan.dto.location_weather.LocationWeatherDTO;
 import org.primshic.stepan.util.PropertyReaderUtil;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -44,10 +45,8 @@ public class WeatherAPIService {
 
     public LocationWeatherDTO getWeatherByLocation(Location location){
         LocationWeatherDTO locationWeatherDTO;
-        double lat = location.getLat();
-        double lon = location.getLon();
-/*        double lat = 44.34;
-        double lon = 10.99;*/
+        BigDecimal lat = location.getLat();
+        BigDecimal lon = location.getLon();
         String appid = getWeatherAPIProperty("APIKey");
         String lang = getWeatherAPIProperty("lang");
         String units = getWeatherAPIProperty("units");
@@ -68,7 +67,7 @@ public class WeatherAPIService {
         return PropertyReaderUtil.read("weatherAPI.properties",key);
     }
 
-    private String getWeatherResponse(double lat,double lon,String url,
+    private String getWeatherResponse(BigDecimal lat,BigDecimal lon,String url,
                               String appid,String lang,String units){
         String latitude = String.valueOf(lat);
         String longitude = String.valueOf(lon);

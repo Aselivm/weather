@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -37,8 +38,8 @@ public class SearchLocations extends BaseServlet {
 
         User user = session.getUser();
         String name = req.getParameter("name");
-        double lat = Double.parseDouble(req.getParameter("lat"));
-        double lon = Double.parseDouble(req.getParameter("lon"));
+        BigDecimal lat = new BigDecimal(req.getParameter("lat"));
+        BigDecimal lon = new BigDecimal(req.getParameter("lon"));
         //todo refactor
         log.info("Name: "+name);
         log.info("Coord: "+lat+", "+lon);

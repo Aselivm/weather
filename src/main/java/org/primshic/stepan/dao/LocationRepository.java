@@ -7,6 +7,7 @@ import org.primshic.stepan.model.User;
 import org.primshic.stepan.util.HibernateUtil;
 
 import javax.persistence.Query;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class LocationRepository {
@@ -29,7 +30,7 @@ public class LocationRepository {
         }
     }
 
-    public void delete(int userId, double lat, double lon) {
+    public void delete(int userId, BigDecimal lat, BigDecimal lon) {
         try(Session session = sessionFactory.openSession()) {
             String jpql = "DELETE FROM Location l WHERE l.user.id = :userId AND l.lat = :lat AND l.lon = :lon";
 

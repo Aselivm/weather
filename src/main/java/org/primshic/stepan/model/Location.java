@@ -3,6 +3,7 @@ package org.primshic.stepan.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Entity()
 @Table(schema = "weather_db",name="Locations")
@@ -23,9 +24,9 @@ public class Location {
     @JoinColumn(name="UserId")
     private User user;
 
-    @Column(name="Latitude")
-    private double lat;
+    @Column(name = "Latitude", precision = 10, scale = 6)
+    private BigDecimal lat;
 
-    @Column(name="Longitude")
-    private double lon;
+    @Column(name = "Longitude", precision = 10, scale = 6)
+    private BigDecimal lon;
 }

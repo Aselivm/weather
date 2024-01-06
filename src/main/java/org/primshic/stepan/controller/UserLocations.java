@@ -17,6 +17,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -43,6 +44,9 @@ public class UserLocations extends BaseServlet {
                 User user = session.getUser();
                 List<Location> locationList = locationService.getUserLocations(user);
                 log.info("User locations list size: "+locationList.size());
+                if(locationList.size()!=0){
+                    log.info("First object from list latitude: " + locationList.get(0).getLat());
+                }
                 List<LocationWeatherDTO> locationWeatherDTOList = WeatherUtil.getWeatherForLocations(locationList);
                 log.info("Locations converted to LocationWeather list size: "+locationWeatherDTOList.size());
                 populateContextVariables(ctx,userSession,locationWeatherDTOList);
@@ -56,8 +60,8 @@ public class UserLocations extends BaseServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
         int userId = sessionService.getById(sessionId).get().getUser().getId();
-        double lat = Integer.parseInt(req.getParameter("lat"));
-        double lon = Integer.parseInt(req.getParameter("lon"));
+        BigDecimal lat = new BigDecimal(req.getParameter("lat"));
+        BigDecimal lon = new BigDecimal(req.getParameter("lon"));
         locationService.delete(userId,lat,lon);
         resp.sendRedirect(req.getContextPath()+"/main");
     }
