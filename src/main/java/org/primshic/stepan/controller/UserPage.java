@@ -9,6 +9,7 @@ import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.LocationService;
 import org.primshic.stepan.services.WeatherAPIService;
 import org.primshic.stepan.util.InputUtil;
+import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.WebContextUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -28,8 +29,6 @@ import java.util.Optional;
 @Slf4j
 public class UserPage extends HttpServlet {
 
-    private Optional<Session> optionalUserSession;
-
     private LocationService locationService;
     private WeatherAPIService weatherAPIService;
 
@@ -46,7 +45,7 @@ public class UserPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
-
+        Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
         List<WeatherDTO> weatherDTOList = new LinkedList<>();
         try {
 

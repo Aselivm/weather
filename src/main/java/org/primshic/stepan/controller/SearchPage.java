@@ -10,6 +10,7 @@ import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.LocationService;
 import org.primshic.stepan.services.WeatherAPIService;
 import org.primshic.stepan.util.InputUtil;
+import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.WebContextUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -29,9 +30,6 @@ import java.util.Optional;
 public class SearchPage extends HttpServlet {
     private LocationService locationService;
     private WeatherAPIService weatherAPIService;
-
-    private Optional<Session> optionalUserSession;
-
     private TemplateEngine templateEngine;
 
     @Override
@@ -44,6 +42,7 @@ public class SearchPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
         WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
 
         try {
@@ -62,7 +61,7 @@ public class SearchPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
-
+        Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
         try {
 
             User user = optionalUserSession.orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR)).getUser();

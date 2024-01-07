@@ -16,7 +16,6 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/log-out")
 public class DeleteServlet extends HttpServlet {
-    private Optional<Session> optionalUserSession;
     private SessionService sessionService;
 
     @Override
@@ -27,7 +26,7 @@ public class DeleteServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        optionalUserSession = SessionUtil.getSessionByReq(req);
+        Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
         SessionUtil.deleteSessionIfPresent(optionalUserSession,sessionService);
         resp.sendRedirect(req.getContextPath()+"/auth");
     }

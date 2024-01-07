@@ -29,8 +29,6 @@ import java.util.Optional;
 public class Registration extends HttpServlet {
     private UserService userService;
 
-    private Optional<Session> optionalUserSession;
-
     private TemplateEngine templateEngine;
 
     private SessionService sessionService;
@@ -60,8 +58,7 @@ public class Registration extends HttpServlet {
             User user = userService.persist(userDTO).orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
             Session userSession = sessionService.startSession(user).orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
 
-            Cookie cookie = CookieUtil.createUUIDCookie(userSession);
-            resp.addCookie(cookie);
+            CookieUtil.createSessionCookie(resp,userSession.getId());
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
             context.setVariable("error",e.getError());

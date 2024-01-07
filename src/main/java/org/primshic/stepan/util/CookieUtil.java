@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.model.Session;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -34,9 +35,10 @@ public class CookieUtil {
         return sessionId;
     }
 
-    public static Cookie createUUIDCookie(Session session) {
-        Cookie uuidCookie = new Cookie("uuid", session.getId());
-        log.info("Created UUID cookie for session ID: {}", session.getId());
-        return uuidCookie;
+    public static void createSessionCookie(HttpServletResponse resp, String sessionId) {
+        Cookie cookie = new Cookie("uuid", sessionId);
+        cookie.setMaxAge(-1); // Кука будет удалена при закрытии браузера
+        resp.addCookie(cookie);
     }
+
 }

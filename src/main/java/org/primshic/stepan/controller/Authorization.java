@@ -8,6 +8,7 @@ import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.services.UserService;
+import org.primshic.stepan.util.CookieUtil;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.WebContextUtil;
 import org.thymeleaf.TemplateEngine;
@@ -27,8 +28,6 @@ import java.util.Optional;
 @Slf4j
 public class Authorization extends HttpServlet {
     private UserService userService;
-
-    private Optional<Session> optionalUserSession;
 
     private  TemplateEngine templateEngine;
 
@@ -57,10 +56,8 @@ public class Authorization extends HttpServlet {
             User user = userService.get(userDTO).orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
             Session userSession = sessionService.startSession(user).orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
 
-            String uuid = userSession.getId();
-            Cookie cookie = new Cookie("uuid", uuid);
+            CookieUtil.createSessionCookie(resp, userSession.getId());
 
-            resp.addCookie(cookie);
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
             context.setVariable("error",e.getError());
