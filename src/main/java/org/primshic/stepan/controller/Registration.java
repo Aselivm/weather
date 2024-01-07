@@ -6,13 +6,11 @@ import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
-import org.primshic.stepan.services.LocationService;
 import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.services.UserService;
 import org.primshic.stepan.util.CookieUtil;
 import org.primshic.stepan.util.InputUtil;
-import org.primshic.stepan.util.SessionUtil;
-import org.primshic.stepan.util.ThymeleafUtil;
+import org.primshic.stepan.util.WebContextUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -24,7 +22,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Optional;
 
 @WebServlet(urlPatterns = "/reg")
@@ -48,19 +45,15 @@ public class Registration extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebContext context = new WebContext(req, resp, getServletContext());
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
 
-        optionalUserSession = SessionUtil.getSessionByReq(req);
-        context.setVariable("userSession",optionalUserSession);
         templateEngine.process("registration", context, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebContext context = new WebContext(req, resp, getServletContext());
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
 
-        optionalUserSession = SessionUtil.getSessionByReq(req);
-        context.setVariable("userSession",optionalUserSession);
         try {
             UserDTO userDTO = InputUtil.authenticate(req);
 
@@ -73,8 +66,8 @@ public class Registration extends HttpServlet {
         } catch (ApplicationException e) {
             context.setVariable("error",e.getError());
             log.error("Error processing POST request in Registration: {}", e.getMessage(), e);
+            templateEngine.process("registration", context, resp.getWriter());
         }
-        templateEngine.process("registration", context, resp.getWriter());
     }
 }
 

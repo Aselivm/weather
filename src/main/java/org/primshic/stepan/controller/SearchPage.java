@@ -1,7 +1,6 @@
 package org.primshic.stepan.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.SessionFactory;
 import org.primshic.stepan.dto.user.UserLocationDTO;
 import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.exception.ApplicationException;
@@ -9,11 +8,9 @@ import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.LocationService;
-import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.services.WeatherAPIService;
 import org.primshic.stepan.util.InputUtil;
-import org.primshic.stepan.util.SessionUtil;
-import org.primshic.stepan.util.ThymeleafUtil;
+import org.primshic.stepan.util.WebContextUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -24,7 +21,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,10 +44,8 @@ public class SearchPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebContext context = new WebContext(req, resp, getServletContext());
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
 
-        optionalUserSession = SessionUtil.getSessionByReq(req);
-        context.setVariable("userSession", optionalUserSession);
         try {
             String name = InputUtil.locationName(req);
             List<LocationDTO> locationDTOList = weatherAPIService.getLocationListByName(name);
@@ -67,10 +61,8 @@ public class SearchPage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebContext context = new WebContext(req, resp, getServletContext());
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
 
-        optionalUserSession = SessionUtil.getSessionByReq(req);
-        context.setVariable("userSession", optionalUserSession);
         try {
 
             User user = optionalUserSession.orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR)).getUser();

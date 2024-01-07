@@ -9,8 +9,7 @@ import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.services.UserService;
 import org.primshic.stepan.util.InputUtil;
-import org.primshic.stepan.util.SessionUtil;
-import org.primshic.stepan.util.ThymeleafUtil;
+import org.primshic.stepan.util.WebContextUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -22,7 +21,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Optional;
 
 @WebServlet(urlPatterns = "/auth")
@@ -46,19 +44,13 @@ public class Authorization extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebContext context = new WebContext(req, resp, getServletContext());
-
-        optionalUserSession = SessionUtil.getSessionByReq(req);
-        context.setVariable("userSession",optionalUserSession);
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         templateEngine.process("authorization", context, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebContext context = new WebContext(req, resp, getServletContext());
-
-        optionalUserSession = SessionUtil.getSessionByReq(req);
-        context.setVariable("userSession",optionalUserSession);
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         try {
             UserDTO userDTO = InputUtil.authenticate(req);
 
@@ -73,7 +65,7 @@ public class Authorization extends HttpServlet {
         } catch (ApplicationException e) {
             context.setVariable("error",e.getError());
             log.error("Error processing POST request in Registration: {}", e.getMessage(), e);
+            templateEngine.process("authorization", context, resp.getWriter());
         }
-        templateEngine.process("authorization", context, resp.getWriter());
     }
 }
