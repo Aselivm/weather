@@ -15,16 +15,34 @@ import java.math.BigDecimal;
 public class InputUtil {
     public static UserDTO authenticate(HttpServletRequest req) {
         String login = req.getParameter("login");
+        validateLogin(login);
+
+        String password = req.getParameter("password");
+        validatePassword(password);
+
+        return new UserDTO(login, password);
+    }
+
+    private static void validateLogin(String login) {
         if (login.length() > 100) {
             log.warn("Long login detected: {}", login);
             throw new ApplicationException(ErrorMessage.LONG_LOGIN);
         }
-        String password = req.getParameter("password");
+        if (login.contains(" ")) {
+            log.warn("Login contains spaces: {}", login);
+            throw new ApplicationException(ErrorMessage.LOGIN_CONTAINS_SPACES);
+        }
+    }
+
+    private static void validatePassword(String password) {
         if (password.length() > 100) {
-            log.warn("Long password detected for user with login: {}", login);
+            log.warn("Long password detected: {}", password);
             throw new ApplicationException(ErrorMessage.LONG_PASSWORD);
         }
-        return new UserDTO(login, password);
+        if (password.contains(" ")) {
+            log.warn("Password contains spaces");
+            throw new ApplicationException(ErrorMessage.PASSWORD_CONTAINS_SPACES);
+        }
     }
 
     public static Integer deletedLocationId(HttpServletRequest req) {
