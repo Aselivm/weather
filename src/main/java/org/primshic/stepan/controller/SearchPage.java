@@ -34,23 +34,23 @@ public class SearchPage extends HttpServlet {
     private LocationService locationService;
     private WeatherAPIService weatherAPIService;
 
-    private SessionService sessionService;
+    private Optional<Session> optionalUserSession;
 
     private TemplateEngine templateEngine;
 
     @Override
     public void init() throws ServletException {
-        locationService = (LocationService) getServletConfig().getServletContext().getAttribute("locationService");
-        weatherAPIService = (WeatherAPIService) getServletConfig().getServletContext().getAttribute("weatherAPIService");
-        sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
-        templateEngine = (TemplateEngine) getServletConfig().getServletContext().getAttribute("templateEngine");
+        ServletContext servletContext = getServletContext();
+        locationService = (LocationService) servletContext.getAttribute("locationService");
+        weatherAPIService = (WeatherAPIService) servletContext.getAttribute("weatherAPIService");
+        templateEngine = (TemplateEngine) servletContext.getAttribute("templateEngine");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         WebContext context = new WebContext(req, resp, getServletContext());
 
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
+        optionalUserSession = SessionUtil.getSessionByReq(req);
         context.setVariable("userSession", optionalUserSession);
         try {
             String name = InputUtil.locationName(req);
@@ -69,7 +69,7 @@ public class SearchPage extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         WebContext context = new WebContext(req, resp, getServletContext());
 
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
+        optionalUserSession = SessionUtil.getSessionByReq(req);
         context.setVariable("userSession", optionalUserSession);
         try {
 

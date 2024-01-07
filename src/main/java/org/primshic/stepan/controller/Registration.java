@@ -16,6 +16,7 @@ import org.primshic.stepan.util.ThymeleafUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -31,22 +32,25 @@ import java.util.Optional;
 public class Registration extends HttpServlet {
     private UserService userService;
 
-    private SessionService sessionService;
+    private Optional<Session> optionalUserSession;
 
     private TemplateEngine templateEngine;
 
+    private SessionService sessionService;
+
     @Override
     public void init() throws ServletException {
-        userService = (UserService) getServletConfig().getServletContext().getAttribute("userService");
-        sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
-        templateEngine = (TemplateEngine) getServletConfig().getServletContext().getAttribute("templateEngine");
+        ServletContext servletContext = getServletContext();
+        userService = (UserService) servletContext.getAttribute("userService");
+        templateEngine = (TemplateEngine) servletContext.getAttribute("templateEngine");
+        sessionService = (SessionService) servletContext.getAttribute("sessionService");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         WebContext context = new WebContext(req, resp, getServletContext());
 
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
+        optionalUserSession = SessionUtil.getSessionByReq(req);
         context.setVariable("userSession",optionalUserSession);
         templateEngine.process("registration", context, resp.getWriter());
     }
@@ -55,7 +59,7 @@ public class Registration extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         WebContext context = new WebContext(req, resp, getServletContext());
 
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
+        optionalUserSession = SessionUtil.getSessionByReq(req);
         context.setVariable("userSession",optionalUserSession);
         try {
             UserDTO userDTO = InputUtil.authenticate(req);

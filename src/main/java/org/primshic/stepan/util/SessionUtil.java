@@ -6,20 +6,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.services.SessionService;
 
+import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionUtil {
-    @Deprecated
+
     public static Optional<Session> getSessionByReq(HttpServletRequest req) {
-        Session userSession = (Session) req.getAttribute("userSession");
-        if (userSession == null) {
+        Optional<Session> userSession = (Optional<Session>) req.getAttribute("userSession");
+        if (userSession.isEmpty()) {
             log.warn("User session not found in the request.");
         }
 
-        return Optional.ofNullable(userSession);
+        return userSession;
     }
     public static Optional<Session> getCurrentSession(String sessionId,SessionService sessionService) {
         Optional<Session> userSession = Optional.empty();
@@ -33,15 +34,11 @@ public class SessionUtil {
         return userSession;
     }
 
-    public static void deleteSessionIfPresent(String sessionId, SessionService sessionService) {
-        if (validSessionId(sessionId)) {
-            sessionService.getById(sessionId).ifPresent(session -> {
-                sessionService.delete(session);
-                log.info("Deleted session with ID: {}", sessionId);
-            });
-        } else {
-            log.warn("Invalid session ID: {}", sessionId);
-        }
+    public static void deleteSessionIfPresent(Optional<Session> userSession, SessionService sessionService) {
+        userSession.ifPresent(session -> {
+            sessionService.delete(session);
+            log.info("Session deleted: {}", session.getId());
+        });
     }
 
     public static Optional<Session> getSessionFromCookies(HttpServletRequest req,SessionService sessionService) {

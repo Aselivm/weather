@@ -15,6 +15,7 @@ import org.primshic.stepan.util.ThymeleafUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,27 +31,26 @@ import java.util.Optional;
 @Slf4j
 public class UserPage extends HttpServlet {
 
+    private Optional<Session> optionalUserSession;
+
     private LocationService locationService;
     private WeatherAPIService weatherAPIService;
-
-    private SessionService sessionService;
 
     private TemplateEngine templateEngine;
 
     @Override
     public void init() throws ServletException {
-        locationService = (LocationService) getServletConfig().getServletContext().getAttribute("locationService");
-        weatherAPIService = (WeatherAPIService) getServletConfig().getServletContext().getAttribute("weatherAPIService");
-        sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
-        templateEngine = (TemplateEngine) getServletConfig().getServletContext().getAttribute("templateEngine");
+        ServletContext servletContext = getServletContext();
+        locationService = (LocationService) servletContext.getAttribute("locationService");
+        weatherAPIService = (WeatherAPIService) servletContext.getAttribute("weatherAPIService");
+        templateEngine = (TemplateEngine) servletContext.getAttribute("templateEngine");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        optionalUserSession = SessionUtil.getSessionByReq(req);
         WebContext context = new WebContext(req, resp, getServletContext());
-
         List<WeatherDTO> weatherDTOList = new LinkedList<>();
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
         context.setVariable("userSession",optionalUserSession);
         try {
 
@@ -70,8 +70,7 @@ public class UserPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         WebContext context = new WebContext(req, resp, getServletContext());
-
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
+        optionalUserSession = SessionUtil.getSessionByReq(req);
         context.setVariable("userSession", optionalUserSession);
         try {
             int databaseId = InputUtil.deletedLocationId(req);
