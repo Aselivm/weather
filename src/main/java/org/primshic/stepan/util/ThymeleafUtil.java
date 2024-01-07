@@ -16,19 +16,6 @@ import java.util.Map;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ThymeleafUtil {
-    public static void templateEngineProcess(String template, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
-        WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());
-
-        try {
-            templateEngine.process(template, ctx, resp.getWriter());
-            log.info("Template '{}' processed successfully.", template);
-        } catch (IOException e) {
-            log.error("Error processing template '{}'", template, e);
-            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
-        }
-    }
-
     public static void templateEngineProcessWithVariables(String template, HttpServletRequest req, HttpServletResponse resp, Map<String, Object> nameToVariable) throws IOException {
         TemplateEngine templateEngine = (TemplateEngine) req.getServletContext().getAttribute("templateEngine");
         WebContext ctx = new WebContext(req, resp, req.getServletContext(), req.getLocale());

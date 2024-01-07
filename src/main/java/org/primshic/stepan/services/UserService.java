@@ -48,6 +48,7 @@ public class UserService {
     }
 
     private String hashPassword(String password) {
-        return BCrypt.hashpw(password, BCrypt.gensalt(6));
+        final int ROUNDS = 6;
+        return BCrypt.hashpw(password, BCrypt.gensalt(ROUNDS));
     }
 }

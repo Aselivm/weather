@@ -15,7 +15,7 @@ public class AplicationContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         ScheduledExecutorService executorService;
         executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(new SessionRepository()::deleteExpiredSessions, 0, 1, TimeUnit.HOURS);
+        executorService.scheduleAtFixedRate(new SessionRepository()::deleteExpiredSessions, 60, 30, TimeUnit.MINUTES);
     }
 
     @Override
