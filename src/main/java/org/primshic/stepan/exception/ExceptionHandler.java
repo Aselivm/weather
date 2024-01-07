@@ -13,9 +13,9 @@ public class ExceptionHandler {
     public static void handle(HttpServletResponse response, ApplicationException e) {
         response.setStatus(e.getError().getStatus());
         response.setContentType("application/json;charset=UTF-8");
-        ErrorDetails errorDetails = new ErrorDetails(e.getError().getStatus(), e.getMessage());
+        response.setCharacterEncoding("UTF-8");
         try {
-            mapper.writeValue(response.getOutputStream(),errorDetails);
+            response.getWriter().write(mapper.writeValueAsString(e.getError().getMessage()));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

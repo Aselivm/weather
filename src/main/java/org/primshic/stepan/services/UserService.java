@@ -7,20 +7,27 @@ import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.User;
 
+import javax.persistence.PersistenceException;
 import java.util.Optional;
 
 public class UserService {
     private final UserRepository userRepository = new UserRepository();
     public Optional<User> persist(UserDTO userDTO) {
-        User userEntity = toEntity(userDTO); //todo unique login check
-        return userRepository.persist(userEntity);
+        Optional<User> user;
+        try{
+            User userEntity = toEntity(userDTO);
+            user = userRepository.persist(userEntity);
+        }catch (PersistenceException ex){
+            throw new ApplicationException(ErrorMessage.LOGIN_ALREADY_EXIST);
+        }
+        return user;
     }
 
     public Optional<User> get(UserDTO userDTO) {
         User userEntity = toEntity(userDTO);
         User user = userRepository.get(userEntity.getLogin()).orElseThrow();//todo add exception
         if(!BCrypt.checkpw(userDTO.getPassword(), user.getPassword())){
-            throw new ApplicationException(ErrorMessage.WRONG_PASSWORD); //todo wrong password exception
+            throw new ApplicationException(ErrorMessage.WRONG_PASSWORD);
         }
         return Optional.of(user);
     }
