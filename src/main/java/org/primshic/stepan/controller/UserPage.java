@@ -1,7 +1,7 @@
 package org.primshic.stepan.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.dto.location_weather.WeatherDTO;
+import org.primshic.stepan.dto.weather_api.WeatherDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.Session;

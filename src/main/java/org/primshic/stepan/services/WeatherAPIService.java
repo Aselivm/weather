@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.dto.location_weather.LocationDTO;
+import org.primshic.stepan.dto.weather_api.LocationCoordinatesDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.Location;
-import org.primshic.stepan.dto.location_weather.WeatherDTO;
+import org.primshic.stepan.dto.weather_api.WeatherDTO;
 import org.primshic.stepan.util.PropertyReaderUtil;
 
 import java.math.BigDecimal;
@@ -24,7 +24,7 @@ import java.util.List;
 public class WeatherAPIService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public List<LocationDTO> getLocationListByName(String name) {
+    public List<LocationCoordinatesDTO> getLocationListByName(String name) {
         String url = getWeatherAPIProperty("url_geo");
         String limit = getWeatherAPIProperty("limit");
         String appid = getWeatherAPIProperty("APIKey");
@@ -87,7 +87,7 @@ public class WeatherAPIService {
         }
     }
 
-    private List<LocationDTO> parseLocationListResponse(String result) {
+    private List<LocationCoordinatesDTO> parseLocationListResponse(String result) {
         try {
             return objectMapper.readValue(result, new TypeReference<>() {});
         } catch (JsonProcessingException e) {

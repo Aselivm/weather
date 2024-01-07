@@ -1,4 +1,4 @@
-package org.primshic.stepan.dto.location_weather;
+package org.primshic.stepan.dto.weather_api;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.ToString;
-import org.primshic.stepan.dto.location_weather.location_info.LocalNames;
+import org.primshic.stepan.dto.weather_api.location_info.LocalNames;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -23,7 +23,7 @@ import org.primshic.stepan.dto.location_weather.location_info.LocalNames;
 })
 @Generated("jsonschema2pojo")
 @ToString
-public class LocationDTO {
+public class LocationCoordinatesDTO {
 
     @JsonProperty("name")
     private String name;

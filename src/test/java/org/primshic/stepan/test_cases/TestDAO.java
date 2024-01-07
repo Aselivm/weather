@@ -3,7 +3,7 @@ package org.primshic.stepan.test_cases;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.primshic.stepan.dto.user.UserDTO;
+import org.primshic.stepan.dto.UserDTO;
 import org.primshic.stepan.repo_mock.model.TestSession;
 import org.primshic.stepan.repo_mock.model.TestUser;
 import org.primshic.stepan.repo_mock.services.LocationServiceTest;

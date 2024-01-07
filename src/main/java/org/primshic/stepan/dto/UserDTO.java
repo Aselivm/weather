@@ -1,4 +1,4 @@
-package org.primshic.stepan.dto.user;
+package org.primshic.stepan.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

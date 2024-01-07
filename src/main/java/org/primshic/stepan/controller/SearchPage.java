@@ -1,8 +1,8 @@
 package org.primshic.stepan.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.dto.user.UserLocationDTO;
-import org.primshic.stepan.dto.location_weather.LocationDTO;
+import org.primshic.stepan.dto.LocationDTO;
+import org.primshic.stepan.dto.weather_api.LocationCoordinatesDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.Session;
@@ -47,8 +47,8 @@ public class SearchPage extends HttpServlet {
 
         try {
             String name = InputUtil.locationName(req);
-            List<LocationDTO> locationDTOList = weatherAPIService.getLocationListByName(name);
-            context.setVariable("locationList",locationDTOList);
+            List<LocationCoordinatesDTO> locationCoordinatesDTOList = weatherAPIService.getLocationListByName(name);
+            context.setVariable("locationList", locationCoordinatesDTOList);
 
         } catch (ApplicationException e) {
             log.error("Error processing GET request in SearchLocations: {}", e.getMessage(), e);
@@ -67,14 +67,14 @@ public class SearchPage extends HttpServlet {
             User user = optionalUserSession.orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR)).getUser();
             String name = InputUtil.locationName(req);
 
-            UserLocationDTO userLocationDTO = UserLocationDTO.builder()
+            LocationDTO locationDTO = LocationDTO.builder()
                     .user(user)
                     .locationName(name)
                     .lat(InputUtil.getLatitude(req))
                     .lon(InputUtil.getLongitude(req))
                     .build();
 
-            locationService.add(userLocationDTO);
+            locationService.add(locationDTO);
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
             log.error("Error processing POST request in SearchLocations: {}", e.getMessage(), e);

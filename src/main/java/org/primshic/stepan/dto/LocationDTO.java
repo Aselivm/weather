@@ -1,4 +1,4 @@
-package org.primshic.stepan.dto.user;
+package org.primshic.stepan.dto;
 
 import lombok.*;
 import org.primshic.stepan.model.User;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserLocationDTO {
+public class LocationDTO {
     private User user;
     private String locationName;
     private BigDecimal lat;

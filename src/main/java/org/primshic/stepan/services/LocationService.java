@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.modelmapper.ModelMapper;
 import org.primshic.stepan.dao.LocationRepository;
-import org.primshic.stepan.dto.user.UserLocationDTO;
+import org.primshic.stepan.dto.LocationDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.Location;
@@ -32,7 +32,7 @@ public class LocationService {
         log.info("Location with ID {} deleted", databaseId);
     }
 
-    public void add(UserLocationDTO location) {
+    public void add(LocationDTO location) {
         if(location.getLocationName().length()>100){
             throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
         }
