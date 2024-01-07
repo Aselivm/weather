@@ -1,4 +1,4 @@
-package org.primshic.stepan.dto;
+package org.primshic.stepan.dto.user;
 
 import lombok.*;
 import org.primshic.stepan.model.User;

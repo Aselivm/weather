@@ -3,7 +3,7 @@ package org.primshic.stepan.services;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.primshic.stepan.dao.LocationRepository;
-import org.primshic.stepan.dto.UserLocationDTO;
+import org.primshic.stepan.dto.user.UserLocationDTO;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.User;
 

@@ -8,7 +8,7 @@ import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.Location;
-import org.primshic.stepan.dto.location_weather.LocationWeatherDTO;
+import org.primshic.stepan.dto.location_weather.WeatherDTO;
 import org.primshic.stepan.util.PropertyReaderUtil;
 
 import java.math.BigDecimal;
@@ -34,7 +34,7 @@ public class WeatherAPIService {
         return parseLocationListResponse(result);
     }
 
-    public LocationWeatherDTO getWeatherByLocation(Location location) {
+    public WeatherDTO getWeatherByLocation(Location location) {
         String appid = getWeatherAPIProperty("APIKey");
         String lang = getWeatherAPIProperty("lang");
         String units = getWeatherAPIProperty("units");
@@ -45,18 +45,18 @@ public class WeatherAPIService {
         return parseWeatherResponse(result);
     }
 
-    public List<LocationWeatherDTO> getWeatherForLocations(List<Location> locationList) {
-        List<LocationWeatherDTO> locationWeatherDTOList = new LinkedList<>();
+    public List<WeatherDTO> getWeatherForLocations(List<Location> locationList) {
+        List<WeatherDTO> weatherDTOList = new LinkedList<>();
         for (Location location : locationList) {
             try {
-                LocationWeatherDTO locationWeatherDTO = getWeatherByLocation(location);
-                locationWeatherDTO.setDatabaseId(location.getId());
-                locationWeatherDTOList.add(locationWeatherDTO);
+                WeatherDTO weatherDTO = getWeatherByLocation(location);
+                weatherDTO.setDatabaseId(location.getId());
+                weatherDTOList.add(weatherDTO);
             } catch (RuntimeException e) {
                 log.warn("Error getting weather for location {}: {}", location.getName(), e.getMessage());
             }
         }
-        return locationWeatherDTOList;
+        return weatherDTOList;
     }
 
     private String buildLocationListRequest(String url, String name, String limit, String appid) {
@@ -96,9 +96,9 @@ public class WeatherAPIService {
         }
     }
 
-    private LocationWeatherDTO parseWeatherResponse(String result) {
+    private WeatherDTO parseWeatherResponse(String result) {
         try {
-            return objectMapper.readValue(result, LocationWeatherDTO.class);
+            return objectMapper.readValue(result, WeatherDTO.class);
         } catch (JsonProcessingException e) {
             log.warn("Error reading JSON response for weather: {}", e.getMessage());
             throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);

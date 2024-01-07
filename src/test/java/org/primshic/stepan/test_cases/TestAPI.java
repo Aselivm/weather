@@ -3,15 +3,13 @@ package org.primshic.stepan.test_cases;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.primshic.stepan.dto.location_weather.LocationDTO;
-import org.primshic.stepan.dto.location_weather.LocationWeatherDTO;
+import org.primshic.stepan.dto.location_weather.WeatherDTO;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.services.WeatherAPIService;
 
@@ -45,7 +43,7 @@ class TestAPI {
 
     @Test
     void locationWeather(){
-        LocationWeatherDTO locationWeatherDTO1;
+        WeatherDTO weatherDTO1;
         final BigDecimal lat = new BigDecimal(37.1289771);
         final BigDecimal lon = new BigDecimal(-84.0832646);
         final Location location = new Location();
@@ -54,15 +52,15 @@ class TestAPI {
         String answer = "{\"coord\":{\"lon\":-84.0833,\"lat\":37.129},\"weather\":[{\"id\":804,\"main\":\"Clouds\",\"description\":\"overcast clouds\",\"icon\":\"04d\"}],\"base\":\"stations\",\"main\":{\"temp\":279.41,\"feels_like\":278.62,\"temp_min\":279.02,\"temp_max\":280.51,\"pressure\":1020,\"humidity\":52,\"sea_level\":1020,\"grnd_level\":974},\"visibility\":10000,\"wind\":{\"speed\":1.43,\"deg\":111,\"gust\":1.37},\"clouds\":{\"all\":97},\"dt\":1704491746,\"sys\":{\"type\":2,\"id\":2009370,\"country\":\"US\",\"sunrise\":1704459016,\"sunset\":1704493946},\"timezone\":-18000,\"id\":4298960,\"name\":\"London\",\"cod\":200}";
 
         try {
-            locationWeatherDTO1 = objectMapper.readValue(answer, LocationWeatherDTO.class);
+            weatherDTO1 = objectMapper.readValue(answer, WeatherDTO.class);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-        Mockito.when(weatherAPIService.getWeatherByLocation(location)).thenReturn(locationWeatherDTO1);
+        Mockito.when(weatherAPIService.getWeatherByLocation(location)).thenReturn(weatherDTO1);
 
-        LocationWeatherDTO locationWeatherDTO2 = weatherAPIService.getWeatherByLocation(location);
-        assertThat(locationWeatherDTO1!=null);
-        assertThat(locationWeatherDTO1).isEqualTo(locationWeatherDTO2);
+        WeatherDTO weatherDTO2 = weatherAPIService.getWeatherByLocation(location);
+        assertThat(weatherDTO1 !=null);
+        assertThat(weatherDTO1).isEqualTo(weatherDTO2);
     }
 
     @Test
@@ -91,6 +89,4 @@ class TestAPI {
                         location.getLon() - lon.doubleValue() <= epsilon.doubleValue()
         );
     }
-
-    //todo В случай ошибки (статусы 4xx, 5xx) от OpenWeather API сервис выбрасывает ожидаемый тип исключения
 }

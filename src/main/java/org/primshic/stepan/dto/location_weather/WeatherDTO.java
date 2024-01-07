@@ -30,7 +30,7 @@ import org.primshic.stepan.dto.location_weather.weather_info.*;
         "cod"
 })
 @Generated("jsonschema2pojo")
-public class LocationWeatherDTO {
+public class WeatherDTO {
 
     private int databaseId;
     @JsonProperty("coord")

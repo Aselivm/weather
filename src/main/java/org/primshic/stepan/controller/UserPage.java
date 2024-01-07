@@ -1,7 +1,7 @@
 package org.primshic.stepan.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.dto.location_weather.LocationWeatherDTO;
+import org.primshic.stepan.dto.location_weather.WeatherDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ExceptionHandler;
 import org.primshic.stepan.model.Location;
@@ -23,23 +23,23 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/main")
 @Slf4j
-public class UserLocations extends BaseServlet {
+public class UserPage extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<LocationWeatherDTO> locationWeatherDTOList = new LinkedList<>();
+        List<WeatherDTO> weatherDTOList = new LinkedList<>();
         try {
             Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
 
             if (optionalUserSession.isPresent()) {
                 User user = optionalUserSession.get().getUser();
                 List<Location> locationList = locationService.getUserLocations(user);
-                locationWeatherDTOList.addAll(weatherAPIService.getWeatherForLocations(locationList));
+                weatherDTOList.addAll(weatherAPIService.getWeatherForLocations(locationList));
             }
 
             ThymeleafUtil.templateEngineProcessWithVariables("main", req, resp, new HashMap<>(){{
                 put("userSession", optionalUserSession);
-                put("locationWeatherList",locationWeatherDTOList);
+                put("locationWeatherList", weatherDTOList);
             }});
         } catch (ApplicationException e) {
             log.error("Error processing GET request in UserLocations: {}", e.getMessage(), e);

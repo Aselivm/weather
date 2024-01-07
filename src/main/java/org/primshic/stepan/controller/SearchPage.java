@@ -1,7 +1,7 @@
 package org.primshic.stepan.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.dto.UserLocationDTO;
+import org.primshic.stepan.dto.user.UserLocationDTO;
 import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/search")
 @Slf4j
-public class SearchLocations extends BaseServlet {
+public class SearchPage extends BaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {

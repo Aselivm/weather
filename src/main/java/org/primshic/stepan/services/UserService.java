@@ -3,7 +3,7 @@ package org.primshic.stepan.services;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.primshic.stepan.dao.UserRepository;
-import org.primshic.stepan.dto.account.UserDTO;
+import org.primshic.stepan.dto.user.UserDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.User;
