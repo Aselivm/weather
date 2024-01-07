@@ -1,9 +1,9 @@
 package org.primshic.stepan.listener;
 
 import org.hibernate.SessionFactory;
-import org.primshic.stepan.services.LocationService;
-import org.primshic.stepan.services.SessionService;
-import org.primshic.stepan.services.UserService;
+import org.primshic.stepan.weather.locations.LocationService;
+import org.primshic.stepan.auth.session.SessionService;
+import org.primshic.stepan.auth.user.UserService;
 import org.primshic.stepan.util.HibernateUtil;
 
 import javax.servlet.ServletContextEvent;

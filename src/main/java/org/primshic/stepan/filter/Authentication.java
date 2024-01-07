@@ -1,8 +1,8 @@
 package org.primshic.stepan.filter;
 
 import org.hibernate.SessionFactory;
-import org.primshic.stepan.model.Session;
-import org.primshic.stepan.services.SessionService;
+import org.primshic.stepan.auth.session.Session;
+import org.primshic.stepan.auth.session.SessionService;
 import org.primshic.stepan.util.HibernateUtil;
 import org.primshic.stepan.util.SessionUtil;
 

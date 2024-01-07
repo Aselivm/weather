@@ -3,8 +3,8 @@ package org.primshic.stepan.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.model.Session;
-import org.primshic.stepan.services.SessionService;
+import org.primshic.stepan.auth.session.Session;
+import org.primshic.stepan.auth.session.SessionService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;

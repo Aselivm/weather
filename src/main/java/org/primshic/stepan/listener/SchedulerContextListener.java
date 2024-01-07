@@ -1,6 +1,6 @@
 package org.primshic.stepan.listener;
 
-import org.primshic.stepan.dao.SessionRepository;
+import org.primshic.stepan.auth.session.SessionRepository;
 import org.primshic.stepan.util.HibernateUtil;
 import org.primshic.stepan.util.PropertyReaderUtil;
 

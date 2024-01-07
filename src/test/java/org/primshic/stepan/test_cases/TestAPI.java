@@ -8,10 +8,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.primshic.stepan.dto.weather_api.LocationCoordinatesDTO;
-import org.primshic.stepan.dto.weather_api.WeatherDTO;
-import org.primshic.stepan.model.Location;
-import org.primshic.stepan.services.WeatherAPIService;
+import org.primshic.stepan.weather.openWeatherAPI.LocationCoordinatesDTO;
+import org.primshic.stepan.weather.openWeatherAPI.WeatherDTO;
+import org.primshic.stepan.weather.locations.Location;
+import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

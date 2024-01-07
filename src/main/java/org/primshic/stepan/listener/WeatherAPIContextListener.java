@@ -1,6 +1,6 @@
 package org.primshic.stepan.listener;
 
-import org.primshic.stepan.services.WeatherAPIService;
+import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
