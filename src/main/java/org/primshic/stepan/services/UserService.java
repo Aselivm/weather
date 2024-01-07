@@ -29,13 +29,8 @@ public class UserService {
 
     public Optional<User> get(UserDTO userDTO) {
         User userEntity = toEntity(userDTO);
-        User user;
-        try {
-            user = userRepository.get(userEntity.getLogin()).orElseThrow();
-        } catch (Exception ex) {
-            log.warn("Error getting user: {}", ex.getMessage());
-            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
-        }
+        User user = userRepository.get(userEntity.getLogin())
+                    .orElseThrow(()->new ApplicationException(ErrorMessage.LOGIN_NOT_EXIST));
 
         if (!BCrypt.checkpw(userDTO.getPassword(), user.getPassword())) {
             log.warn("Wrong password for user: {}", userDTO.getLogin());

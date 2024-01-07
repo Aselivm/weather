@@ -57,7 +57,7 @@ public class Authorization extends HttpServlet {
         try {
             UserDTO userDTO = InputUtil.authenticate(req);
 
-            User user = userService.get(userDTO).orElseThrow(() -> new ApplicationException(ErrorMessage.LOGIN_NOT_EXIST));
+            User user = userService.get(userDTO).orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
             Session userSession = sessionService.startSession(user).orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
 
             String uuid = userSession.getId();
