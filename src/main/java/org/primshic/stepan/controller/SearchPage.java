@@ -14,6 +14,8 @@ import org.primshic.stepan.services.WeatherAPIService;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.ThymeleafUtil;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -34,36 +36,41 @@ public class SearchPage extends HttpServlet {
 
     private SessionService sessionService;
 
+    private TemplateEngine templateEngine;
+
     @Override
     public void init() throws ServletException {
         locationService = (LocationService) getServletConfig().getServletContext().getAttribute("locationService");
         weatherAPIService = (WeatherAPIService) getServletConfig().getServletContext().getAttribute("weatherAPIService");
         sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
+        templateEngine = (TemplateEngine) getServletConfig().getServletContext().getAttribute("templateEngine");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebContext context = new WebContext(req, resp, getServletContext());
+
         Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
+        context.setVariable("userSession", optionalUserSession);
         try {
             String name = InputUtil.locationName(req);
             List<LocationDTO> locationDTOList = weatherAPIService.getLocationListByName(name);
+            context.setVariable("locationList",locationDTOList);
 
-            ThymeleafUtil.templateEngineProcessWithVariables("search", req, resp, new HashMap<>(){{
-                put("userSession", optionalUserSession);
-                put("locationList",locationDTOList);
-            }});
         } catch (ApplicationException e) {
             log.error("Error processing GET request in SearchLocations: {}", e.getMessage(), e);
-            ThymeleafUtil.templateEngineProcessWithVariables("search", req, resp, new HashMap<>(){{
-                put("userSession", optionalUserSession);
-                put("error", e.getError());
-            }});
+            context.setVariable("error", e.getError());
         }
+
+        templateEngine.process("search", context, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebContext context = new WebContext(req, resp, getServletContext());
+
         Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
+        context.setVariable("userSession", optionalUserSession);
         try {
 
             User user = optionalUserSession.orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR)).getUser();
@@ -80,10 +87,8 @@ public class SearchPage extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
             log.error("Error processing POST request in SearchLocations: {}", e.getMessage(), e);
-            ThymeleafUtil.templateEngineProcessWithVariables("search", req, resp, new HashMap<>(){{
-                put("userSession", optionalUserSession);
-                put("error", e.getError());
-            }});
+            context.setVariable("error", e.getError());
+            templateEngine.process("search", context, resp.getWriter());
         }
     }
 }

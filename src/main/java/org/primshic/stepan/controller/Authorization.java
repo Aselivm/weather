@@ -11,6 +11,8 @@ import org.primshic.stepan.services.UserService;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.ThymeleafUtil;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,31 +31,30 @@ public class Authorization extends HttpServlet {
 
     private SessionService sessionService;
 
+    private  TemplateEngine templateEngine;
+
     @Override
     public void init() throws ServletException {
         userService = (UserService) getServletConfig().getServletContext().getAttribute("userService");
         sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
+        templateEngine = (TemplateEngine) getServletConfig().getServletContext().getAttribute("templateEngine");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebContext context = new WebContext(req, resp, getServletContext());
+
         Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
-        try {
-            ThymeleafUtil.templateEngineProcessWithVariables("authorization", req, resp, new HashMap<>(){{
-                put("userSession", optionalUserSession);
-            }});
-        } catch (ApplicationException e) {
-            log.error("Error processing GET request in Authorization: {}", e.getMessage(), e);
-            ThymeleafUtil.templateEngineProcessWithVariables("authorization", req, resp, new HashMap<>(){{
-                put("userSession", optionalUserSession);
-                put("error", e.getError());
-            }});
-        }
+        context.setVariable("userSession",optionalUserSession);
+        templateEngine.process("authorization", context, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebContext context = new WebContext(req, resp, getServletContext());
+
         Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
+        context.setVariable("userSession",optionalUserSession);
         try {
             UserDTO userDTO = InputUtil.authenticate(req);
 
@@ -66,11 +67,9 @@ public class Authorization extends HttpServlet {
             resp.addCookie(cookie);
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
-            log.error("Error processing POST request in Authorization: {}", e.getMessage(), e);
-            ThymeleafUtil.templateEngineProcessWithVariables("authorization", req, resp, new HashMap<>(){{
-                put("userSession", optionalUserSession);
-                put("error", e.getError());
-            }});
+            context.setVariable("error",e.getError());
+            log.error("Error processing POST request in Registration: {}", e.getMessage(), e);
         }
+        templateEngine.process("authorization", context, resp.getWriter());
     }
 }

@@ -12,6 +12,8 @@ import org.primshic.stepan.services.WeatherAPIService;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.ThymeleafUtil;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -33,51 +35,52 @@ public class UserPage extends HttpServlet {
 
     private SessionService sessionService;
 
+    private TemplateEngine templateEngine;
+
     @Override
     public void init() throws ServletException {
         locationService = (LocationService) getServletConfig().getServletContext().getAttribute("locationService");
         weatherAPIService = (WeatherAPIService) getServletConfig().getServletContext().getAttribute("weatherAPIService");
         sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
+        templateEngine = (TemplateEngine) getServletConfig().getServletContext().getAttribute("templateEngine");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebContext context = new WebContext(req, resp, getServletContext());
+
         List<WeatherDTO> weatherDTOList = new LinkedList<>();
         Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
+        context.setVariable("userSession",optionalUserSession);
         try {
 
             if (optionalUserSession.isPresent()) {
                 User user = optionalUserSession.get().getUser();
                 List<Location> locationList = locationService.getUserLocations(user);
                 weatherDTOList.addAll(weatherAPIService.getWeatherForLocations(locationList));
+                context.setVariable("locationWeatherList",weatherDTOList);
             }
-
-            ThymeleafUtil.templateEngineProcessWithVariables("main", req, resp, new HashMap<>(){{
-                put("userSession", optionalUserSession);
-                put("locationWeatherList", weatherDTOList);
-            }});
         } catch (ApplicationException e) {
-            log.error("Error processing GET request in UserLocations: {}", e.getMessage(), e);
-            ThymeleafUtil.templateEngineProcessWithVariables("main", req, resp, new HashMap<>(){{
-                put("userSession", optionalUserSession);
-                put("error", e.getError());
-            }});
+            context.setVariable("error",e.getError());
+            log.error("Error processing GET request in UserLocations: {}", e.getMessage(), e);;
         }
+        templateEngine.process("main", context, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        WebContext context = new WebContext(req, resp, getServletContext());
+
         Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
+        context.setVariable("userSession", optionalUserSession);
         try {
             int databaseId = InputUtil.deletedLocationId(req);
             locationService.delete(databaseId);
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
             log.error("Error processing POST request in UserLocations: {}", e.getMessage(), e);
-            ThymeleafUtil.templateEngineProcessWithVariables("main", req, resp, new HashMap<>(){{
-                put("userSession", optionalUserSession);
-                put("error", e.getError());
-            }});
+            context.setVariable("error", e.getError());
+            templateEngine.process("main", context, resp.getWriter());
         }
     }
 }
