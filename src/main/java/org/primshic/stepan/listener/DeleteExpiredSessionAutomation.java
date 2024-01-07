@@ -10,17 +10,17 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @WebListener
-public class AplicationContextListener implements ServletContextListener {
+public class DeleteExpiredSessionAutomation implements ServletContextListener {
+    private ScheduledExecutorService executorService;
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ScheduledExecutorService executorService;
         executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleAtFixedRate(new SessionRepository()::deleteExpiredSessions, 60, 30, TimeUnit.MINUTES);
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        ServletContextListener.super.contextDestroyed(sce);
+        executorService.shutdown();
     }
 
 }
