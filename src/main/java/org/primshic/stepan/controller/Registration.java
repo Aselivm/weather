@@ -4,13 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.dto.user.UserDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
-import org.primshic.stepan.exception.ExceptionHandler;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
-import org.primshic.stepan.services.LocationService;
 import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.services.UserService;
-import org.primshic.stepan.services.WeatherAPIService;
 import org.primshic.stepan.util.CookieUtil;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
@@ -41,19 +38,23 @@ public class Registration extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
         try {
-            Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
             ThymeleafUtil.templateEngineProcessWithVariables("registration", req, resp, new HashMap<>(){{
                 put("userSession", optionalUserSession);
             }});
         } catch (ApplicationException e) {
             log.error("Error processing GET request in Registration: {}", e.getMessage(), e);
-            ExceptionHandler.handle(resp, e);
+            ThymeleafUtil.templateEngineProcessWithVariables("registration", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
+                put("error", e.getError());
+            }});
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
         try {
             UserDTO userDTO = InputUtil.authenticate(req);
 
@@ -65,7 +66,10 @@ public class Registration extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
             log.error("Error processing POST request in Registration: {}", e.getMessage(), e);
-            ExceptionHandler.handle(resp, e);
+            ThymeleafUtil.templateEngineProcessWithVariables("registration", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
+                put("error", e.getError());
+            }});
         }
     }
 }

@@ -22,7 +22,7 @@ public class UserService {
             user = userRepository.persist(userEntity);
         } catch (PersistenceException ex) {
             log.warn("Error persisting user: {}", ex.getMessage());
-            throw new ApplicationException(ErrorMessage.LOGIN_ALREADY_EXIST);
+            throw new ApplicationException(ErrorMessage.LOGIN_ALREADY_EXISTS);
         }
         return user;
     }

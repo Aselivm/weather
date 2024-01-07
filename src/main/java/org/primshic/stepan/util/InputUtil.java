@@ -37,10 +37,10 @@ public class InputUtil {
     }
 
     public static String locationName(HttpServletRequest req) {
-        String name = req.getParameter("name").trim();
+        String name = req.getParameter("name").replaceAll("\\s", "");;
         if (name.isEmpty()) {
             log.warn("Empty location name detected");
-            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+            throw new ApplicationException(ErrorMessage.EMPTY_INPUT);
         }
         return name;
     }

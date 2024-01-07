@@ -5,7 +5,6 @@ import org.primshic.stepan.dto.user.UserLocationDTO;
 import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
-import org.primshic.stepan.exception.ExceptionHandler;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.LocationService;
@@ -38,8 +37,8 @@ public class SearchPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
         try {
-            Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
             String name = InputUtil.locationName(req);
             List<LocationDTO> locationDTOList = weatherAPIService.getLocationListByName(name);
 
@@ -49,14 +48,17 @@ public class SearchPage extends HttpServlet {
             }});
         } catch (ApplicationException e) {
             log.error("Error processing GET request in SearchLocations: {}", e.getMessage(), e);
-            ExceptionHandler.handle(resp, e);
+            ThymeleafUtil.templateEngineProcessWithVariables("search", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
+                put("error", e.getError());
+            }});
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
         try {
-            Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
 
             User user = optionalUserSession.orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR)).getUser();
             String name = InputUtil.locationName(req);
@@ -72,7 +74,10 @@ public class SearchPage extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
             log.error("Error processing POST request in SearchLocations: {}", e.getMessage(), e);
-            ExceptionHandler.handle(resp, e);
+            ThymeleafUtil.templateEngineProcessWithVariables("search", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
+                put("error", e.getError());
+            }});
         }
     }
 }

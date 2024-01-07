@@ -3,7 +3,6 @@ package org.primshic.stepan.controller;
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.dto.location_weather.WeatherDTO;
 import org.primshic.stepan.exception.ApplicationException;
-import org.primshic.stepan.exception.ExceptionHandler;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
@@ -40,8 +39,8 @@ public class UserPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<WeatherDTO> weatherDTOList = new LinkedList<>();
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
         try {
-            Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
 
             if (optionalUserSession.isPresent()) {
                 User user = optionalUserSession.get().getUser();
@@ -55,19 +54,26 @@ public class UserPage extends HttpServlet {
             }});
         } catch (ApplicationException e) {
             log.error("Error processing GET request in UserLocations: {}", e.getMessage(), e);
-            ExceptionHandler.handle(resp, e);
+            ThymeleafUtil.templateEngineProcessWithVariables("main", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
+                put("error", e.getError());
+            }});
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
         try {
             int databaseId = InputUtil.deletedLocationId(req);
             locationService.delete(databaseId);
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
             log.error("Error processing POST request in UserLocations: {}", e.getMessage(), e);
-            ExceptionHandler.handle(resp, e);
+            ThymeleafUtil.templateEngineProcessWithVariables("main", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
+                put("error", e.getError());
+            }});
         }
     }
 }

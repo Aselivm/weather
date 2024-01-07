@@ -4,12 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.dto.user.UserDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
-import org.primshic.stepan.exception.ExceptionHandler;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.services.UserService;
-import org.primshic.stepan.util.CookieUtil;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.ThymeleafUtil;
@@ -39,23 +37,27 @@ public class Authorization extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
         try {
-            Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
             ThymeleafUtil.templateEngineProcessWithVariables("authorization", req, resp, new HashMap<>(){{
                 put("userSession", optionalUserSession);
             }});
         } catch (ApplicationException e) {
             log.error("Error processing GET request in Authorization: {}", e.getMessage(), e);
-            ExceptionHandler.handle(resp, e);
+            ThymeleafUtil.templateEngineProcessWithVariables("authorization", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
+                put("error", e.getError());
+            }});
         }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
         try {
             UserDTO userDTO = InputUtil.authenticate(req);
 
-            User user = userService.get(userDTO).orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
+            User user = userService.get(userDTO).orElseThrow(() -> new ApplicationException(ErrorMessage.LOGIN_NOT_EXIST));
             Session userSession = sessionService.startSession(user).orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
 
             String uuid = userSession.getId();
@@ -65,7 +67,10 @@ public class Authorization extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
             log.error("Error processing POST request in Authorization: {}", e.getMessage(), e);
-            ExceptionHandler.handle(resp, e);
+            ThymeleafUtil.templateEngineProcessWithVariables("authorization", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
+                put("error", e.getError());
+            }});
         }
     }
 }
