@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.services.SessionService;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 

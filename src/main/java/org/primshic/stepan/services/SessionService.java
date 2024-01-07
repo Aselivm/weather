@@ -7,8 +7,6 @@ import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 
 import java.util.Optional;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class SessionService {

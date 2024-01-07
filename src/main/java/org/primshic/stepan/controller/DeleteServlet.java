@@ -2,7 +2,6 @@ package org.primshic.stepan.controller;
 
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.services.SessionService;
-import org.primshic.stepan.util.CookieUtil;
 import org.primshic.stepan.util.SessionUtil;
 
 import javax.servlet.ServletContext;

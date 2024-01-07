@@ -3,7 +3,6 @@ package org.primshic.stepan.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.model.Session;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
