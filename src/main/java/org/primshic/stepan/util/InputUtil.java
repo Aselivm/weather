@@ -27,7 +27,9 @@ public class InputUtil {
     }
 
     public static String locationName(HttpServletRequest req){
-        return req.getParameter("name");
+        String name = req.getParameter("name").trim();
+        if(name.isEmpty()) throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+        return req.getParameter("name").trim();
     }
 
     public static BigDecimal getLatitude(HttpServletRequest req){
