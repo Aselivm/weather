@@ -1,20 +1,11 @@
 package org.primshic.stepan.dao;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.User;
-import org.primshic.stepan.util.HibernateUtil;
-
-import javax.persistence.Query;
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.logging.Logger;
 
-public class LocationRepository {
-    private Logger log = Logger.getLogger(LocationRepository.class.getName());
-    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
-
+public class LocationRepository extends BaseRepository {
     public List<Location> getUserLocations(User user) {
         try (Session session = sessionFactory.openSession()) {
             String hql = "FROM Location WHERE user = :user";

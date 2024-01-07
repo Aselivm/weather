@@ -5,6 +5,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.dto.location_weather.LocationDTO;
+import org.primshic.stepan.exception.ApplicationException;
+import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.dto.location_weather.LocationWeatherDTO;
 import org.primshic.stepan.util.PropertyReaderUtil;
@@ -17,51 +19,26 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
-
+@Slf4j
 public class WeatherAPIService {
-    private static final Logger log = Logger.getLogger(WeatherAPIService.class.getName());
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-/*    public static void main(String[] args) {
-        WeatherAPIService weatherAPIService = new WeatherAPIService();
-        weatherAPIService.getLocationListByName("Москва");
-    }*/
-    public List<LocationDTO> getLocationListByName(String name){
-        List<LocationDTO> locationList;
+    public List<LocationDTO> getLocationListByName(String name) {
         String url = getWeatherAPIProperty("url_geo");
         String limit = getWeatherAPIProperty("limit");
         String appid = getWeatherAPIProperty("APIKey");
-        String result = getLocationListResponse(url,name,limit,appid);
-        try {
-            locationList = objectMapper.readValue(result, new TypeReference<>() {});
-        } catch (JsonProcessingException e) {
-            log.warning("Error reading JSON response: "+e.getMessage());
-            throw new RuntimeException(e); // todo добавить эксепшн
-        }
-        log.info("List of locations by name: "+locationList.toString());
-        return locationList;
+        String result = sendHttpRequest(buildLocationListRequest(url, name, limit, appid));
+        return parseLocationListResponse(result);
     }
 
-    public LocationWeatherDTO getWeatherByLocation(Location location){
-        LocationWeatherDTO locationWeatherDTO;
-        BigDecimal lat = location.getLat();
-        BigDecimal lon = location.getLon();
+    public LocationWeatherDTO getWeatherByLocation(Location location) {
         String appid = getWeatherAPIProperty("APIKey");
         String lang = getWeatherAPIProperty("lang");
         String units = getWeatherAPIProperty("units");
         String url = getWeatherAPIProperty("url_data");
-
-        String result = getWeatherResponse(lat,lon,url,appid,lang,units);
-        try {
-           locationWeatherDTO = objectMapper.readValue(result, LocationWeatherDTO.class);
-        } catch (JsonProcessingException e) {
-            log.warning("Error reading JSON response: "+e.getMessage());
-            throw new RuntimeException(e);//todo добавить эксепшн
-        }
-        log.info("Weather by location info: "+locationWeatherDTO.toString());
-        return locationWeatherDTO;
+        String result = sendHttpRequest(buildWeatherRequest(location.getLat(), location.getLon(), url, appid, lang, units));
+        return parseWeatherResponse(result);
     }
 
     public List<LocationWeatherDTO> getWeatherForLocations(List<Location> locationList) {
@@ -69,69 +46,62 @@ public class WeatherAPIService {
         for (Location location : locationList) {
             try {
                 LocationWeatherDTO locationWeatherDTO = getWeatherByLocation(location);
-                int locationId = location.getId();
-                locationWeatherDTO.setDatabaseId(locationId);
+                locationWeatherDTO.setDatabaseId(location.getId());
                 locationWeatherDTOList.add(locationWeatherDTO);
             } catch (RuntimeException e) {
-                //todo exception
-                log.warning("Error getting weather for location {"+location.getName()+"}: {"+e.getMessage()+"}");
+                log.warn("Error getting weather for location {}: {}", location.getName(), e.getMessage());
             }
         }
         return locationWeatherDTOList;
     }
 
-    private String getWeatherAPIProperty(String key){
-        return PropertyReaderUtil.read("weatherAPI.properties",key);
+    private String buildLocationListRequest(String url, String name, String limit, String appid) {
+        return url + "q=" + name + "&limit=" + limit + "&appid=" + appid;
     }
 
-    private String getWeatherResponse(BigDecimal lat,BigDecimal lon,String url,
-                              String appid,String lang,String units){
-        String latitude = String.valueOf(lat);
-        String longitude = String.valueOf(lon);
+    private String buildWeatherRequest(BigDecimal lat, BigDecimal lon, String url, String appid, String lang, String units) {
+        return url + "lat=" + lat + "&lon=" + lon + "&appid=" + appid + "&lang=" + lang + "&units=" + units;
+    }
+
+    private String sendHttpRequest(String requestUrl) {
         HttpClient httpClient = HttpClient.newHttpClient();
         HttpRequest request;
         try {
             request = HttpRequest.newBuilder()
-                    .uri(new URI(url+"lat="+latitude+"&lon="+longitude+"&appid="+appid+"&lang="+lang+"&units="+units))
+                    .uri(new URI(requestUrl))
                     .GET()
                     .build();
 
         } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
+            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
         }
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            String jsonResponse = response.body();
-
-            return jsonResponse;
+            return response.body();
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-
-    private String getLocationListResponse(String url, String name, String limit,String appid){
-        HttpClient httpClient = HttpClient.newHttpClient();
-        HttpRequest request;
-        try {
-            request = HttpRequest.newBuilder()
-                    .uri(new URI(url+"q="+name+"&limit="+limit+"&appid="+appid))
-                    .GET()
-                    .build();
-
-        } catch (URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            String jsonResponse = response.body();
-
-            return jsonResponse;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
         }
     }
 
+    private List<LocationDTO> parseLocationListResponse(String result) {
+        try {
+            return objectMapper.readValue(result, new TypeReference<>() {});
+        } catch (JsonProcessingException e) {
+            log.warn("Error reading JSON response for location list: {}", e.getMessage());
+            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+        }
+    }
+
+    private LocationWeatherDTO parseWeatherResponse(String result) {
+        try {
+            return objectMapper.readValue(result, LocationWeatherDTO.class);
+        } catch (JsonProcessingException e) {
+            log.warn("Error reading JSON response for weather: {}", e.getMessage());
+            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+        }
+    }
+
+    private String getWeatherAPIProperty(String key) {
+        return PropertyReaderUtil.read("weatherAPI.properties", key);
+    }
 }

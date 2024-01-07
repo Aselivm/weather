@@ -1,17 +1,11 @@
 package org.primshic.stepan.dao;
 
-import org.hibernate.SessionFactory;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
-import org.primshic.stepan.util.HibernateUtil;
 
 import java.util.Optional;
-import java.util.logging.Logger;
 
-public class SessionRepository {
-
-    private Logger log = Logger.getLogger(SessionRepository.class.getName());
-    private final SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+public class SessionRepository extends BaseRepository  {
 
     public Optional<Session> getByUserId(int id, org.hibernate.Session session) {
         return Optional.ofNullable(session.createQuery("FROM Session WHERE user.id = :userId", Session.class)
