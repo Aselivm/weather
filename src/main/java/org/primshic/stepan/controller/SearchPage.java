@@ -1,6 +1,7 @@
 package org.primshic.stepan.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.SessionFactory;
 import org.primshic.stepan.dto.user.UserLocationDTO;
 import org.primshic.stepan.dto.location_weather.LocationDTO;
 import org.primshic.stepan.exception.ApplicationException;
@@ -8,11 +9,13 @@ import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.LocationService;
+import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.services.WeatherAPIService;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.ThymeleafUtil;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,15 +32,18 @@ public class SearchPage extends HttpServlet {
     private LocationService locationService;
     private WeatherAPIService weatherAPIService;
 
+    private SessionService sessionService;
+
     @Override
     public void init() throws ServletException {
-        locationService = new LocationService();
-        weatherAPIService = new WeatherAPIService();
+        locationService = (LocationService) getServletConfig().getServletContext().getAttribute("locationService");
+        weatherAPIService = (WeatherAPIService) getServletConfig().getServletContext().getAttribute("weatherAPIService");
+        sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
         try {
             String name = InputUtil.locationName(req);
             List<LocationDTO> locationDTOList = weatherAPIService.getLocationListByName(name);
@@ -57,7 +63,7 @@ public class SearchPage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
         try {
 
             User user = optionalUserSession.orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR)).getUser();

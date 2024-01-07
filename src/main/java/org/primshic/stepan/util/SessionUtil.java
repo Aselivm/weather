@@ -12,8 +12,6 @@ import java.util.Optional;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionUtil {
-    private static SessionService sessionService = new SessionService();
-
     @Deprecated
     public static Optional<Session> getSessionByReq(HttpServletRequest req) {
         Session userSession = (Session) req.getAttribute("userSession");
@@ -23,7 +21,7 @@ public class SessionUtil {
 
         return Optional.ofNullable(userSession);
     }
-    public static Optional<Session> getCurrentSession(String sessionId) {
+    public static Optional<Session> getCurrentSession(String sessionId,SessionService sessionService) {
         Optional<Session> userSession = Optional.empty();
         if (validSessionId(sessionId)) {
             log.info("Session ID is valid: {}", sessionId);
@@ -35,7 +33,7 @@ public class SessionUtil {
         return userSession;
     }
 
-    public static void deleteSessionIfPresent(String sessionId) {
+    public static void deleteSessionIfPresent(String sessionId, SessionService sessionService) {
         if (validSessionId(sessionId)) {
             sessionService.getById(sessionId).ifPresent(session -> {
                 sessionService.delete(session);
@@ -46,9 +44,9 @@ public class SessionUtil {
         }
     }
 
-    public static Optional<Session> getSessionFromCookies(HttpServletRequest req) {
+    public static Optional<Session> getSessionFromCookies(HttpServletRequest req,SessionService sessionService) {
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
-        return getCurrentSession(sessionId);
+        return getCurrentSession(sessionId,sessionService);
     }
 
     public static boolean validSessionId(String sessionId) {

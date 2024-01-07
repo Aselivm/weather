@@ -1,5 +1,6 @@
 package org.primshic.stepan.controller;
 
+import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.util.CookieUtil;
 import org.primshic.stepan.util.SessionUtil;
 
@@ -12,15 +13,17 @@ import java.io.IOException;
 
 @WebServlet(urlPatterns = "/log-out")
 public class DeleteServlet extends HttpServlet {
+    private SessionService sessionService;
+
     @Override
     public void init() throws ServletException {
-        super.init();
+        sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
-        SessionUtil.deleteSessionIfPresent(sessionId);
+        SessionUtil.deleteSessionIfPresent(sessionId,sessionService);
         resp.sendRedirect(req.getContextPath()+"/auth");
     }
 }

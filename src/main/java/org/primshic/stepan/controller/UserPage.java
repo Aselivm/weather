@@ -7,6 +7,7 @@ import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 import org.primshic.stepan.services.LocationService;
+import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.services.WeatherAPIService;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
@@ -30,16 +31,19 @@ public class UserPage extends HttpServlet {
     private LocationService locationService;
     private WeatherAPIService weatherAPIService;
 
+    private SessionService sessionService;
+
     @Override
     public void init() throws ServletException {
-        locationService = new LocationService();
-        weatherAPIService = new WeatherAPIService();
+        locationService = (LocationService) getServletConfig().getServletContext().getAttribute("locationService");
+        weatherAPIService = (WeatherAPIService) getServletConfig().getServletContext().getAttribute("weatherAPIService");
+        sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<WeatherDTO> weatherDTOList = new LinkedList<>();
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
         try {
 
             if (optionalUserSession.isPresent()) {
@@ -63,7 +67,7 @@ public class UserPage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
         try {
             int databaseId = InputUtil.deletedLocationId(req);
             locationService.delete(databaseId);

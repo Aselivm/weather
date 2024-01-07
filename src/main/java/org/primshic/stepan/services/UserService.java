@@ -1,7 +1,9 @@
 package org.primshic.stepan.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.SessionFactory;
 import org.mindrot.jbcrypt.BCrypt;
+import org.primshic.stepan.dao.LocationRepository;
 import org.primshic.stepan.dao.UserRepository;
 import org.primshic.stepan.dto.user.UserDTO;
 import org.primshic.stepan.exception.ApplicationException;
@@ -13,7 +15,11 @@ import java.util.Optional;
 
 @Slf4j
 public class UserService {
-    private final UserRepository userRepository = new UserRepository();
+
+    private final UserRepository userRepository;
+    public UserService(SessionFactory sessionFactory) {
+        this.userRepository = new UserRepository(sessionFactory);
+    }
 
     public Optional<User> persist(UserDTO userDTO) {
         Optional<User> user;

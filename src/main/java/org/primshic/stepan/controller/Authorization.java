@@ -31,13 +31,13 @@ public class Authorization extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        userService = new UserService();
-        sessionService = new SessionService();
+        userService = (UserService) getServletConfig().getServletContext().getAttribute("userService");
+        sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
         try {
             ThymeleafUtil.templateEngineProcessWithVariables("authorization", req, resp, new HashMap<>(){{
                 put("userSession", optionalUserSession);
@@ -53,7 +53,7 @@ public class Authorization extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
         try {
             UserDTO userDTO = InputUtil.authenticate(req);
 

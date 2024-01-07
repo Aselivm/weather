@@ -1,11 +1,17 @@
 package org.primshic.stepan.dao;
 
+import org.hibernate.SessionFactory;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
 
 import java.util.Optional;
 
-public class SessionRepository extends BaseRepository  {
+public class SessionRepository{
+
+    private SessionFactory sessionFactory;
+    public SessionRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public Optional<Session> getByUserId(int id, org.hibernate.Session session) {
         return Optional.ofNullable(session.createQuery("FROM Session WHERE user.id = :userId", Session.class)

@@ -1,10 +1,17 @@
 package org.primshic.stepan.dao;
 
+import org.hibernate.SessionFactory;
 import org.primshic.stepan.model.User;
 
 import java.util.Optional;
 
-public class UserRepository extends BaseRepository {
+public class UserRepository{
+
+    private SessionFactory sessionFactory;
+    public UserRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
     public Optional<User> persist(User user) {
         try(org.hibernate.Session session = sessionFactory.openSession()){
             session.beginTransaction();

@@ -6,6 +6,7 @@ import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
+import org.primshic.stepan.services.LocationService;
 import org.primshic.stepan.services.SessionService;
 import org.primshic.stepan.services.UserService;
 import org.primshic.stepan.util.CookieUtil;
@@ -32,13 +33,13 @@ public class Registration extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        userService = new UserService();
-        sessionService = new SessionService();
+        userService = (UserService) getServletConfig().getServletContext().getAttribute("userService");
+        sessionService = (SessionService) getServletConfig().getServletContext().getAttribute("sessionService");
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
         try {
             ThymeleafUtil.templateEngineProcessWithVariables("registration", req, resp, new HashMap<>(){{
                 put("userSession", optionalUserSession);
@@ -54,7 +55,7 @@ public class Registration extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
+        Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req,sessionService);
         try {
             UserDTO userDTO = InputUtil.authenticate(req);
 

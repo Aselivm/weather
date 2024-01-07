@@ -1,6 +1,7 @@
 package org.primshic.stepan.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.SessionFactory;
 import org.primshic.stepan.dao.SessionRepository;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
@@ -11,7 +12,10 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class SessionService {
-    private final SessionRepository sessionRepository = new SessionRepository();
+    private final SessionRepository sessionRepository;
+    public SessionService(SessionFactory sessionFactory) {
+        sessionRepository = new SessionRepository(sessionFactory);
+    }
     public Optional<Session> startSession(User user) {
         log.info("Starting a new session for user: {}", user.getLogin());
         Session session = new Session();
