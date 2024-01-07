@@ -5,6 +5,8 @@ import org.hibernate.SessionFactory;
 import org.modelmapper.ModelMapper;
 import org.primshic.stepan.dao.LocationRepository;
 import org.primshic.stepan.dto.user.UserLocationDTO;
+import org.primshic.stepan.exception.ApplicationException;
+import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.User;
 
@@ -31,6 +33,9 @@ public class LocationService {
     }
 
     public void add(UserLocationDTO location) {
+        if(location.getLocationName().length()>100){
+            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+        }
         log.info("Adding location: Lat={}, Lon={}", location.getLat(), location.getLon());
         locationRepository.add(new ModelMapper().map(location, Location.class));
         log.info("Location added successfully");
