@@ -14,50 +14,10 @@
     </style>
 </head>
 <body>
-    <div class="container-fluid bg-secondary">
-        <div class="container text-white py-4">
-        <div class="row justify-content-center align-items-center gx-5">
-            <div class="col-sm-6 col-lg-8 text-start">
-                <a th:href="@{/main}" style="text-decoration: none;color:white"><h1>Weather</h1></a>
-            </div>
-            <div class="col-sm-3 col-lg-2 text-center d-grid gap-2 mx-auto my-1">
-                <a th:if="${userSession.isEmpty()}" th:href="@{/auth}" class="btn btn-primary  btn-lg">Log in</a>
-                <a th:unless="${userSession.isEmpty()}">
-                    <h6>Current user:</h6>
-                    <h3
-                            th:text="${userSession.get().getUser().getLogin()}"
-                            th:class="${#strings.length(userSession.get().getUser().getLogin()) > 10} ? 'long-username' : ''">
-                        User login
-                    </h3>
-                </a>
-            </div>
-            <div class="col-sm-3 col-lg-2 text-center d-grid gap-2 mx-auto my-1">
-                <a th:if="${userSession.isEmpty()}" th:href="@{/reg}" class="btn btn-primary btn-lg">Sign up</a>
-                <form th:action="@{/log-out}" method="post" th:unless="${userSession.isEmpty()}">
-                    <button type="submit" class="btn btn-primary btn-lg">Log out</button>
-                </form>
-         </div>
-        </div>
-    </div>
-</div>
-<form th:action="@{/search}" method="get">
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-5 col-md-8 col-sm-8">
-            <div class="input-group input-group-lg mb-3">
-                <input type="text" class="form-control" name="name" placeholder="Search for location" required>
-                <button class="btn btn-primary" type="submit">Search</button>
-            </div>
-        </div>
-    </div>
-</div>
-</form>
-    <div class="container">
-        <div class="row gx-0 my-4 justify-content-center">
-            <div th:if="${error != null}" class="alert alert-danger">
-                <p th:text="${error.getMessage()}"></p>
-            </div>
-        </div>
+<div th:replace="fragments/header"></div>
+<div th:replace="fragments/search_form"></div>
+<div th:replace="fragments/search_error_alert"></div>
+
         <div class="row my-5 p-3">
             <div th:unless="${#lists.isEmpty(locationWeatherList)}" th:each="locationWeather : ${locationWeatherList}" class="col-lg-2 col-md-4 col-sm-6">
                 <div class="card text-center">
@@ -74,25 +34,8 @@
                   </div>
             </div>
         </div>
-    </div>
 
+<div th:replace="fragments/scripts"></div>
 
-    <script th:inline="javascript">
-        document.getElementById('registrationForm').addEventListener('submit', function (event) {
-            var errorDiv = document.querySelector('.alert-danger');
-            errorDiv.style.display = 'none'; // Скрыть сообщение об ошибке при повторной отправке формы
-
-            try {
-
-            } catch (e) {
-                console.error('Error submitting form:', e);
-                errorDiv.querySelector('p').innerText = e.message;
-                errorDiv.style.display = 'block';
-                event.preventDefault();
-            }
-        });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -1,0 +1,8 @@
+<!-- SEARCH ERROR ALERT -->
+<div th:fragment="search_error_alert" class="container">
+    <div class="row gx-0 my-4 justify-content-center">
+        <div th:if="${error != null}" class="alert alert-danger col-lg-8 col-md-10 col-sm-10">
+            <p th:text="${error.getMessage()}"></p>
+        </div>
+    </div>
+</div>

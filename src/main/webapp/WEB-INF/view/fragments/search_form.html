@@ -1,0 +1,15 @@
+<!-- SEARCH FORM -->
+<div th:fragment="search_form">
+    <form th:action="@{/search}" method="get" onsubmit="return validateSearchForm()">
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10 col-sm-10">
+                    <div class="input-group input-group-lg mb-3">
+                        <input type="text" class="form-control" name="name" id="searchInput" placeholder="Search for location" required>
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

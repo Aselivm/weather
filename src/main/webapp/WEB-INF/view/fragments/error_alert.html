@@ -1,0 +1,6 @@
+<!-- ERROR ALERT -->
+<div th:fragment="error_alert" class="row gx-0 my-4 justify-content-center">
+    <div th:if="${error != null}" class="alert alert-danger col-sm-8 d-grid gap-2 mx-auto">
+        <p th:text="${error.getMessage()}"></p>
+    </div>
+</div>
