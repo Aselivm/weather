@@ -14,6 +14,7 @@ import java.util.Optional;
 public class SessionUtil {
     private static SessionService sessionService = new SessionService();
 
+    @Deprecated
     public static Optional<Session> getSessionByReq(HttpServletRequest req) {
         Session userSession = (Session) req.getAttribute("userSession");
         if (userSession == null) {
@@ -45,7 +46,7 @@ public class SessionUtil {
         }
     }
 
-    public static Optional<Session> getSessionByCookieReq(HttpServletRequest req) {
+    public static Optional<Session> getSessionFromCookies(HttpServletRequest req) {
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
         return getCurrentSession(sessionId);
     }

@@ -39,7 +39,7 @@ public class SearchPage extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
+            Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
             String name = InputUtil.locationName(req);
             List<LocationDTO> locationDTOList = weatherAPIService.getLocationListByName(name);
 
@@ -56,7 +56,7 @@ public class SearchPage extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            Optional<Session> optionalUserSession = SessionUtil.getSessionByCookieReq(req);
+            Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
 
             User user = optionalUserSession.orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR)).getUser();
             String name = InputUtil.locationName(req);

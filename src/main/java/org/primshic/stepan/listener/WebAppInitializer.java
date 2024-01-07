@@ -1,23 +1,18 @@
-package org.primshic.stepan.config;
+package org.primshic.stepan.listener;
 
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @WebListener
 public class WebAppInitializer implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext servletContext = sce.getServletContext();
-
         TemplateEngine templateEngine = new TemplateEngine();
         templateEngine.setTemplateResolver(thymeleafTemplateResolver(servletContext));
 

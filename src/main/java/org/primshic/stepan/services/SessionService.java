@@ -11,14 +11,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class SessionService {
-
-    private boolean collectorStarted = false;
     private final SessionRepository sessionRepository = new SessionRepository();
-
-    public SessionService() {
-        sessionCollector();
-    }
-
     public Optional<Session> startSession(User user) {
         log.info("Starting a new session for user: {}", user.getLogin());
         Session session = new Session();
@@ -33,15 +26,6 @@ public class SessionService {
         Optional<Session> session = sessionRepository.getById(uuid);
         log.info("Retrieved session: {}", session.orElse(null));
         return session;
-    }
-
-    public void sessionCollector() {
-        if (!collectorStarted) {
-            ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(1);
-            scheduledThreadPoolExecutor.scheduleWithFixedDelay(sessionRepository::deleteExpiredSessions, 1, 1, TimeUnit.HOURS);
-            log.info("Session collector started");
-            collectorStarted = true;
-        }
     }
 
     public void delete(Session session) {

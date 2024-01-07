@@ -23,6 +23,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Optional;
 
 @WebServlet(urlPatterns = "/reg")
 @Slf4j
@@ -40,9 +42,10 @@ public class Registration extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
-            SessionUtil.deleteSessionIfPresent(sessionId);
-            ThymeleafUtil.templateEngineProcess("registration", req, resp);
+            Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
+            ThymeleafUtil.templateEngineProcessWithVariables("registration", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
+            }});
         } catch (ApplicationException e) {
             log.error("Error processing GET request in Registration: {}", e.getMessage(), e);
             ExceptionHandler.handle(resp, e);

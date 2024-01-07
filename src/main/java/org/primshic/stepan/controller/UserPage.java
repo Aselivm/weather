@@ -41,7 +41,7 @@ public class UserPage extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<WeatherDTO> weatherDTOList = new LinkedList<>();
         try {
-            Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
+            Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
 
             if (optionalUserSession.isPresent()) {
                 User user = optionalUserSession.get().getUser();

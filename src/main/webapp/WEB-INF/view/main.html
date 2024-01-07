@@ -33,7 +33,9 @@
             </div>
             <div class="col-sm-3 col-lg-2 text-center d-grid gap-2 mx-auto my-1">
                 <a th:if="${userSession.isEmpty()}" th:href="@{/reg}" class="btn btn-primary btn-lg">Sign up</a>
-                <a th:unless="${userSession.isEmpty()}" th:href="@{/auth}" class="btn btn-primary btn-lg">Log out</a>
+                <form th:action="@{/log-out}" method="post" th:unless="${userSession.isEmpty()}">
+                    <button type="submit" class="btn btn-primary btn-lg">Log out</button>
+                </form>
          </div>
         </div>
     </div>

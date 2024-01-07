@@ -21,6 +21,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Optional;
 
 @WebServlet(urlPatterns = "/auth")
 @Slf4j
@@ -38,9 +40,10 @@ public class Authorization extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
-            SessionUtil.deleteSessionIfPresent(sessionId);
-            ThymeleafUtil.templateEngineProcess("authorization", req, resp);
+            Optional<Session> optionalUserSession = SessionUtil.getSessionFromCookies(req);
+            ThymeleafUtil.templateEngineProcessWithVariables("authorization", req, resp, new HashMap<>(){{
+                put("userSession", optionalUserSession);
+            }});
         } catch (ApplicationException e) {
             log.error("Error processing GET request in Authorization: {}", e.getMessage(), e);
             ExceptionHandler.handle(resp, e);
