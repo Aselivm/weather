@@ -28,7 +28,9 @@ public class WeatherAPIService {
         String url = getWeatherAPIProperty("url_geo");
         String limit = getWeatherAPIProperty("limit");
         String appid = getWeatherAPIProperty("APIKey");
-        String result = sendHttpRequest(buildLocationListRequest(url, name, limit, appid));
+        String request = buildLocationListRequest(url, name, limit, appid);
+        log.info("Calling getLocationListByName with URL: {}",request);
+        String result = sendHttpRequest(request);
         return parseLocationListResponse(result);
     }
 
@@ -37,7 +39,9 @@ public class WeatherAPIService {
         String lang = getWeatherAPIProperty("lang");
         String units = getWeatherAPIProperty("units");
         String url = getWeatherAPIProperty("url_data");
-        String result = sendHttpRequest(buildWeatherRequest(location.getLat(), location.getLon(), url, appid, lang, units));
+        String request = buildWeatherRequest(location.getLat(), location.getLon(), url, appid, lang, units);
+        log.info("Calling getLocationListByName with URL: {}",request);
+        String result = sendHttpRequest(request);
         return parseWeatherResponse(result);
     }
 
