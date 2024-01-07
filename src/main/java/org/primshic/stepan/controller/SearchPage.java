@@ -8,11 +8,15 @@ import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.exception.ExceptionHandler;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
+import org.primshic.stepan.services.LocationService;
+import org.primshic.stepan.services.WeatherAPIService;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.ThymeleafUtil;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,7 +26,15 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/search")
 @Slf4j
-public class SearchPage extends BaseServlet {
+public class SearchPage extends HttpServlet {
+    private LocationService locationService;
+    private WeatherAPIService weatherAPIService;
+
+    @Override
+    public void init() throws ServletException {
+        locationService = new LocationService();
+        weatherAPIService = new WeatherAPIService();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -44,7 +56,7 @@ public class SearchPage extends BaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try {
-            Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
+            Optional<Session> optionalUserSession = SessionUtil.getSessionByCookieReq(req);
 
             User user = optionalUserSession.orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR)).getUser();
             String name = InputUtil.locationName(req);

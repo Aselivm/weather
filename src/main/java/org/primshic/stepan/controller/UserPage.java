@@ -7,12 +7,15 @@ import org.primshic.stepan.exception.ExceptionHandler;
 import org.primshic.stepan.model.Location;
 import org.primshic.stepan.model.Session;
 import org.primshic.stepan.model.User;
+import org.primshic.stepan.services.LocationService;
+import org.primshic.stepan.services.WeatherAPIService;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
 import org.primshic.stepan.util.ThymeleafUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,10 +26,19 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/main")
 @Slf4j
-public class UserPage extends BaseServlet {
+public class UserPage extends HttpServlet {
+
+    private LocationService locationService;
+    private WeatherAPIService weatherAPIService;
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void init() throws ServletException {
+        locationService = new LocationService();
+        weatherAPIService = new WeatherAPIService();
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         List<WeatherDTO> weatherDTOList = new LinkedList<>();
         try {
             Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);

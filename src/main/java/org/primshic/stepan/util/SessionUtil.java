@@ -13,6 +13,15 @@ import java.util.Optional;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SessionUtil {
     private static SessionService sessionService = new SessionService();
+
+    public static Optional<Session> getSessionByReq(HttpServletRequest req) {
+        Session userSession = (Session) req.getAttribute("userSession");
+        if (userSession == null) {
+            log.warn("User session not found in the request.");
+        }
+
+        return Optional.ofNullable(userSession);
+    }
     public static Optional<Session> getCurrentSession(String sessionId) {
         Optional<Session> userSession = Optional.empty();
         if (validSessionId(sessionId)) {
@@ -36,7 +45,7 @@ public class SessionUtil {
         }
     }
 
-    public static Optional<Session> getSessionByReq(HttpServletRequest req) {
+    public static Optional<Session> getSessionByCookieReq(HttpServletRequest req) {
         String sessionId = CookieUtil.getSessionIdByCookie(req.getCookies());
         return getCurrentSession(sessionId);
     }
