@@ -1,14 +1,19 @@
 package org.primshic.stepan.repo_mock.dao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.primshic.stepan.repo_mock.model.TestLocation;
 import org.primshic.stepan.repo_mock.util.TestHibernateUtil;
 
 import javax.persistence.Query;
 
 public class LocationRepositoryTest {
-    private final SessionFactory sessionFactory = TestHibernateUtil.getSessionFactory();
+    private final SessionFactory sessionFactory;
+    public LocationRepositoryTest(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
 
     public void add(TestLocation location) {
         try(Session session = sessionFactory.openSession()){
@@ -18,15 +23,19 @@ public class LocationRepositoryTest {
         }
     }
 
-    public void delete(int userId, double lat, double lon) {
-        try(Session session = sessionFactory.openSession()) {
-            String jpql = "DELETE FROM TestLocation l WHERE l.user.id = :userId AND l.lat = :lat AND l.lon = :lon";
+    public void delete(int databaseId) {
+        Transaction transaction = null;
+        try (Session session = sessionFactory.openSession()) {
+            transaction = session.beginTransaction();
 
-            Query query = session.createQuery(jpql);
-            query.setParameter("userId", userId);
-            query.setParameter("lat", lat);
-            query.setParameter("lon", lon);
-            query.executeUpdate();
+            String hql = "DELETE FROM TestLocation WHERE id = :databaseId";
+            session.createQuery(hql).setParameter("databaseId", databaseId).executeUpdate();
+            transaction.commit();
+        } catch (HibernateException e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            throw e;
         }
     }
 }

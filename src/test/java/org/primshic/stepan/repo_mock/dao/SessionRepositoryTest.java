@@ -10,7 +10,11 @@ import java.util.logging.Logger;
 
 public class SessionRepositoryTest {
     private Logger log = Logger.getLogger(SessionRepositoryTest.class.getName());
-    private final SessionFactory sessionFactory = TestHibernateUtil.getSessionFactory();
+
+    private final SessionFactory sessionFactory;
+    public SessionRepositoryTest(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
     public void save(TestSession sessionEntity) {
         try (org.hibernate.Session session = sessionFactory.openSession()) {
             session.beginTransaction();

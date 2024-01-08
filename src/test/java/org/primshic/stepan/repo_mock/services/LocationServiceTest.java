@@ -1,14 +1,19 @@
 package org.primshic.stepan.repo_mock.services;
 
+import org.hibernate.SessionFactory;
 import org.primshic.stepan.repo_mock.dao.LocationRepositoryTest;
 import org.primshic.stepan.repo_mock.model.TestLocation;
 import org.primshic.stepan.repo_mock.model.TestUser;
 
 public class LocationServiceTest {
-    private final LocationRepositoryTest locationRepositoryTest = new LocationRepositoryTest();
+    private final LocationRepositoryTest locationRepositoryTest;
 
-    public void delete(int userId, double lat, double lon) {
-        locationRepositoryTest.delete(userId,lat,lon);
+    public LocationServiceTest(SessionFactory sessionFactory) {
+        locationRepositoryTest = new LocationRepositoryTest(sessionFactory);
+    }
+
+    public void delete(int locationId) {
+        locationRepositoryTest.delete(locationId);
     }
 
     public void add(TestUser user, String name, double lat, double lon) {

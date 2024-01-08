@@ -1,6 +1,8 @@
 package org.primshic.stepan.repo_mock.services;
 
+import org.hibernate.SessionFactory;
 import org.mindrot.jbcrypt.BCrypt;
+import org.primshic.stepan.repo_mock.dao.LocationRepositoryTest;
 import org.primshic.stepan.repo_mock.dao.UserRepositoryTest;
 import org.primshic.stepan.auth.user.UserDTO;
 import org.primshic.stepan.repo_mock.model.TestUser;
@@ -8,8 +10,11 @@ import org.primshic.stepan.repo_mock.model.TestUser;
 import java.util.Optional;
 
 public class UserServiceTest {
-    private final UserRepositoryTest userRepository = new UserRepositoryTest();
+    private final UserRepositoryTest userRepository;
 
+    public UserServiceTest(SessionFactory sessionFactory) {
+        userRepository = new UserRepositoryTest(sessionFactory);
+    }
     public Optional<TestUser> persist(UserDTO userDTO) {
         TestUser userEntity = toEntity(userDTO);
         return userRepository.persist(userEntity);

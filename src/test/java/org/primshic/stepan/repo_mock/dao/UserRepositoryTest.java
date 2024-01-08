@@ -7,7 +7,10 @@ import org.primshic.stepan.repo_mock.util.TestHibernateUtil;
 import java.util.Optional;
 
 public class UserRepositoryTest {
-    private final SessionFactory sessionFactory = TestHibernateUtil.getSessionFactory();
+    private final SessionFactory sessionFactory;
+    public UserRepositoryTest(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
     public Optional<TestUser> persist(TestUser user) {
         try(org.hibernate.Session session = sessionFactory.openSession()){
             session.beginTransaction();

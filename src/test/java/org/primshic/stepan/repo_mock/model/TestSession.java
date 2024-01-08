@@ -21,7 +21,7 @@ public class TestSession {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne()
     @JoinColumn(name="UserId")
     private TestUser user;
 

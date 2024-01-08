@@ -12,7 +12,7 @@ import java.math.BigInteger;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class Test_01_HibernateConnection {
+public class TestHibernateConnection {
     private static SessionFactory sessionFactory;
 
     @BeforeAll
