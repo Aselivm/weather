@@ -2,14 +2,14 @@ package org.primshic.stepan.auth.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.auth.session.Session;
-import org.primshic.stepan.exception.ApplicationException;
+import org.primshic.stepan.common.exception.ApplicationException;
 import org.primshic.stepan.weather.locations.LocationService;
 import org.primshic.stepan.weather.locations.Location;
 import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
 import org.primshic.stepan.weather.openWeatherAPI.WeatherDTO;
-import org.primshic.stepan.util.InputUtil;
-import org.primshic.stepan.util.SessionUtil;
-import org.primshic.stepan.util.WebContextUtil;
+import org.primshic.stepan.common.util.InputUtil;
+import org.primshic.stepan.common.util.SessionUtil;
+import org.primshic.stepan.common.util.WebContextUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 

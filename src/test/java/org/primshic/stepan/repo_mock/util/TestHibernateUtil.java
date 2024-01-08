@@ -9,7 +9,7 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.primshic.stepan.util.HibernateUtil;
+import org.primshic.stepan.common.util.HibernateUtil;
 
 import java.io.*;
 

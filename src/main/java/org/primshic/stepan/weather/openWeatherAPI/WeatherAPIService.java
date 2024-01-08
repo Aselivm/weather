@@ -5,9 +5,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.weather.locations.Location;
-import org.primshic.stepan.exception.ApplicationException;
-import org.primshic.stepan.exception.ErrorMessage;
-import org.primshic.stepan.util.PropertyReaderUtil;
+import org.primshic.stepan.common.exception.ApplicationException;
+import org.primshic.stepan.common.exception.ErrorMessage;
+import org.primshic.stepan.common.util.PropertyReaderUtil;
 
 import java.math.BigDecimal;
 import java.net.URI;

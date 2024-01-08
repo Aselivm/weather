@@ -3,11 +3,8 @@ package org.primshic.stepan.auth.user;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.mindrot.jbcrypt.BCrypt;
-import org.primshic.stepan.auth.user.User;
-import org.primshic.stepan.auth.user.UserDTO;
-import org.primshic.stepan.auth.user.UserRepository;
-import org.primshic.stepan.exception.ApplicationException;
-import org.primshic.stepan.exception.ErrorMessage;
+import org.primshic.stepan.common.exception.ApplicationException;
+import org.primshic.stepan.common.exception.ErrorMessage;
 
 import javax.persistence.PersistenceException;
 import java.util.Optional;

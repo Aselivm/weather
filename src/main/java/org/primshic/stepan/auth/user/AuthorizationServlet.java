@@ -2,12 +2,12 @@ package org.primshic.stepan.auth.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.auth.session.Session;
-import org.primshic.stepan.exception.ApplicationException;
-import org.primshic.stepan.exception.ErrorMessage;
+import org.primshic.stepan.common.exception.ApplicationException;
+import org.primshic.stepan.common.exception.ErrorMessage;
 import org.primshic.stepan.auth.session.SessionService;
-import org.primshic.stepan.util.CookieUtil;
-import org.primshic.stepan.util.InputUtil;
-import org.primshic.stepan.util.WebContextUtil;
+import org.primshic.stepan.common.util.CookieUtil;
+import org.primshic.stepan.common.util.InputUtil;
+import org.primshic.stepan.common.util.WebContextUtil;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 

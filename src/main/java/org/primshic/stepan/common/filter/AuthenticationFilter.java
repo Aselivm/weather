@@ -1,10 +1,10 @@
-package org.primshic.stepan.filter;
+package org.primshic.stepan.common.filter;
 
 import org.hibernate.SessionFactory;
 import org.primshic.stepan.auth.session.Session;
 import org.primshic.stepan.auth.session.SessionService;
-import org.primshic.stepan.util.HibernateUtil;
-import org.primshic.stepan.util.SessionUtil;
+import org.primshic.stepan.common.util.HibernateUtil;
+import org.primshic.stepan.common.util.SessionUtil;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @WebFilter(urlPatterns = "/*")
-public class Authentication implements Filter {
+public class AuthenticationFilter implements Filter {
 
     private SessionService sessionService;
 

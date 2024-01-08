@@ -1,10 +1,10 @@
-package org.primshic.stepan.util;
+package org.primshic.stepan.common.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.exception.ApplicationException;
-import org.primshic.stepan.exception.ErrorMessage;
+import org.primshic.stepan.common.exception.ApplicationException;
+import org.primshic.stepan.common.exception.ErrorMessage;
 
 import java.io.*;
 import java.util.Properties;

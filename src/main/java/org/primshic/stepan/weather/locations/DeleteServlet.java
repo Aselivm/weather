@@ -2,7 +2,7 @@ package org.primshic.stepan.weather.locations;
 
 import org.primshic.stepan.auth.session.Session;
 import org.primshic.stepan.auth.session.SessionService;
-import org.primshic.stepan.util.SessionUtil;
+import org.primshic.stepan.common.util.SessionUtil;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

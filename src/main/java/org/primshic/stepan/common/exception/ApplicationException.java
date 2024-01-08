@@ -1,4 +1,4 @@
-package org.primshic.stepan.exception;
+package org.primshic.stepan.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

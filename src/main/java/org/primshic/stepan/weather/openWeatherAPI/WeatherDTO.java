@@ -11,11 +11,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.primshic.commons.stepan.weather.openWeatherAPI.common.weather_info.*;
-import org.primshic.stepan.dto.weather_api.weather_info.*;
-import org.primshic.stepan.weather.locations.api_dto.weather_info.*;
 import org.primshic.stepan.weather.openWeatherAPI.common_info.weather_info.*;
-import org.primshic.stepan.weather.openWeatherAPI.weather_info.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({

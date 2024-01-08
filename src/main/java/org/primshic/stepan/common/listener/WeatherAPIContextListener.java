@@ -1,4 +1,4 @@
-package org.primshic.stepan.listener;
+package org.primshic.stepan.common.listener;
 
 import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
 
