@@ -2,9 +2,7 @@ package org.primshic.stepan.auth.session;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
-import org.primshic.stepan.auth.session.Session;
 import org.primshic.stepan.auth.user.User;
-import org.primshic.stepan.auth.session.SessionRepository;
 
 import java.util.Optional;
 

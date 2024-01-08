@@ -2,6 +2,7 @@ package org.primshic.stepan.auth.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.auth.session.Session;
+import org.primshic.stepan.common.WeatherTrackerBaseServlet;
 import org.primshic.stepan.common.exception.ApplicationException;
 import org.primshic.stepan.weather.locations.LocationService;
 import org.primshic.stepan.weather.locations.Location;
@@ -26,7 +27,7 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/main")
 @Slf4j
-public class UserPage extends HttpServlet {
+public class UserPageServlet extends WeatherTrackerBaseServlet {
 
     private LocationService locationService;
     private WeatherAPIService weatherAPIService;
@@ -43,15 +44,16 @@ public class UserPage extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
-        List<WeatherDTO> weatherDTOList = new LinkedList<>();
         try {
 
             if (optionalUserSession.isPresent()) {
                 User user = optionalUserSession.get().getUser();
                 List<Location> locationList = locationService.getUserLocations(user);
-                weatherDTOList.addAll(weatherAPIService.getWeatherForLocations(locationList));
+
+                List<WeatherDTO> weatherDTOList = new LinkedList<>(
+                        weatherAPIService.getWeatherForLocations(locationList));
+
                 context.setVariable("locationWeatherList",weatherDTOList);
             }
         } catch (ApplicationException e) {
@@ -63,8 +65,6 @@ public class UserPage extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
-
         try {
             int databaseId = InputUtil.deletedLocationId(req);
             locationService.delete(databaseId);

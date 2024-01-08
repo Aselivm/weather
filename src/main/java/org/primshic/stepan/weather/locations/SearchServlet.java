@@ -3,6 +3,7 @@ package org.primshic.stepan.weather.locations;
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.auth.session.Session;
 import org.primshic.stepan.auth.user.User;
+import org.primshic.stepan.common.WeatherTrackerBaseServlet;
 import org.primshic.stepan.common.exception.ApplicationException;
 import org.primshic.stepan.common.exception.ErrorMessage;
 import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
@@ -25,7 +26,7 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/search")
 @Slf4j
-public class SearchServlet extends HttpServlet {
+public class SearchServlet extends WeatherTrackerBaseServlet {
     private LocationService locationService;
     private WeatherAPIService weatherAPIService;
     private TemplateEngine templateEngine;
@@ -40,9 +41,6 @@ public class SearchServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-
-        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
-
         try {
             String name = InputUtil.locationName(req);
             List<LocationCoordinatesDTO> locationCoordinatesDTOList = weatherAPIService.getLocationListByName(name);
@@ -58,7 +56,6 @@ public class SearchServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
         try {
 

@@ -2,26 +2,24 @@ package org.primshic.stepan.auth.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.auth.session.Session;
+import org.primshic.stepan.common.WeatherTrackerBaseServlet;
 import org.primshic.stepan.common.exception.ApplicationException;
 import org.primshic.stepan.common.exception.ErrorMessage;
 import org.primshic.stepan.auth.session.SessionService;
 import org.primshic.stepan.common.util.CookieUtil;
 import org.primshic.stepan.common.util.InputUtil;
-import org.primshic.stepan.common.util.WebContextUtil;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = "/reg")
 @Slf4j
-public class RegistrationServlet extends HttpServlet {
+public class RegistrationServlet extends WeatherTrackerBaseServlet {
     private UserService userService;
 
     private TemplateEngine templateEngine;
@@ -38,20 +36,18 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
-
         templateEngine.process("registration", context, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
-
         try {
             UserDTO userDTO = InputUtil.authenticate(req);
 
-            User user = userService.persist(userDTO).orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
-            Session userSession = sessionService.startSession(user).orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
+            User user = userService.persist(userDTO)
+                    .orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
+            Session userSession = sessionService.startSession(user)
+                    .orElseThrow(() -> new ApplicationException(ErrorMessage.INTERNAL_ERROR));
 
             CookieUtil.createSessionCookie(resp,userSession.getId());
             resp.sendRedirect(req.getContextPath() + "/main");

@@ -2,6 +2,7 @@ package org.primshic.stepan.weather.locations;
 
 import org.primshic.stepan.auth.session.Session;
 import org.primshic.stepan.auth.session.SessionService;
+import org.primshic.stepan.common.WeatherTrackerBaseServlet;
 import org.primshic.stepan.common.util.SessionUtil;
 
 import javax.servlet.ServletContext;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 @WebServlet(urlPatterns = "/log-out")
-public class DeleteServlet extends HttpServlet {
+public class DeleteServlet extends WeatherTrackerBaseServlet {
     private SessionService sessionService;
 
     @Override
