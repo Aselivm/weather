@@ -10,18 +10,25 @@
     <div class="container">
         <div class="row my-5 p-3">
             <div th:unless="${#lists.isEmpty(locationWeatherList)}" th:each="locationWeather : ${locationWeatherList}" class="col-lg-2 col-md-4 col-sm-6">
-                <div class="card text-center">
+                <div class="card text-center d-flex flex-column mb-4" style="height: 410px;">
                     <form th:action="@{/main}" method="post">
-                    <div class="card-body">
-                      <h5 class="card-title" th:text="${locationWeather.getName()}">City</h5>
-                        <h5 class="card-title" th:text="${locationWeather.getSys().getCountry()}">Country</h5>
-                        <h3 class="card-text" th:if="${locationWeather.getMain().getTemp() > 0}" th:text="'+' + ${locationWeather.getMain().getTemp()}">Temperature</h3>
-                        <h3 class="card-text" th:if="${locationWeather.getMain().getTemp() <= 0}" th:text="${locationWeather.getMain().getTemp()}">Temperature</h3>
-                        <input type="hidden" name="databaseId" th:value="${locationWeather.getDatabaseId()}">
-                      <button type="submit" class="btn btn-secondary">Delete</button>
-                    </div>
+                        <div class="card-body">
+                            <div class="cl">
+                            <h5 class="card-title" th:text="${locationWeather.getName()}">City</h5>
+                            <h5 class="card-title" th:text="${locationWeather.getSys().getCountry()}">Country</h5>
+                            <h3 class="card-text" th:if="${locationWeather.getMain().getTemp() > 0}" th:text="'+' + ${locationWeather.getMain().getTemp()}">Temperature</h3>
+                            <h3 class="card-text" th:if="${locationWeather.getMain().getTemp() <= 0}" th:text="${locationWeather.getMain().getTemp()}">Temperature</h3>
+                            <p class="card-text" th:if="${not #lists.isEmpty(locationWeather.getWeather())}" th:text="${locationWeather.getWeather().get(0).getDescription()}">Weather Description</p>
+                            <p class="card-text" th:if="${not #lists.isEmpty(locationWeather.getWeather())}" th:text="'Humidity: ' + (${locationWeather.getMain().getHumidity()}+'%')">Humidity</p>
+                            <p class="card-text" th:text="'Wind Speed: ' + ${locationWeather.getWind().getSpeed()+' m/s'}">Wind Speed</p>
+                            <p class="card-text" th:if="${not #lists.isEmpty(locationWeather.getWeather())}" th:text="'Pressure: ' + ${locationWeather.getMain().getPressure() + ' hPa'}">Pressure</p>
+                            <p class="card-text" th:if="${not #lists.isEmpty(locationWeather.getWeather())}" th:text="'Visibility: ' + ${locationWeather.getVisibility() + ' meters'}">Visibility</p>
+                            <input type="hidden" name="databaseId" th:value="${locationWeather.getDatabaseId()}">
+                        </div>
+                            <button type="submit" class="btn btn-secondary">Delete</button>
+                        </div>
                     </form>
-                  </div>
+                </div>
             </div>
         </div>
     </div>
