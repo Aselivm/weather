@@ -1,5 +1,6 @@
 package org.primshic.stepan.common.listener;
 
+import lombok.extern.slf4j.Slf4j;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
@@ -9,14 +10,24 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 @WebListener
+@Slf4j
 public class ThymeleafContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ServletContext servletContext = sce.getServletContext();
-        TemplateEngine templateEngine = new TemplateEngine();
-        templateEngine.setTemplateResolver(thymeleafTemplateResolver(servletContext));
+        try {
+            log.info("Initializing ThymeleafContextListener...");
 
-        servletContext.setAttribute("templateEngine", templateEngine);
+            ServletContext servletContext = sce.getServletContext();
+            TemplateEngine templateEngine = new TemplateEngine();
+            templateEngine.setTemplateResolver(thymeleafTemplateResolver(servletContext));
+
+            servletContext.setAttribute("templateEngine", templateEngine);
+
+            log.info("ThymeleafContextListener initialized successfully.");
+        } catch (Exception e) {
+            log.error("Failed to initialize ThymeleafContextListener", e);
+            throw new RuntimeException("Failed to initialize ThymeleafContextListener", e);
+        }
     }
 
     private ServletContextTemplateResolver thymeleafTemplateResolver(ServletContext servletContext) {
