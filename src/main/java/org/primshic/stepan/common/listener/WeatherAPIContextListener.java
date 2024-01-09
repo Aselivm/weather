@@ -1,5 +1,6 @@
 package org.primshic.stepan.common.listener;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
 
@@ -14,8 +15,9 @@ public class WeatherAPIContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         try {
             log.info("Initializing WeatherAPIContextListener...");
-
-            WeatherAPIService weatherAPIService = new WeatherAPIService();
+            Dotenv dotenv = Dotenv.load();
+            String apiKey = dotenv.get("API_KEY");
+            WeatherAPIService weatherAPIService = new WeatherAPIService(apiKey);
             sce.getServletContext().setAttribute("weatherAPIService", weatherAPIService);
 
             log.info("WeatherAPIContextListener initialized successfully.");

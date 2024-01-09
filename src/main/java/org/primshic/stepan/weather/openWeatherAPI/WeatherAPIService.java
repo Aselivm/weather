@@ -3,6 +3,7 @@ package org.primshic.stepan.weather.openWeatherAPI;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.weather.locations.Location;
 import org.primshic.stepan.common.exception.ApplicationException;
@@ -22,11 +23,16 @@ import java.util.List;
 public class WeatherAPIService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    private final static String API_KEY = System.getenv("API_KEY");
+    private String apiKey;
+
+    public WeatherAPIService(String apiKey) {
+        this.apiKey = apiKey;
+    }
+
     public List<LocationCoordinatesDTO> getLocationListByName(String name) {
         String url = getWeatherAPIProperty("url_geo");
         String limit = getWeatherAPIProperty("limit");
-        String request = buildLocationListRequest(url, name, limit, API_KEY);
+        String request = buildLocationListRequest(url, name, limit, apiKey);
         log.info("Calling getLocationListByName with URL: {}",request);
         String result = sendHttpRequest(request);
         return parseLocationListResponse(result);
@@ -36,7 +42,7 @@ public class WeatherAPIService {
         String lang = getWeatherAPIProperty("lang");
         String units = getWeatherAPIProperty("units");
         String url = getWeatherAPIProperty("url_data");
-        String request = buildWeatherRequest(location.getLat(), location.getLon(), url, API_KEY, lang, units);
+        String request = buildWeatherRequest(location.getLat(), location.getLon(), url, apiKey, lang, units);
         log.info("Calling getLocationListByName with URL: {}",request);
         String result = sendHttpRequest(request);
         return parseWeatherResponse(result);
