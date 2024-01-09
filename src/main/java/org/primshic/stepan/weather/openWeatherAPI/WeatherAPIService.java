@@ -22,22 +22,21 @@ import java.util.List;
 public class WeatherAPIService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    private final static String API_KEY = System.getenv("API_KEY");
     public List<LocationCoordinatesDTO> getLocationListByName(String name) {
         String url = getWeatherAPIProperty("url_geo");
         String limit = getWeatherAPIProperty("limit");
-        String appid = getWeatherAPIProperty("APIKey");
-        String request = buildLocationListRequest(url, name, limit, appid);
+        String request = buildLocationListRequest(url, name, limit, API_KEY);
         log.info("Calling getLocationListByName with URL: {}",request);
         String result = sendHttpRequest(request);
         return parseLocationListResponse(result);
     }
 
     public WeatherDTO getWeatherByLocation(Location location) {
-        String appid = getWeatherAPIProperty("APIKey");
         String lang = getWeatherAPIProperty("lang");
         String units = getWeatherAPIProperty("units");
         String url = getWeatherAPIProperty("url_data");
-        String request = buildWeatherRequest(location.getLat(), location.getLon(), url, appid, lang, units);
+        String request = buildWeatherRequest(location.getLat(), location.getLon(), url, API_KEY, lang, units);
         log.info("Calling getLocationListByName with URL: {}",request);
         String result = sendHttpRequest(request);
         return parseWeatherResponse(result);
@@ -75,13 +74,13 @@ public class WeatherAPIService {
                     .build();
 
         } catch (URISyntaxException e) {
-            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+            throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);
         }
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } catch (Exception e) {
-            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+            throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);
         }
     }
 
@@ -90,7 +89,7 @@ public class WeatherAPIService {
             return objectMapper.readValue(result, new TypeReference<>() {});
         } catch (JsonProcessingException e) {
             log.warn("Error reading JSON response for location list: {}", e.getMessage());
-            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+            throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);
         }
     }
 
@@ -99,7 +98,7 @@ public class WeatherAPIService {
             return objectMapper.readValue(result, WeatherDTO.class);
         } catch (JsonProcessingException e) {
             log.warn("Error reading JSON response for weather: {}", e.getMessage());
-            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+            throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);
         }
     }
 

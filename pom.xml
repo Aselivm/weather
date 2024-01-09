@@ -125,6 +125,12 @@
       <version>1.2.3</version>
     </dependency>
 
+    <dependency>
+      <groupId>io.github.cdimascio</groupId>
+      <artifactId>dotenv-java</artifactId>
+      <version>5.2.2</version>
+    </dependency>
+
   </dependencies>
   <build>
     <finalName>weather</finalName>

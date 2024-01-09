@@ -19,7 +19,8 @@ public enum ErrorMessage {
     LONG_LOGIN("Login length exceeds 100 characters", HttpServletResponse.SC_BAD_REQUEST),
     LONG_PASSWORD("Password length exceeds 60 characters", HttpServletResponse.SC_BAD_REQUEST),
     LOGIN_CONTAINS_SPACES("Login must not have spaces.", HttpServletResponse.SC_BAD_REQUEST),
-    PASSWORD_CONTAINS_SPACES("Password must not have spaces.", HttpServletResponse.SC_BAD_REQUEST);
+    PASSWORD_CONTAINS_SPACES("Password must not have spaces.", HttpServletResponse.SC_BAD_REQUEST),
+    OPEN_WEATHER_ERROR("OpenWeatherAPI Error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 
 
     private final String message;
