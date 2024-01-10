@@ -3,6 +3,8 @@ package org.primshic.stepan.auth.session;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.primshic.stepan.auth.user.User;
+import org.primshic.stepan.common.exception.ApplicationException;
+import org.primshic.stepan.common.exception.ErrorMessage;
 
 import java.util.Optional;
 
@@ -26,7 +28,7 @@ public class SessionRepository{
             return Optional.ofNullable(session.get(Session.class, uuid));
         } catch (Exception e) {
             log.error("Error while getting session by ID", e);
-            throw e;
+            throw new ApplicationException(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -41,7 +43,7 @@ public class SessionRepository{
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             log.error("Error while deleting expired sessions", e);
-            throw e;
+            throw new ApplicationException(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -58,7 +60,7 @@ public class SessionRepository{
             session.getTransaction().commit();
         } catch (Exception e) {
             log.error("Error while starting session", e);
-            throw e;
+            throw new ApplicationException(ErrorMessage.DATABASE_ERROR);
         }
 
         return fromDB;
@@ -76,7 +78,7 @@ public class SessionRepository{
             session.getTransaction().commit();
         } catch (Exception e) {
             log.error("Error while deleting session", e);
-            throw e;
+            throw new ApplicationException(ErrorMessage.DATABASE_ERROR);
         }
     }
 }

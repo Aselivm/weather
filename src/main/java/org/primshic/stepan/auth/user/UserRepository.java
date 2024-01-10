@@ -2,6 +2,8 @@ package org.primshic.stepan.auth.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
+import org.primshic.stepan.common.exception.ApplicationException;
+import org.primshic.stepan.common.exception.ErrorMessage;
 
 import java.util.Optional;
 
@@ -21,7 +23,7 @@ public class UserRepository{
             session.getTransaction().commit();
         } catch (Exception e) {
             log.error("Error while persisting user", e);
-            throw e;
+            throw new ApplicationException(ErrorMessage.DATABASE_ERROR);
         }
         return Optional.of(user);
     }
@@ -34,7 +36,7 @@ public class UserRepository{
                     .uniqueResult());
         } catch (Exception e) {
             log.error("Error while getting user by login", e);
-            throw e;
+            throw new ApplicationException(ErrorMessage.DATABASE_ERROR);
         }
     }
 }

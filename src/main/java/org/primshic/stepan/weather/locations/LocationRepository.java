@@ -6,6 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.primshic.stepan.auth.user.User;
+import org.primshic.stepan.common.exception.ApplicationException;
+import org.primshic.stepan.common.exception.ErrorMessage;
 
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class LocationRepository {
                     .getResultList();
         } catch (HibernateException e) {
             log.error("Error while fetching user locations", e);
-            throw e;
+            throw new ApplicationException(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -41,7 +43,7 @@ public class LocationRepository {
             if (transaction != null && transaction.isActive()) {
                    transaction.rollback();
             }
-            throw e;
+            throw new ApplicationException(ErrorMessage.DATABASE_ERROR);
         }
     }
 
@@ -58,7 +60,7 @@ public class LocationRepository {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            throw e;
+            throw new ApplicationException(ErrorMessage.DATABASE_ERROR);
         }
     }
 }

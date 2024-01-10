@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 @Getter
 public enum ErrorMessage {
     INTERNAL_ERROR("Internal error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR),
+
+    DATABASE_ERROR("Database error", HttpServletResponse.SC_INTERNAL_SERVER_ERROR),
     EMPTY_INPUT("The search field must not be empty", HttpServletResponse.SC_BAD_REQUEST),
 
     WRONG_PASSWORD("Wrong password", HttpServletResponse.SC_UNAUTHORIZED),
