@@ -103,6 +103,7 @@ public class WeatherAPIService {
         }
         try {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            //todo ОБРАБОТАТЬ body
             return response.body();
         } catch (Exception e) {
             throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);

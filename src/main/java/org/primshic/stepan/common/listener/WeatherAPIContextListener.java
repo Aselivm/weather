@@ -2,6 +2,7 @@ package org.primshic.stepan.common.listener;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.slf4j.Slf4j;
+import org.primshic.stepan.common.util.OpenWeatherAPIUtil;
 import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
 
 import javax.servlet.ServletContextEvent;
@@ -11,13 +12,12 @@ import javax.servlet.annotation.WebListener;
 @WebListener
 @Slf4j
 public class WeatherAPIContextListener implements ServletContextListener {
+    private static final String API_KEY = OpenWeatherAPIUtil.getApiKey();
     @Override
     public void contextInitialized(ServletContextEvent sce) {
         try {
             log.info("Initializing WeatherAPIContextListener...");
-            Dotenv dotenv = Dotenv.load();
-            String apiKey = System.getenv("API_KEY");
-            WeatherAPIService weatherAPIService = new WeatherAPIService(apiKey);
+            WeatherAPIService weatherAPIService = new WeatherAPIService(API_KEY);
             sce.getServletContext().setAttribute("weatherAPIService", weatherAPIService);
 
             log.info("WeatherAPIContextListener initialized successfully.");
