@@ -53,32 +53,29 @@ public class WeatherAPIService {
 
     public List<WeatherDTO> getWeatherDataForLocations(List<Location> locationList) {
         List<WeatherDTO> weatherDTOList = new LinkedList<>();
-        List<Future<?>> futures = new ArrayList<>();
 
         ExecutorService executorService = Executors.newFixedThreadPool(locationList.size());
-        for (int i = 0; i < locationList.size(); i++) {
-            int finalI = i;
-            futures.add(executorService.submit(() -> {
-                Location temp = locationList.get(finalI);
-                WeatherDTO weatherResponse = getWeatherByLocation(temp);
-                weatherDTOList.add(weatherResponse);
-            }));
+        List<Callable<WeatherDTO>> callables = new ArrayList<>();
+
+        for (Location location : locationList) {
+            callables.add(() -> getWeatherByLocation(location));
         }
 
-        for (Future<?> future : futures) {
-            try {
-                future.get();
-            } catch (InterruptedException | ExecutionException e) {
-                log.error("Error waiting for task completion: {}", e.getMessage(), e);
-                throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
-            }
-        }
-
-        executorService.shutdown();
         try {
-            executorService.awaitTermination(10, TimeUnit.SECONDS);
+            List<Future<WeatherDTO>> futures = executorService.invokeAll(callables);
+
+            for (Future<WeatherDTO> future : futures) {
+                try {
+                    weatherDTOList.add(future.get());
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+                }
+            }
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+        } finally {
+            executorService.shutdown();
         }
 
         return weatherDTOList;
