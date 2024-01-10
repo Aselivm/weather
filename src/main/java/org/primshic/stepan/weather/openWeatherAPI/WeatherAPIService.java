@@ -3,7 +3,6 @@ package org.primshic.stepan.weather.openWeatherAPI;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.weather.locations.Location;
 import org.primshic.stepan.common.exception.ApplicationException;
@@ -16,8 +15,10 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.*;
 
 @Slf4j
 public class WeatherAPIService {
@@ -45,20 +46,41 @@ public class WeatherAPIService {
         String request = buildWeatherRequest(location.getLat(), location.getLon(), url, apiKey, lang, units);
         log.info("Calling getLocationListByName with URL: {}",request);
         String result = sendHttpRequest(request);
-        return parseWeatherResponse(result);
+        WeatherDTO weatherDTO = parseWeatherResponse(result);
+        weatherDTO.setDatabaseId(location.getId());
+        return weatherDTO;
     }
 
-    public List<WeatherDTO> getWeatherForLocations(List<Location> locationList) {
+    public List<WeatherDTO> getWeatherDataForLocations(List<Location> locationList) {
         List<WeatherDTO> weatherDTOList = new LinkedList<>();
-        for (Location location : locationList) {
+        List<Future<?>> futures = new ArrayList<>();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(locationList.size());
+        for (int i = 0; i < locationList.size(); i++) {
+            int finalI = i;
+            futures.add(executorService.submit(() -> {
+                Location temp = locationList.get(finalI);
+                WeatherDTO weatherResponse = getWeatherByLocation(temp);
+                weatherDTOList.add(weatherResponse);
+            }));
+        }
+
+        for (Future<?> future : futures) {
             try {
-                WeatherDTO weatherDTO = getWeatherByLocation(location);
-                weatherDTO.setDatabaseId(location.getId());
-                weatherDTOList.add(weatherDTO);
-            } catch (RuntimeException e) {
-                log.warn("Error getting weather for location {}: {}", location.getName(), e.getMessage());
+                future.get();
+            } catch (InterruptedException | ExecutionException e) {
+                log.error("Error waiting for task completion: {}", e.getMessage(), e);
+                throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
             }
         }
+
+        executorService.shutdown();
+        try {
+            executorService.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+        }
+
         return weatherDTOList;
     }
 

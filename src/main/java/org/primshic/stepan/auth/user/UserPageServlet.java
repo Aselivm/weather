@@ -1,5 +1,6 @@
 package org.primshic.stepan.auth.user;
 
+import ch.qos.logback.core.util.ExecutorServiceUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.auth.session.Session;
 import org.primshic.stepan.common.WeatherTrackerBaseServlet;
@@ -10,20 +11,19 @@ import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
 import org.primshic.stepan.weather.openWeatherAPI.WeatherDTO;
 import org.primshic.stepan.common.util.InputUtil;
 import org.primshic.stepan.common.util.SessionUtil;
-import org.primshic.stepan.common.util.WebContextUtil;
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.*;
 
 @WebServlet(urlPatterns = "/main")
 @Slf4j
@@ -46,14 +46,10 @@ public class UserPageServlet extends WeatherTrackerBaseServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
         try {
-
             if (optionalUserSession.isPresent()) {
                 User user = optionalUserSession.get().getUser();
                 List<Location> locationList = locationService.getUserLocations(user);
-
-                List<WeatherDTO> weatherDTOList = new LinkedList<>(
-                        weatherAPIService.getWeatherForLocations(locationList));
-
+                List<WeatherDTO> weatherDTOList = weatherAPIService.getWeatherDataForLocations(locationList);
                 context.setVariable("locationWeatherList",weatherDTOList);
             }
         } catch (ApplicationException e) {
