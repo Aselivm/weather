@@ -11,6 +11,7 @@ import org.primshic.stepan.weather.openWeatherAPI.LocationCoordinatesDTO;
 import org.primshic.stepan.common.util.InputUtil;
 import org.primshic.stepan.common.util.SessionUtil;
 import org.primshic.stepan.common.util.WebContextUtil;
+import org.primshic.stepan.weather.openWeatherAPI.WeatherDTO;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,9 +43,25 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String name = InputUtil.locationName(req);
+        List<LocationCoordinatesDTO> locationCoordinatesDTOList = weatherAPIService.getLocationListByName(name);
+
+        Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
+        List<Location> userLocations;
         try {
-            String name = InputUtil.locationName(req);
-            List<LocationCoordinatesDTO> locationCoordinatesDTOList = weatherAPIService.getLocationListByName(name);
+            if (optionalUserSession.isPresent()) {
+                User user = optionalUserSession.get().getUser();
+                userLocations = locationService.getUserLocations(user);
+
+                List<Location> finalUserLocations = userLocations;
+                locationCoordinatesDTOList.removeIf(dto ->
+                        finalUserLocations.stream()
+                                .anyMatch(userLocation ->
+                                        userLocation.getLat().doubleValue() == dto.getLat() &&
+                                                userLocation.getLon().doubleValue() == dto.getLon()
+                                )
+                );
+            }
             context.setVariable("locationList", locationCoordinatesDTOList);
 
         } catch (ApplicationException e) {

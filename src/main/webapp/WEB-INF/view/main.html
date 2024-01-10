@@ -16,8 +16,8 @@
                             <div class="cl">
                             <h5 class="card-title" th:text="${locationWeather.getName()}">City</h5>
                             <h5 class="card-title" th:text="${locationWeather.getSys().getCountry()}">Country</h5>
-                            <h3 class="card-text" th:if="${locationWeather.getMain().getTemp() > 0}" th:text="'+' + ${locationWeather.getMain().getTemp()}">Temperature</h3>
-                            <h3 class="card-text" th:if="${locationWeather.getMain().getTemp() <= 0}" th:text="${locationWeather.getMain().getTemp()}">Temperature</h3>
+                                <h3 class="card-text" th:if="${locationWeather.getMain() != null and locationWeather.getMain().getTemp() > 0}" th:text="'+' + ${locationWeather.getMain().getTemp()}">Temperature</h3>
+                                <h3 class="card-text" th:if="${locationWeather.getMain() != null and locationWeather.getMain().getTemp() <= 0}" th:text="${locationWeather.getMain().getTemp()}">Temperature</h3>
                             <p class="card-text" th:if="${not #lists.isEmpty(locationWeather.getWeather())}" th:text="${locationWeather.getWeather().get(0).getDescription()}">Weather Description</p>
                             <p class="card-text" th:if="${not #lists.isEmpty(locationWeather.getWeather())}" th:text="'Humidity: ' + (${locationWeather.getMain().getHumidity()}+'%')">Humidity</p>
                             <p class="card-text" th:text="'Wind Speed: ' + ${locationWeather.getWind().getSpeed()+' m/s'}">Wind Speed</p>

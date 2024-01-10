@@ -18,8 +18,9 @@
                         <input type="hidden" name="name" th:value="${location.getName()}" />
                         <input type="hidden" name="lat" th:value="${location.getLat()}" />
                         <input type="hidden" name="lon" th:value="${location.getLon()}" />
+
                         <button th:if="${userSession.isEmpty()}" type="submit" class="btn btn-primary" disabled> Add </button>
-                      <button th:unless="${userSession.isEmpty()}" type="submit" class="btn btn-primary" > Add </button>
+                        <button th:unless="${userSession.isEmpty()}" type="submit" class="btn btn-primary"> Add </button>
                     </div>
                     </form>
                   </div>
