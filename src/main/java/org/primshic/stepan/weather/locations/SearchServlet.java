@@ -43,12 +43,12 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String name = InputUtil.locationName(req);
-        List<LocationCoordinatesDTO> locationCoordinatesDTOList = weatherAPIService.getLocationListByName(name);
-
-        Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
-        List<Location> userLocations;
         try {
+            String name = InputUtil.locationName(req);
+            List<LocationCoordinatesDTO> locationCoordinatesDTOList = weatherAPIService.getLocationListByName(name);
+
+            Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
+            List<Location> userLocations;
             if (optionalUserSession.isPresent()) {
                 User user = optionalUserSession.get().getUser();
                 userLocations = locationService.getUserLocations(user);

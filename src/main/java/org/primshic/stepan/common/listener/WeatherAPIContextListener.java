@@ -16,7 +16,7 @@ public class WeatherAPIContextListener implements ServletContextListener {
         try {
             log.info("Initializing WeatherAPIContextListener...");
             Dotenv dotenv = Dotenv.load();
-            String apiKey = dotenv.get("API_KEY");
+            String apiKey = System.getenv("API_KEY");
             WeatherAPIService weatherAPIService = new WeatherAPIService(apiKey);
             sce.getServletContext().setAttribute("weatherAPIService", weatherAPIService);
 
