@@ -49,8 +49,10 @@ public class UserPageServlet extends WeatherTrackerBaseServlet {
             if (optionalUserSession.isPresent()) {
                 User user = optionalUserSession.get().getUser();
                 List<Location> locationList = locationService.getUserLocations(user);
-                List<WeatherDTO> weatherDTOList = weatherAPIService.getWeatherDataForLocations(locationList);
-                context.setVariable("locationWeatherList",weatherDTOList);
+                if(!locationList.isEmpty()){
+                    List<WeatherDTO> weatherDTOList = weatherAPIService.getWeatherDataForLocations(locationList);
+                    context.setVariable("locationWeatherList",weatherDTOList);
+                }
             }
         } catch (ApplicationException e) {
             context.setVariable("error",e.getError());
