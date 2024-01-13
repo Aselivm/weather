@@ -5,9 +5,10 @@ import org.primshic.stepan.auth.user.User;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity()
-@Table(schema = "weather_db",name="Locations")
+@Table(schema = "weather_db",name="Locations",uniqueConstraints = @UniqueConstraint(columnNames = {"Latitude", "Longitude", "UserId"}))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,16 +19,17 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="Name")
+    @Column(name = "Name", columnDefinition = "VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="UserId")
     private User user;
 
-    @Column(name = "Latitude", precision = 11, scale = 8)
+    @Column(name = "Latitude", precision = 30, scale = 20)
     private BigDecimal lat;
 
-    @Column(name = "Longitude", precision = 11, scale = 8)
+    @Column(name = "Longitude", precision = 30, scale = 20)
     private BigDecimal lon;
+
 }

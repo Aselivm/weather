@@ -11,8 +11,7 @@ import java.util.List;
 
 @Entity()
 @Table(schema = "weather_db",name="Users",
-        indexes = {@Index(name="login_idx",columnList = "Login"),
-        @Index(name="password_idx",columnList = "Password")})
+        indexes = @Index(name="login_idx",columnList = "Login"))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -23,8 +22,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name="Login" , nullable = false, unique = true)
-
+    @Column(name = "Login", nullable = false, unique = true)
     private String login;
 
     @Column(name="Password", nullable = false)

@@ -8,6 +8,7 @@ import org.primshic.stepan.common.exception.ApplicationException;
 import org.primshic.stepan.common.exception.ErrorMessage;
 import org.primshic.stepan.weather.locations.search.LocationRequestDTO;
 
+import javax.persistence.PersistenceException;
 import java.util.List;
 
 @Slf4j
@@ -35,7 +36,11 @@ public class LocationService {
             throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
         }
         log.info("Adding location: Lat={}, Lon={}", location.getLat(), location.getLon());
-        locationRepository.add(new ModelMapper().map(location, Location.class));
+        try{
+            locationRepository.add(new ModelMapper().map(location, Location.class));
+        }catch (PersistenceException e){
+            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+        }
         log.info("Location added successfully");
     }
 }

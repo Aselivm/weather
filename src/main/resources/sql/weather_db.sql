@@ -5,11 +5,12 @@ create table Users(
 );
 CREATE TABLE Locations (
                            ID INT AUTO_INCREMENT PRIMARY KEY,
-                           Name VARCHAR(100),
-                           UserId INT REFERENCES users(ID) ON DELETE CASCADE,
+                           Name VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+                           UserId INT,
                            Latitude DECIMAL(30,20),
-                           Longitude DECIMAL(30,20)
-);
+                           Longitude DECIMAL(30,20),
+                           FOREIGN KEY (UserId) REFERENCES Users(ID) ON DELETE CASCADE
+) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE TABLE Sessions
 (
     ID        VARCHAR(36) PRIMARY KEY DEFAULT UUID(),

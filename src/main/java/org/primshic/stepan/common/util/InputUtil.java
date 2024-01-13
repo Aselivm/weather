@@ -55,7 +55,7 @@ public class InputUtil {
     }
 
     public static String locationName(HttpServletRequest req) {
-        String name = req.getParameter("name");;
+        String name = req.getParameter("name").replace(" ","-");
         return name;
     }
 
