@@ -42,12 +42,16 @@ public class HomePageServlet extends WeatherTrackerBaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
+        //todo закинуть в фильтр трай кечи
         try {
             if (optionalUserSession.isPresent()) {
                 User user = optionalUserSession.get().getUser();
                 List<Location> locationList = locationService.getUserLocations(user);
+
                 if(!locationList.isEmpty()){
+
                     List<WeatherDTO> weatherDTOList = weatherAPIService.getWeatherDataForLocations(locationList);
+
                     context.setVariable("locationWeatherList",weatherDTOList);
                 }
             }

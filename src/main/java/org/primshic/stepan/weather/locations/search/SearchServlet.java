@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = "/search")
 @Slf4j
@@ -49,7 +50,10 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
 
             //todo перенести
             List<LocationCoordinatesDTO> locationCoordinatesDTOList = weatherAPIService.getLocationListByName(name);
-            List<LocationResponseDTO> locations = Collections.singletonList(new ModelMapper().map(locationCoordinatesDTOList, LocationResponseDTO.class));
+            List<LocationResponseDTO> locations = locationCoordinatesDTOList
+                    .stream()
+                    .map(locationCoordinatesDTO -> new ModelMapper().map(locationCoordinatesDTO, LocationResponseDTO.class))
+                    .collect(Collectors.toList());
 
             Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
             List<Location> userLocations;
@@ -66,7 +70,7 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
                                 )
                 );
             }
-            context.setVariable("locationList", locationCoordinatesDTOList);
+            context.setVariable("locationList", locations);
 
         } catch (ApplicationException e) {
             log.error("Error processing GET request in SearchLocations: {}", e.getMessage(), e);

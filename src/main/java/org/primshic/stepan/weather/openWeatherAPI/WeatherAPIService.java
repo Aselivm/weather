@@ -4,10 +4,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.primshic.stepan.weather.locations.Location;
 import org.primshic.stepan.common.exception.ApplicationException;
 import org.primshic.stepan.common.exception.ErrorMessage;
 import org.primshic.stepan.common.util.PropertyReaderUtil;
+import org.primshic.stepan.weather.locations.search.LocationResponseDTO;
 
 import java.math.BigDecimal;
 import java.net.URI;
@@ -58,7 +60,11 @@ public class WeatherAPIService {
         List<Callable<WeatherDTO>> callables = new ArrayList<>();
 
         for (Location location : locationList) {
-            callables.add(() -> getWeatherByLocation(location));
+            callables.add(() -> {
+                WeatherDTO weatherDTO = getWeatherByLocation(location);
+                weatherDTO.setName(location.getName()); // Добавляем name в WeatherDTO
+                return weatherDTO;
+            });
         }
 
         try {

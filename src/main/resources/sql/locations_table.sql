@@ -1,7 +1,7 @@
-create table Locations(
-                          ID int auto_increment primary key ,
-                          Name varchar(100),
-                          UserId int references users(ID) on delete cascade,
-                          Latitude DECIMAL(11,8),
-                          Longitude DECIMAL(11,8)
+CREATE TABLE Locations (
+                           ID INT AUTO_INCREMENT PRIMARY KEY,
+                           Name VARCHAR(100),
+                           UserId INT REFERENCES users(ID) ON DELETE CASCADE,
+                           Latitude DECIMAL(30,20),
+                           Longitude DECIMAL(30,20)
 );
