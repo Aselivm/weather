@@ -15,10 +15,11 @@
                     <div class="card-body">
                       <h5 class="card-title" th:text="${location.getName()}">Moscow</h5>
                       <p class="card-text" th:text="${location.getCountry()+', '+location.getState()}">America</p>
+                        <p class="card-text" th:text="${'Latitude: '+location.getLat()}">America</p>
+                        <p class="card-text" th:text="${'Longitude: '+location.getLon()}">America</p>
                         <input type="hidden" name="name" th:value="${location.getName()}" />
                         <input type="hidden" name="lat" th:value="${location.getLat()}" />
                         <input type="hidden" name="lon" th:value="${location.getLon()}" />
-
                         <button th:if="${userSession.isEmpty()}" type="submit" class="btn btn-primary" disabled> Add </button>
                         <button th:unless="${userSession.isEmpty()}" type="submit" class="btn btn-primary"> Add </button>
                     </div>

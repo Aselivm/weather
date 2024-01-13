@@ -6,6 +6,7 @@ import org.modelmapper.ModelMapper;
 import org.primshic.stepan.auth.user.User;
 import org.primshic.stepan.common.exception.ApplicationException;
 import org.primshic.stepan.common.exception.ErrorMessage;
+import org.primshic.stepan.weather.locations.search.LocationRequestDTO;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class LocationService {
         log.info("Location with ID {} deleted", databaseId);
     }
 
-    public void add(LocationDTO location) {
+    public void add(LocationRequestDTO location) {
         if(location.getLocationName().length()>100){
             throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
         }

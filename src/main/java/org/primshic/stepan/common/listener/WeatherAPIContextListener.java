@@ -1,6 +1,5 @@
 package org.primshic.stepan.common.listener;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.common.util.OpenWeatherAPIUtil;
 import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;

@@ -1,4 +1,4 @@
-package org.primshic.stepan.weather.locations;
+package org.primshic.stepan.weather.locations.search;
 
 import lombok.*;
 import org.primshic.stepan.auth.user.User;
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LocationDTO {
+public class LocationRequestDTO {
     private User user;
     private String locationName;
     private BigDecimal lat;

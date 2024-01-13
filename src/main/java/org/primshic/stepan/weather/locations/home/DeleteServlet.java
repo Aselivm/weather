@@ -1,4 +1,4 @@
-package org.primshic.stepan.weather.locations;
+package org.primshic.stepan.weather.locations.home;
 
 import org.primshic.stepan.auth.session.Session;
 import org.primshic.stepan.auth.session.SessionService;
@@ -8,7 +8,6 @@ import org.primshic.stepan.common.util.SessionUtil;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
