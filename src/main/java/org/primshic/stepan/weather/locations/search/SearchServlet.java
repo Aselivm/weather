@@ -47,7 +47,6 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
         try {
             String name = InputUtil.locationName(req);
 
-            //todo перенести
             List<LocationCoordinatesDTO> locationCoordinatesDTOList = weatherAPIService.getLocationListByName(name);
 
             Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);

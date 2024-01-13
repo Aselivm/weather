@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.http.util.EntityUtils;
 import org.modelmapper.ModelMapper;
 import org.primshic.stepan.weather.locations.Location;
 import org.primshic.stepan.common.exception.ApplicationException;
@@ -17,6 +18,8 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,9 +39,18 @@ public class WeatherAPIService {
         String url = getWeatherAPIProperty("url_geo");
         String limit = getWeatherAPIProperty("limit");
         String request = buildLocationListRequest(url, name, limit, apiKey);
-        log.info("Calling getLocationListByName with URL: {}",request);
+        log.info("Calling getLocationListByName with URL: {}", request);
         String result = sendHttpRequest(request);
-        return parseLocationListResponse(result);
+        List<LocationCoordinatesDTO> locationCoordinatesDTO = parseLocationListResponse(result);
+
+        //todo Удалить цикл
+        for (LocationCoordinatesDTO locationDTO : locationCoordinatesDTO) {
+            log.info("Location Name: {}", locationDTO.getName());
+            log.info("Location Latitude: {}", locationDTO.getLat());
+            log.info("Location Longitude: {}", locationDTO.getLon());
+        }
+
+        return locationCoordinatesDTO;
     }
 
     public WeatherDTO getWeatherByLocation(Location location) {
@@ -46,9 +58,12 @@ public class WeatherAPIService {
         String units = getWeatherAPIProperty("units");
         String url = getWeatherAPIProperty("url_data");
         String request = buildWeatherRequest(location.getLat(), location.getLon(), url, apiKey, lang, units);
-        log.info("Calling getLocationListByName with URL: {}",request);
+        log.info("Calling getLocationListByName with URL: {}", request);
         String result = sendHttpRequest(request);
         WeatherDTO weatherDTO = parseWeatherResponse(result);
+
+        log.info("WeatherDTO Name: {}", weatherDTO.getName());
+
         weatherDTO.setDatabaseId(location.getId());
         return weatherDTO;
     }
@@ -62,7 +77,7 @@ public class WeatherAPIService {
         for (Location location : locationList) {
             callables.add(() -> {
                 WeatherDTO weatherDTO = getWeatherByLocation(location);
-                weatherDTO.setName(location.getName()); // Добавляем name в WeatherDTO
+                weatherDTO.setName(location.getName());
                 return weatherDTO;
             });
         }
@@ -103,15 +118,19 @@ public class WeatherAPIService {
                     .uri(new URI(requestUrl))
                     .GET()
                     .build();
-
         } catch (URISyntaxException e) {
             throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);
         }
+
         try {
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-            //todo ОБРАБОТАТЬ body
-            return response.body();
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+
+            String responseBody = response.body();
+            log.info("Response Body: {}", responseBody);
+
+            return responseBody;
         } catch (Exception e) {
+            log.error("Error sending HTTP request: {}", e.getMessage());
             throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);
         }
     }

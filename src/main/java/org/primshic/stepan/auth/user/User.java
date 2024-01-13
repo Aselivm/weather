@@ -30,7 +30,6 @@ public class User {
     @Column(name="Password", nullable = false)
     private String password;
 
-    @Transient
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Location> locations;
 }
