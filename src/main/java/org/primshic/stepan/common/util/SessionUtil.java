@@ -14,7 +14,7 @@ import java.util.Optional;
 public class SessionUtil {
 
     public static Optional<Session> getSessionByReq(HttpServletRequest req) {
-        Optional<Session> userSession = (Optional<Session>) req.getAttribute("userSession");
+        Optional<Session> userSession = (Optional<Session>) req.getSession().getAttribute("userSession");
         if (userSession.isEmpty()) {
             log.warn("User session not found in the request.");
         }

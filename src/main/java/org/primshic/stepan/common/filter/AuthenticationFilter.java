@@ -17,11 +17,9 @@ public class AuthenticationFilter implements Filter {
 
     private SessionService sessionService;
 
-    private SessionFactory sessionFactory;
-
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        sessionFactory = HibernateUtil.getSessionFactory();
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
         sessionService = new SessionService(sessionFactory);
     }
 
@@ -29,8 +27,7 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         Optional<Session> userSession = SessionUtil.getSessionFromCookies(request,sessionService);
-        request.setAttribute("userSession",userSession);
-        request.setAttribute("sessionFactory",sessionFactory);
+        request.getSession().setAttribute("userSession",userSession);
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

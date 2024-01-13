@@ -26,7 +26,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @WebServlet(urlPatterns = "/search")
 @Slf4j
@@ -50,10 +49,6 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
 
             //todo перенести
             List<LocationCoordinatesDTO> locationCoordinatesDTOList = weatherAPIService.getLocationListByName(name);
-            List<LocationResponseDTO> locations = locationCoordinatesDTOList
-                    .stream()
-                    .map(locationCoordinatesDTO -> new ModelMapper().map(locationCoordinatesDTO, LocationResponseDTO.class))
-                    .collect(Collectors.toList());
 
             Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
             List<Location> userLocations;
@@ -62,16 +57,15 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
                 userLocations = locationService.getUserLocations(user);
 
                 List<Location> finalUserLocations = userLocations;
-                locations.removeIf(dto ->
+                locationCoordinatesDTOList.removeIf(dto ->
                         finalUserLocations.stream()
                                 .anyMatch(userLocation ->
-                                        userLocation.getLat().equals(dto.getLat()) &&
-                                                userLocation.getLon().equals(dto.getLon())
+                                        userLocation.getLat().doubleValue()==dto.getLat() &&
+                                                userLocation.getLon().doubleValue()==dto.getLon()
                                 )
                 );
             }
-            context.setVariable("locationList", locations);
-
+            context.setVariable("locationList", locationCoordinatesDTOList);
         } catch (ApplicationException e) {
             log.error("Error processing GET request in SearchLocations: {}", e.getMessage(), e);
             context.setVariable("error", e.getError());

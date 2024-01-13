@@ -28,6 +28,7 @@ public class RepositoryContextListener implements ServletContextListener {
             servletContextEvent.getServletContext().setAttribute("locationService", locationService);
             servletContextEvent.getServletContext().setAttribute("userService", userService);
             servletContextEvent.getServletContext().setAttribute("sessionService", sessionService);
+            servletContextEvent.getServletContext().setAttribute("sessionFactory", sessionFactory);
 
             log.info("RepositoryContextListener initialized successfully.");
         } catch (Exception e) {
