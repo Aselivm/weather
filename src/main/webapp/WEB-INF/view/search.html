@@ -14,7 +14,7 @@
                     <form th:action="@{/search}" method="post">
                     <div class="card-body">
                       <h5 class="card-title" th:text="${location.getName()}">Moscow</h5>
-                      <p class="card-text" th:text="${location.getCountry()+', '+location.getState()}">America</p>
+                        <p class="card-text" th:with="st=${location.getState()}" th:text="${location.getCountry()  + (st != null ? ', '+st : '')}">America</p>
                         <p class="card-text" th:text="${'Latitude: '}">Coordinates</p>
                         <p class="card-text" th:text="${location.getLat()}">lat</p>
                         <p class="card-text" th:text="${'Longitude: '}">Coordinates</p>
