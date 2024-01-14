@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,8 +66,13 @@ public class HomePageServlet extends WeatherTrackerBaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            int databaseId = InputUtil.deletedLocationId(req);
-            locationService.delete(databaseId);
+            int userId = InputUtil.userId(req);
+            BigDecimal lat = InputUtil.getLatitude(req);
+            BigDecimal lon = InputUtil.getLongitude(req);
+
+            log.info("Received POST request. UserId: {}, Latitude: {}, Longitude: {}", userId, lat, lon);
+
+            locationService.delete(userId,lat,lon);
             resp.sendRedirect(req.getContextPath() + "/main");
         } catch (ApplicationException e) {
             log.error("Error processing POST request in UserLocations: {}", e.getMessage(), e);

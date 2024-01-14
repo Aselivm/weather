@@ -26,7 +26,9 @@
                             <p class="card-text" th:text="'Wind Speed: ' + ${locationWeather.getWind().getSpeed()+' m/s'}">Wind Speed</p>
                             <p class="card-text" th:if="${not #lists.isEmpty(locationWeather.getWeather())}" th:text="'Pressure: ' + ${locationWeather.getMain().getPressure() + ' hPa'}">Pressure</p>
                             <p class="card-text" th:if="${not #lists.isEmpty(locationWeather.getWeather())}" th:text="'Visibility: ' + ${locationWeather.getVisibility() + ' meters'}">Visibility</p>
-                            <input type="hidden" name="databaseId" th:value="${locationWeather.getDatabaseId()}">
+                            <input type="hidden" name="userId" th:value="${userSession.get().getUser().getId()}">
+                            <input type="hidden" name="lat" th:value="${locationWeather.getCoord().getLat()}">
+                            <input type="hidden" name="lon" th:value="${locationWeather.getCoord().getLon()}">
                         </div>
                             <button type="submit" class="btn btn-secondary">Delete</button>
                         </div>

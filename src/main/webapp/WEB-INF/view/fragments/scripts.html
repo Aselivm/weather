@@ -16,18 +16,7 @@
             });
         });
     </script>
-    <script th:inline="javascript">
-        /*<![CDATA[*/
-        function validateSearchForm() {
-            var searchInput = document.getElementById('searchInput').value;
-            if (!searchInput.trim()) {
-                alert('Please enter a valid location name.');
-                return false; // Отменить отправку формы
-            }
-            return true; // Продолжить отправку формы
-        }
-        /*]]>*/
-    </script>
+
     <script th:inline="javascript">
         document.getElementById('registrationForm').addEventListener('submit', function (event) {
             var errorDiv = document.querySelector('.alert-danger');

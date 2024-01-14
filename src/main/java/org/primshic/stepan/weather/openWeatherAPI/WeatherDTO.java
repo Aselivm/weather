@@ -31,8 +31,6 @@ import org.primshic.stepan.weather.openWeatherAPI.common_info.weather_info.*;
 })
 @Generated("jsonschema2pojo")
 public class WeatherDTO {
-
-    private int databaseId;
     @JsonProperty("coord")
     private Coord coord;
     @JsonProperty("weather")
@@ -202,12 +200,5 @@ public class WeatherDTO {
         this.additionalProperties.put(name, value);
     }
 
-    public void setDatabaseId(int databaseId) {
-        this.databaseId = databaseId;
-    }
-
-    public int getDatabaseId() {
-        return databaseId;
-    }
 
 }

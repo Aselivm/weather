@@ -62,10 +62,7 @@ public class WeatherAPIService {
         log.info("Calling getLocationListByName with URL: {}", request);
         String result = sendHttpRequest(request);
         WeatherDTO weatherDTO = parseWeatherResponse(result);
-
         log.info("WeatherDTO Name: {}", weatherDTO.getName());
-
-        weatherDTO.setDatabaseId(location.getId());
         return weatherDTO;
     }
 

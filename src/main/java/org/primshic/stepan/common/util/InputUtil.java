@@ -13,6 +13,16 @@ import java.math.BigDecimal;
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class InputUtil {
+
+    public static int userId(HttpServletRequest req){
+        int userId;
+        try{
+            userId = Integer.parseInt(req.getParameter("userId"));
+        }catch (RuntimeException e){
+            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
+        }
+        return userId;
+    }
     public static UserDTO authenticate(HttpServletRequest req) {
         String login = req.getParameter("login");
         validateLogin(login);
@@ -44,15 +54,6 @@ public class InputUtil {
         if (password.contains(" ")) {
             log.warn("Password contains spaces");
             throw new ApplicationException(ErrorMessage.PASSWORD_CONTAINS_SPACES);
-        }
-    }
-
-    public static Integer deletedLocationId(HttpServletRequest req) {
-        try {
-            return Integer.parseInt(req.getParameter("databaseId"));
-        } catch (NumberFormatException e) {
-            log.error("Error parsing location ID from request parameter: {}", req.getParameter("databaseId"), e);
-            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
         }
     }
 

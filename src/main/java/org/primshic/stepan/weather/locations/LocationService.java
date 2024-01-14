@@ -9,6 +9,7 @@ import org.primshic.stepan.common.exception.ErrorMessage;
 import org.primshic.stepan.weather.locations.search.LocationRequestDTO;
 
 import javax.persistence.PersistenceException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Slf4j
@@ -25,10 +26,10 @@ public class LocationService {
         return userLocations;
     }
 
-    public void delete(int databaseId) {
-        log.info("Deleting location with ID: {}", databaseId);
-        locationRepository.delete(databaseId);
-        log.info("Location with ID {} deleted", databaseId);
+    public void delete(int userId, BigDecimal lat, BigDecimal lon) {
+        log.info("Deleting location: lat {}, lon {}", lat,lon);
+        locationRepository.delete(userId,lat,lon);
+        log.info("Location lat {}, lon {} deleted", lat,lon);
     }
 
     public void add(LocationRequestDTO location) {
