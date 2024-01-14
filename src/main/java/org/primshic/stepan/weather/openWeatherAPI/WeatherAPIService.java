@@ -104,11 +104,11 @@ public class WeatherAPIService {
     }
 
     private String buildLocationListRequest(String url, String name, String limit, String appid) {
-        return url + "q=" + name + "&limit=" + limit + "&appid=" + appid;
+        return url + "?q=" + name + "&limit=" + limit + "&appid=" + appid;
     }
 
     private String buildWeatherRequest(BigDecimal lat, BigDecimal lon, String url, String appid, String lang, String units) {
-        return url + "lat=" + lat + "&lon=" + lon + "&appid=" + appid + "&lang=" + lang + "&units=" + units;
+        return url + "?lat=" + lat + "&lon=" + lon + "&appid=" + appid + "&lang=" + lang + "&units=" + units;
     }
 
     private String sendHttpRequest(String requestUrl) {
