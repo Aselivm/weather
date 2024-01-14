@@ -3,6 +3,7 @@
 <hibernate-configuration>
 
     <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MariaDBDialect</property>
         <property name="hibernate.connection.useUnicode">true</property>
         <property name="hibernate.connection.CharSet">UTF-8</property>
         <property name="hibernate.connection.characterEncoding">UTF-8</property>

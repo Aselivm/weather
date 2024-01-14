@@ -1,7 +1,7 @@
-package org.primshic.stepan.common.listener;
+package org.primshic.stepan.listener;
 
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.common.util.OpenWeatherAPIUtil;
+import org.primshic.stepan.util.OpenWeatherAPIUtil;
 import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
 
 import javax.servlet.ServletContextEvent;

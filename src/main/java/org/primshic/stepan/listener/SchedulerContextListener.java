@@ -1,10 +1,9 @@
-package org.primshic.stepan.common.listener;
+package org.primshic.stepan.listener;
 
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.auth.session.SessionRepository;
 import org.primshic.stepan.auth.session.SessionService;
-import org.primshic.stepan.common.util.HibernateUtil;
-import org.primshic.stepan.common.util.PropertyReaderUtil;
+import org.primshic.stepan.util.HibernateUtil;
+import org.primshic.stepan.util.PropertyReaderUtil;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;

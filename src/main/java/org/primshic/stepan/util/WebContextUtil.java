@@ -1,4 +1,4 @@
-package org.primshic.stepan.common.util;
+package org.primshic.stepan.util;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

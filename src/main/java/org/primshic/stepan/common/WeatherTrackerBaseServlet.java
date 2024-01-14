@@ -1,6 +1,6 @@
 package org.primshic.stepan.common;
 
-import org.primshic.stepan.common.util.WebContextUtil;
+import org.primshic.stepan.util.WebContextUtil;
 import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletException;

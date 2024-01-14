@@ -6,7 +6,6 @@ import org.primshic.stepan.auth.session.SessionService;
 import org.primshic.stepan.auth.user.User;
 import org.primshic.stepan.auth.user.UserDTO;
 import org.primshic.stepan.auth.user.UserService;
-import org.primshic.stepan.common.exception.ApplicationException;
 import org.primshic.stepan.repo_mock.TestHibernateUtil;
 
 import java.util.Optional;

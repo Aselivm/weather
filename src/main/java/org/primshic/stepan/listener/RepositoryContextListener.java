@@ -1,16 +1,15 @@
-package org.primshic.stepan.common.listener;
+package org.primshic.stepan.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.primshic.stepan.weather.locations.LocationService;
 import org.primshic.stepan.auth.session.SessionService;
 import org.primshic.stepan.auth.user.UserService;
-import org.primshic.stepan.common.util.HibernateUtil;
+import org.primshic.stepan.util.HibernateUtil;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
-import java.util.Locale;
 
 @WebListener
 @Slf4j

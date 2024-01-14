@@ -2,16 +2,12 @@ package org.primshic.stepan.repo_mock;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.primshic.stepan.common.util.HibernateUtil;
-
-import java.io.*;
+import org.primshic.stepan.util.HibernateUtil;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class TestHibernateUtil {

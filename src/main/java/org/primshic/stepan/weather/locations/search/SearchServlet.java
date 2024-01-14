@@ -1,20 +1,17 @@
 package org.primshic.stepan.weather.locations.search;
 
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.primshic.stepan.auth.session.Session;
 import org.primshic.stepan.auth.user.User;
 import org.primshic.stepan.common.WeatherTrackerBaseServlet;
-import org.primshic.stepan.common.exception.ApplicationException;
-import org.primshic.stepan.common.exception.ErrorMessage;
+import org.primshic.stepan.exception.ApplicationException;
+import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.weather.locations.Location;
 import org.primshic.stepan.weather.locations.LocationService;
-import org.primshic.stepan.weather.locations.search.LocationRequestDTO;
-import org.primshic.stepan.weather.locations.search.LocationResponseDTO;
 import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
 import org.primshic.stepan.weather.openWeatherAPI.LocationCoordinatesDTO;
-import org.primshic.stepan.common.util.InputUtil;
-import org.primshic.stepan.common.util.SessionUtil;
+import org.primshic.stepan.util.InputUtil;
+import org.primshic.stepan.util.SessionUtil;
 import org.thymeleaf.TemplateEngine;
 
 import javax.servlet.ServletContext;
@@ -23,7 +20,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

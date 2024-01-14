@@ -3,7 +3,7 @@ package org.primshic.stepan.auth.user.home;
 import org.primshic.stepan.auth.session.Session;
 import org.primshic.stepan.auth.session.SessionService;
 import org.primshic.stepan.common.WeatherTrackerBaseServlet;
-import org.primshic.stepan.common.util.SessionUtil;
+import org.primshic.stepan.util.SessionUtil;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

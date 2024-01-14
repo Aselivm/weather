@@ -6,8 +6,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.primshic.stepan.auth.user.User;
-import org.primshic.stepan.common.exception.ApplicationException;
-import org.primshic.stepan.common.exception.ErrorMessage;
+import org.primshic.stepan.exception.ApplicationException;
+import org.primshic.stepan.exception.ErrorMessage;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

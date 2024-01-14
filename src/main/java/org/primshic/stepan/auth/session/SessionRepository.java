@@ -3,8 +3,8 @@ package org.primshic.stepan.auth.session;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.primshic.stepan.auth.user.User;
-import org.primshic.stepan.common.exception.ApplicationException;
-import org.primshic.stepan.common.exception.ErrorMessage;
+import org.primshic.stepan.exception.ApplicationException;
+import org.primshic.stepan.exception.ErrorMessage;
 
 import java.util.Optional;
 

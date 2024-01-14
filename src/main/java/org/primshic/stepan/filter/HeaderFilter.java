@@ -1,4 +1,4 @@
-package org.primshic.stepan.common.filter;
+package org.primshic.stepan.filter;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

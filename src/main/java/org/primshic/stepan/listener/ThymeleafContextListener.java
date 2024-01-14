@@ -1,4 +1,4 @@
-package org.primshic.stepan.common.listener;
+package org.primshic.stepan.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.thymeleaf.TemplateEngine;
