@@ -20,6 +20,8 @@ public class InputUtil {
         String password = req.getParameter("password");
         validatePassword(password);
 
+        log.info("Authentication successful for user: {}", login);
+
         return new UserDTO(login, password);
     }
 
@@ -56,6 +58,7 @@ public class InputUtil {
 
     public static String locationName(HttpServletRequest req) {
         String name = req.getParameter("name").replace(" ","-");
+        log.info("Location name from request: {}", name);
         return name;
     }
 

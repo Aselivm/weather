@@ -4,9 +4,9 @@
 
     <session-factory>
         <!-- JDBC Database connection settings -->
-        <property name="hibernate.connection.CharSet">utf8mb4</property>
-        <property name="hibernate.connection.characterEncoding">utf8mb4</property>
         <property name="hibernate.connection.useUnicode">true</property>
+        <property name="hibernate.connection.CharSet">UTF-8</property>
+        <property name="hibernate.connection.characterEncoding">UTF-8</property>
         <property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mariadb://localhost:3303/weather_db</property>
         <property name="hibernate.connection.username">root</property>

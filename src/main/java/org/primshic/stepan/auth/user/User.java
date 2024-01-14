@@ -23,7 +23,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "Login", nullable = false, unique = true, columnDefinition = "VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci'")
+    @Column(name = "Login", nullable = false, unique = true)
     @Nationalized
     private String login;
 

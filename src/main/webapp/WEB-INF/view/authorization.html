@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:encoding="UTF-8" lang="en">
 <head>
     <th:block th:replace="fragments/head :: head"></th:block>
 </head>
@@ -11,10 +11,25 @@
         <div class="row gx-0 my-4 justify-content-center">
             <div class="col-sm-8 d-grid gap-2 mx-auto"><h2>Log in page</h2></div>
         </div>
-        <th:block th:replace="fragments/form"></th:block>
-      <div th:if="${userSession.isEmpty()}" class="row gx-0 my-4 justify-content-center">
-        <div  class="col-sm-8 d-grid gap-2 mx-auto"><button type="submit" class="btn btn-primary btn-lg col-12">Log in!</button></div>
-      </div>
+        <th:block th:fragment="form">
+            <form th:action="@{/auth}" method="post">
+                <div class="row gx-0 my-4 justify-content-center">
+                    <div class="col-sm-3">
+                        <span class="input-group-text">Login:</span>
+                    </div>
+                    <div class="col-sm-5"><input type="text" name="login" class="col-10 form-control" required></div>
+                </div>
+                <div class="row gx-0 my-4 justify-content-center">
+                    <div class="col-sm-3">
+                        <span class="input-group-text">Password:</span>
+                    </div>
+                    <div class="col-sm-5"><input type="password" name="password" class="col-10 form-control" required></div>
+                </div>
+                <div th:if="${userSession.isEmpty()}" class="row gx-0 my-4 justify-content-center">
+                    <div class="col-sm-8 d-grid gap-2 mx-auto"><button type="submit" class="btn btn-primary btn-lg col-12">Submit</button></div>
+                </div>
+            </form>
+        </th:block>
         <div th:replace="fragments/error_alert::error_alert">
     </div>
     </div>
