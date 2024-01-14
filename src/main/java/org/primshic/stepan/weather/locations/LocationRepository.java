@@ -54,13 +54,24 @@ public class LocationRepository {
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
 
-            String hql = "DELETE FROM Location WHERE user.id = :userId AND ROUND(lat, 4) = :latitude AND ROUND(lon, 4) = :longitude";
-            session.createQuery(hql)
+            String hqlSelect = "FROM Location WHERE user.id = :userId " +
+                    "AND lat BETWEEN :minLat AND :maxLat " +
+                    "AND lon BETWEEN :minLon AND :maxLon " +
+                    "ORDER BY ABS(lat - :latitude) + ABS(lon - :longitude)";
+            Location locationToDelete = (Location) session.createQuery(hqlSelect)
                     .setParameter("userId", userId)
-                    .setParameter("latitude", lat.setScale(4, RoundingMode.HALF_UP))
-                    .setParameter("longitude", lon.setScale(4, RoundingMode.HALF_UP))
-                    .executeUpdate();
+                    .setParameter("minLat", lat.subtract(new BigDecimal("0.1")))
+                    .setParameter("maxLat", lat.add(new BigDecimal("0.1")))
+                    .setParameter("minLon", lon.subtract(new BigDecimal("0.1")))
+                    .setParameter("maxLon", lon.add(new BigDecimal("0.1")))
+                    .setParameter("latitude", lat)
+                    .setParameter("longitude", lon)
+                    .setMaxResults(1)
+                    .uniqueResult();
 
+            if (locationToDelete != null) {
+                session.delete(locationToDelete);
+            }
             transaction.commit();
         } catch (HibernateException e) {
             log.error("Error while deleting location", e);

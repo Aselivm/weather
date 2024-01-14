@@ -20,6 +20,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,8 +56,8 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
                 locationCoordinatesDTOList.removeIf(dto ->
                         finalUserLocations.stream()
                                 .anyMatch(userLocation ->
-                                        userLocation.getLat().doubleValue()==dto.getLat() &&
-                                                userLocation.getLon().doubleValue()==dto.getLon()
+                                        round(userLocation.getLat().doubleValue(), 4) == round(dto.getLat(), 4) &&
+                                                round(userLocation.getLon().doubleValue(), 4) == round(dto.getLon(), 4)
                                 )
                 );
             }
@@ -90,6 +92,14 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
             context.setVariable("error", e.getError());
             templateEngine.process("search", context, resp.getWriter());
         }
+    }
+
+    private double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = BigDecimal.valueOf(value);
+        bd = bd.setScale(places, RoundingMode.FLOOR);
+        return bd.doubleValue();
     }
 }
 
