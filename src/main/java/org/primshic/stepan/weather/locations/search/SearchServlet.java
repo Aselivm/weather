@@ -20,6 +20,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,8 +56,8 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
                 locationCoordinatesDTOList.removeIf(dto ->
                         finalUserLocations.stream()
                                 .anyMatch(userLocation ->
-                                        userLocation.getLat().doubleValue()==dto.getLat() &&
-                                                userLocation.getLon().doubleValue()==dto.getLon()
+                                        userLocation.getLat().doubleValue() == dto.getLat() &&
+                                                userLocation.getLon().doubleValue() == dto.getLon()
                                 )
                 );
             }
@@ -91,5 +93,6 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
             templateEngine.process("search", context, resp.getWriter());
         }
     }
+
 }
 

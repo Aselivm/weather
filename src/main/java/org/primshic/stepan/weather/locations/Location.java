@@ -8,7 +8,8 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity()
-@Table(name="Locations",uniqueConstraints = @UniqueConstraint(columnNames = {"Latitude", "Longitude", "UserId"}))
+@Table(name = "Locations",
+        uniqueConstraints = @UniqueConstraint(name = "unique_location_constraint", columnNames = {"Latitude", "Longitude", "UserId"}))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,10 +28,10 @@ public class Location {
     @JoinColumn(name="UserId")
     private User user;
 
-    @Column(name = "Latitude", precision = 30, scale = 20)
+    @Column(name = "Latitude", precision = 10, scale = 4)
     private BigDecimal lat;
 
-    @Column(name = "Longitude", precision = 30, scale = 20)
+    @Column(name = "Longitude", precision = 10, scale = 4)
     private BigDecimal lon;
 
 }
