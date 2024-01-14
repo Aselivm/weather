@@ -8,9 +8,9 @@
         <property name="hibernate.connection.CharSet">UTF-8</property>
         <property name="hibernate.connection.characterEncoding">UTF-8</property>
         <property name="hibernate.connection.driver_class">org.mariadb.jdbc.Driver</property>
-        <property name="hibernate.connection.url">jdbc:mariadb://localhost:3303/weather_db</property>
+        <property name="hibernate.connection.url">jdbc:mariadb://localhost:3306/weather_db</property>
         <property name="hibernate.connection.username">root</property>
-        <property name="hibernate.connection.password">2816</property>
+        <property name="hibernate.connection.password">новый_пароль</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
         <property name="hibernate.connection.pool_size">10</property>
         <property name="hibernate.show_sql">true</property>
