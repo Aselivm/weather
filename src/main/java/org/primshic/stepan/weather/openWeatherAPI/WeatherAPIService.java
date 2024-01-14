@@ -39,14 +39,6 @@ public class WeatherAPIService {
         log.info("Calling getLocationListByName with URL: {}", request);
         String result = sendHttpRequest(request);
         List<LocationCoordinatesDTO> locationCoordinatesDTO = parseLocationListResponse(result);
-
-        //todo Удалить цикл
-        for (LocationCoordinatesDTO locationDTO : locationCoordinatesDTO) {
-            log.info("Location Name: {}", locationDTO.getName());
-            log.info("Location Latitude: {}", locationDTO.getLat());
-            log.info("Location Longitude: {}", locationDTO.getLon());
-        }
-
         return locationCoordinatesDTO;
     }
 
