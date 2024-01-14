@@ -1,4 +1,4 @@
-package org.primshic.stepan.weather.locations.home;
+package org.primshic.stepan.auth.user.home;
 
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.auth.session.Session;

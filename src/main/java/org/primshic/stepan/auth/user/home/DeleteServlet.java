@@ -1,4 +1,4 @@
-package org.primshic.stepan.weather.locations.home;
+package org.primshic.stepan.auth.user.home;
 
 import org.primshic.stepan.auth.session.Session;
 import org.primshic.stepan.auth.session.SessionService;

@@ -5,6 +5,7 @@ import org.hibernate.SessionFactory;
 import org.primshic.stepan.common.exception.ApplicationException;
 import org.primshic.stepan.common.exception.ErrorMessage;
 
+import javax.persistence.PersistenceException;
 import java.util.Optional;
 
 @Slf4j
@@ -21,6 +22,9 @@ public class UserRepository{
             session.beginTransaction();
             session.persist(user);
             session.getTransaction().commit();
+        }catch (PersistenceException ex) {
+            log.warn("Error persisting user: {}", ex.getMessage());
+            throw new ApplicationException(ErrorMessage.LOGIN_ALREADY_EXISTS);
         } catch (Exception e) {
             log.error("Error while persisting user", e);
             throw new ApplicationException(ErrorMessage.DATABASE_ERROR);

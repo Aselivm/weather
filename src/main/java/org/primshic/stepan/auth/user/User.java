@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Nationalized;
 import org.primshic.stepan.weather.locations.Location;
 
 import javax.persistence.*;
@@ -22,7 +23,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "Login", nullable = false, unique = true)
+    @Column(name = "Login", nullable = false, unique = true, columnDefinition = "VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci'")
+    @Nationalized
     private String login;
 
     @Column(name="Password", nullable = false)

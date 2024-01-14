@@ -10,6 +10,7 @@ import org.primshic.stepan.common.util.HibernateUtil;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
+import java.util.Locale;
 
 @WebListener
 @Slf4j
@@ -19,7 +20,6 @@ public class RepositoryContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         try {
             log.info("Initializing RepositoryContextListener...");
-
             SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
             LocationService locationService = new LocationService(sessionFactory);
             UserService userService = new UserService(sessionFactory);

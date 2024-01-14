@@ -19,13 +19,8 @@ public class UserService {
 
     public Optional<User> persist(UserDTO userDTO) {
         Optional<User> user;
-        try {
-            User userEntity = toEntity(userDTO);
-            user = userRepository.persist(userEntity);
-        } catch (PersistenceException ex) {
-            log.warn("Error persisting user: {}", ex.getMessage());
-            throw new ApplicationException(ErrorMessage.LOGIN_ALREADY_EXISTS);
-        }
+        User userEntity = toEntity(userDTO);
+        user = userRepository.persist(userEntity);
         return user;
     }
 

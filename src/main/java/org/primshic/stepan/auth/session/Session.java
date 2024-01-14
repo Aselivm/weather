@@ -29,6 +29,6 @@ public class Session {
     @JoinColumn(name="UserId")
     private User user;
 
-    @Column(name="ExpiresAt")
+    @Column(name="ExpiresAt", nullable = false)
     private LocalDateTime expiresAt = LocalDateTime.now().plusHours(1);
 }

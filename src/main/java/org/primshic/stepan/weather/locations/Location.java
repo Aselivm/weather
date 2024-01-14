@@ -1,6 +1,7 @@
 package org.primshic.stepan.weather.locations;
 
 import lombok.*;
+import org.hibernate.annotations.Nationalized;
 import org.primshic.stepan.auth.user.User;
 
 import javax.persistence.*;
@@ -19,7 +20,8 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "Name", columnDefinition = "VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
+    @Column(name = "Name", columnDefinition = "VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci'")
+    @Nationalized
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
