@@ -5,7 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
 import org.junit.jupiter.api.*;
-import org.primshic.stepan.repo_mock.util.TestHibernateUtil;
+import org.primshic.stepan.repo_mock.TestHibernateUtil;
 
 import java.math.BigInteger;
 

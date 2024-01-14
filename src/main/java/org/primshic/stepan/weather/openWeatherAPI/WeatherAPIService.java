@@ -12,6 +12,7 @@ import org.primshic.stepan.common.exception.ErrorMessage;
 import org.primshic.stepan.common.util.PropertyReaderUtil;
 import org.primshic.stepan.weather.locations.search.LocationResponseDTO;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -119,7 +120,7 @@ public class WeatherAPIService {
                     .GET()
                     .build();
         } catch (URISyntaxException e) {
-            throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);
+            throw new ApplicationException(ErrorMessage.BAD_REQUEST);
         }
 
         try {
@@ -127,10 +128,8 @@ public class WeatherAPIService {
 
             String responseBody = response.body();
             log.info("Response Body: {}", responseBody);
-
             return responseBody;
-        } catch (Exception e) {
-            log.error("Error sending HTTP request: {}", e.getMessage());
+        } catch (IOException | InterruptedException e) {
             throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);
         }
     }
@@ -140,7 +139,7 @@ public class WeatherAPIService {
             return objectMapper.readValue(result, new TypeReference<>() {});
         } catch (JsonProcessingException e) {
             log.warn("Error reading JSON response for location list: {}", e.getMessage());
-            throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);
+            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
         }
     }
 
@@ -149,7 +148,7 @@ public class WeatherAPIService {
             return objectMapper.readValue(result, WeatherDTO.class);
         } catch (JsonProcessingException e) {
             log.warn("Error reading JSON response for weather: {}", e.getMessage());
-            throw new ApplicationException(ErrorMessage.OPEN_WEATHER_ERROR);
+            throw new ApplicationException(ErrorMessage.INTERNAL_ERROR);
         }
     }
 

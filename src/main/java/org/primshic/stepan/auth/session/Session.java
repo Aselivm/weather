@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity()
-@Table(schema = "weather_db",name="Sessions",
+@Table(name="Sessions",
         indexes = @Index(name = "expiresAt_idx",columnList = "ExpiresAt") )
 @Getter
 @Setter

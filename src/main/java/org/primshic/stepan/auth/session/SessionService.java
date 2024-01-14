@@ -3,6 +3,8 @@ package org.primshic.stepan.auth.session;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;;
 import org.primshic.stepan.auth.user.User;
+import org.primshic.stepan.common.exception.ApplicationException;
+import org.primshic.stepan.common.exception.ErrorMessage;
 
 import java.util.Optional;
 
@@ -21,12 +23,18 @@ public class SessionService {
         return startedSession;
     }
 
+    public void deleteExpiredSessions() {
+        sessionRepository.deleteExpiredSessions();
+    }
+
     public Optional<Session> getById(String uuid) {
         log.info("Getting session by ID: {}", uuid);
         Optional<Session> session = sessionRepository.getById(uuid);
         log.info("Retrieved session: {}", session.orElse(null));
         return session;
     }
+
+
 
     public void delete(Session session) {
         log.info("Deleting session: {}", session);

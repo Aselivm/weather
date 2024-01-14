@@ -2,6 +2,7 @@ package org.primshic.stepan.common.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.auth.session.SessionRepository;
+import org.primshic.stepan.auth.session.SessionService;
 import org.primshic.stepan.common.util.HibernateUtil;
 import org.primshic.stepan.common.util.PropertyReaderUtil;
 
@@ -27,7 +28,7 @@ public class SchedulerContextListener implements ServletContextListener {
 
             executorService = Executors.newSingleThreadScheduledExecutor();
             executorService.scheduleAtFixedRate(
-                    new SessionRepository(HibernateUtil.getSessionFactory())::deleteExpiredSessions,
+                    new SessionService(HibernateUtil.getSessionFactory())::deleteExpiredSessions,
                     init,
                     period,
                     TimeUnit.MINUTES

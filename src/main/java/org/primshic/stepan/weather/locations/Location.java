@@ -6,10 +6,9 @@ import org.primshic.stepan.auth.user.User;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Objects;
 
 @Entity()
-@Table(schema = "weather_db",name="Locations",uniqueConstraints = @UniqueConstraint(columnNames = {"Latitude", "Longitude", "UserId"}))
+@Table(name="Locations",uniqueConstraints = @UniqueConstraint(columnNames = {"Latitude", "Longitude", "UserId"}))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,7 +19,7 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "Name", columnDefinition = "VARCHAR(100) CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_general_ci'")
+    @Column(name = "Name")
     @Nationalized
     private String name;
 

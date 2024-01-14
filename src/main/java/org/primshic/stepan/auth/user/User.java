@@ -1,22 +1,21 @@
 package org.primshic.stepan.auth.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Nationalized;
 import org.primshic.stepan.weather.locations.Location;
 
 import javax.persistence.*;
+import java.security.AuthProvider;
 import java.util.List;
 
 @Entity()
-@Table(schema = "weather_db",name="Users",
+@Table(name="Users",
         indexes = @Index(name="login_idx",columnList = "Login"))
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User {
     @Id
     @Column(name="ID")

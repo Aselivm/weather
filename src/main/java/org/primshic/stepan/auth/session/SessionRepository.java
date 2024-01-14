@@ -39,7 +39,7 @@ public class SessionRepository{
     public void deleteExpiredSessions() {
         try (org.hibernate.Session session = sessionFactory.openSession()) {
             session.beginTransaction();
-            session.createQuery("delete from TestSession where expiresAt<CURRENT_TIMESTAMP ").executeUpdate();
+            session.createQuery("delete from Session where expiresAt<CURRENT_TIMESTAMP ").executeUpdate();
             session.getTransaction().commit();
         } catch (RuntimeException e) {
             log.error("Error while deleting expired sessions", e);
