@@ -1,8 +1,8 @@
-package org.primshic.stepan.auth.session;
+package org.primshic.stepan.web.auth.session;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
-import org.primshic.stepan.auth.user.User;
+import org.primshic.stepan.web.auth.user.User;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 

@@ -1,4 +1,4 @@
-package org.primshic.stepan.auth.user;
+package org.primshic.stepan.web.auth.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;

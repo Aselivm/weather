@@ -1,7 +1,7 @@
-package org.primshic.stepan.weather.locations.search;
+package org.primshic.stepan.web.servlets.search;
 
 import lombok.*;
-import org.primshic.stepan.auth.user.User;
+import org.primshic.stepan.web.auth.user.User;
 
 import java.math.BigDecimal;
 

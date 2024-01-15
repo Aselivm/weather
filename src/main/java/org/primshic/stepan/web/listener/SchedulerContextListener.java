@@ -1,7 +1,7 @@
-package org.primshic.stepan.listener;
+package org.primshic.stepan.web.listener;
 
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.auth.session.SessionService;
+import org.primshic.stepan.web.auth.session.SessionService;
 import org.primshic.stepan.util.HibernateUtil;
 import org.primshic.stepan.util.PropertyReaderUtil;
 

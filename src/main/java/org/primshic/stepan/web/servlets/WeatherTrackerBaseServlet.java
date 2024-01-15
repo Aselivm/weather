@@ -1,4 +1,4 @@
-package org.primshic.stepan.common;
+package org.primshic.stepan.web.servlets;
 
 import org.primshic.stepan.util.WebContextUtil;
 import org.thymeleaf.context.WebContext;

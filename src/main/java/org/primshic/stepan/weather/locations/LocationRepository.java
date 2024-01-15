@@ -5,12 +5,11 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.primshic.stepan.auth.user.User;
+import org.primshic.stepan.web.auth.user.User;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 @Slf4j

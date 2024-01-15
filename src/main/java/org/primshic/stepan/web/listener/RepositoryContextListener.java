@@ -1,10 +1,10 @@
-package org.primshic.stepan.listener;
+package org.primshic.stepan.web.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.SessionFactory;
 import org.primshic.stepan.weather.locations.LocationService;
-import org.primshic.stepan.auth.session.SessionService;
-import org.primshic.stepan.auth.user.UserService;
+import org.primshic.stepan.web.auth.session.SessionService;
+import org.primshic.stepan.web.auth.user.UserService;
 import org.primshic.stepan.util.HibernateUtil;
 
 import javax.servlet.ServletContextEvent;

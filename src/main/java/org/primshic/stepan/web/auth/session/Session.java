@@ -1,11 +1,11 @@
-package org.primshic.stepan.auth.session;
+package org.primshic.stepan.web.auth.session;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
-import org.primshic.stepan.auth.user.User;
+import org.primshic.stepan.web.auth.user.User;
 
 import javax.persistence.*;
 

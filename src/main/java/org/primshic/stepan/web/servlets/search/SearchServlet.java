@@ -1,9 +1,9 @@
-package org.primshic.stepan.weather.locations.search;
+package org.primshic.stepan.web.servlets.search;
 
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.auth.session.Session;
-import org.primshic.stepan.auth.user.User;
-import org.primshic.stepan.common.WeatherTrackerBaseServlet;
+import org.primshic.stepan.web.auth.session.Session;
+import org.primshic.stepan.web.auth.user.User;
+import org.primshic.stepan.web.servlets.WeatherTrackerBaseServlet;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.weather.locations.Location;
@@ -20,8 +20,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,6 +50,7 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
                 User user = optionalUserSession.get().getUser();
                 userLocations = locationService.getUserLocations(user);
 
+                //todo удаление из поиска добавленных локаций на работает [ТОЛЬКО НА УДАЛЕННОМ СЕРВЕРЕ]
                 List<Location> finalUserLocations = userLocations;
                 locationCoordinatesDTOList.removeIf(dto ->
                         finalUserLocations.stream()

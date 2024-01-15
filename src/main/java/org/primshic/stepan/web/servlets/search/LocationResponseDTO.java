@@ -1,4 +1,4 @@
-package org.primshic.stepan.weather.locations.search;
+package org.primshic.stepan.web.servlets.search;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

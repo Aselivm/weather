@@ -21,8 +21,8 @@
         <property name="hibernate.dbcp.maxWaitMillis">-1</property>
         <property name="hibernate.connection.autocommit">true</property>
         <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
-        <mapping class="org.primshic.stepan.auth.user.User"/>
-        <mapping class="org.primshic.stepan.auth.session.Session"/>
+        <mapping class="org.primshic.stepan.web.auth.user.User"/>
+        <mapping class="org.primshic.stepan.web.auth.session.Session"/>
         <mapping class="org.primshic.stepan.weather.locations.Location"/>
     </session-factory>
 </hibernate-configuration>

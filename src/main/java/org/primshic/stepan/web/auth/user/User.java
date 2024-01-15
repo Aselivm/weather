@@ -1,4 +1,4 @@
-package org.primshic.stepan.auth.user;
+package org.primshic.stepan.web.auth.user;
 
 import lombok.*;
 import org.hibernate.annotations.Nationalized;

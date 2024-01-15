@@ -3,8 +3,8 @@ package org.primshic.stepan.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.auth.session.Session;
-import org.primshic.stepan.auth.session.SessionService;
+import org.primshic.stepan.web.auth.session.Session;
+import org.primshic.stepan.web.auth.session.SessionService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -21,7 +21,7 @@ public class SessionUtil {
 
         return userSession;
     }
-    public static Optional<Session> getCurrentSession(String sessionId,SessionService sessionService) {
+    public static Optional<Session> getCurrentSession(String sessionId, SessionService sessionService) {
         Optional<Session> userSession = Optional.empty();
         if (validSessionId(sessionId)) {
             log.info("Session ID is valid: {}", sessionId);

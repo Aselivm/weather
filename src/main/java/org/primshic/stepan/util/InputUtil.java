@@ -3,7 +3,7 @@ package org.primshic.stepan.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.auth.user.UserDTO;
+import org.primshic.stepan.web.auth.user.UserDTO;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 

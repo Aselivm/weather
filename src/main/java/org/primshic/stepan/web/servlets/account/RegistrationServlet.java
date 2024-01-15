@@ -1,13 +1,16 @@
-package org.primshic.stepan.auth.user;
+package org.primshic.stepan.web.servlets.account;
 
 import lombok.extern.slf4j.Slf4j;
-import org.primshic.stepan.auth.session.Session;
-import org.primshic.stepan.common.WeatherTrackerBaseServlet;
+import org.primshic.stepan.web.auth.session.Session;
+import org.primshic.stepan.web.auth.user.User;
+import org.primshic.stepan.web.auth.user.UserDTO;
+import org.primshic.stepan.web.auth.user.UserService;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
-import org.primshic.stepan.auth.session.SessionService;
+import org.primshic.stepan.web.auth.session.SessionService;
 import org.primshic.stepan.util.CookieUtil;
 import org.primshic.stepan.util.InputUtil;
+import org.primshic.stepan.web.servlets.WeatherTrackerBaseServlet;
 import org.thymeleaf.TemplateEngine;
 
 import javax.servlet.ServletContext;

@@ -2,9 +2,9 @@ package org.primshic.stepan.test_cases;
 
 import org.hibernate.SessionFactory;
 import org.junit.jupiter.api.*;
-import org.primshic.stepan.auth.user.User;
-import org.primshic.stepan.auth.user.UserDTO;
-import org.primshic.stepan.auth.user.UserService;
+import org.primshic.stepan.web.auth.user.User;
+import org.primshic.stepan.web.auth.user.UserDTO;
+import org.primshic.stepan.web.auth.user.UserService;
 import org.primshic.stepan.repo_mock.TestHibernateUtil;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)

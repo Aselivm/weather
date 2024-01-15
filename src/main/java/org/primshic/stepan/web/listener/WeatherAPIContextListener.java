@@ -1,4 +1,4 @@
-package org.primshic.stepan.listener;
+package org.primshic.stepan.web.listener;
 
 import lombok.extern.slf4j.Slf4j;
 import org.primshic.stepan.util.OpenWeatherAPIUtil;

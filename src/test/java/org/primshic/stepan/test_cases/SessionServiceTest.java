@@ -1,11 +1,11 @@
 package org.primshic.stepan.test_cases;
 
 import org.junit.jupiter.api.*;
-import org.primshic.stepan.auth.session.Session;
-import org.primshic.stepan.auth.session.SessionService;
-import org.primshic.stepan.auth.user.User;
-import org.primshic.stepan.auth.user.UserDTO;
-import org.primshic.stepan.auth.user.UserService;
+import org.primshic.stepan.web.auth.session.Session;
+import org.primshic.stepan.web.auth.session.SessionService;
+import org.primshic.stepan.web.auth.user.User;
+import org.primshic.stepan.web.auth.user.UserDTO;
+import org.primshic.stepan.web.auth.user.UserService;
 import org.primshic.stepan.repo_mock.TestHibernateUtil;
 
 import java.util.Optional;
