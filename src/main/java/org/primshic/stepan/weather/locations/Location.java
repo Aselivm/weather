@@ -6,7 +6,6 @@ import org.primshic.stepan.web.auth.user.User;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-//todo unique constraint user location не работает [ТОЛЬКО НА УДАЛЕННОМ СЕРВЕРЕ]
 @Entity()
 @Table(name = "Locations",
         uniqueConstraints = @UniqueConstraint(name = "unique_location_constraint", columnNames = {"Latitude", "Longitude", "UserId"}))

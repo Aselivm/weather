@@ -50,13 +50,12 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
                 User user = optionalUserSession.get().getUser();
                 userLocations = locationService.getUserLocations(user);
 
-                //todo удаление из поиска добавленных локаций на работает [ТОЛЬКО НА УДАЛЕННОМ СЕРВЕРЕ]
                 List<Location> finalUserLocations = userLocations;
                 locationCoordinatesDTOList.removeIf(dto ->
                         finalUserLocations.stream()
                                 .anyMatch(userLocation ->
-                                        userLocation.getLat().doubleValue() == dto.getLat() &&
-                                                userLocation.getLon().doubleValue() == dto.getLon()
+                                        isClose(userLocation.getLat().doubleValue(), dto.getLat()) &&
+                                                isClose(userLocation.getLon().doubleValue(), dto.getLon())
                                 )
                 );
             }
@@ -91,6 +90,11 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
             context.setVariable("error", e.getError());
             templateEngine.process("search", context, resp.getWriter());
         }
+    }
+
+    private boolean isClose(double value1, double value2) {
+        double epsilon = 0.1;
+        return Math.abs(value1 - value2) < epsilon;
     }
 
 }

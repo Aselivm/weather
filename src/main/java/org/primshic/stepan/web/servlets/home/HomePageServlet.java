@@ -43,7 +43,6 @@ public class HomePageServlet extends WeatherTrackerBaseServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
-        //todo закинуть в фильтр трай кечи
         try {
             if (optionalUserSession.isPresent()) {
                 User user = optionalUserSession.get().getUser();
