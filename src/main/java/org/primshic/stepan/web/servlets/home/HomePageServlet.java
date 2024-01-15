@@ -65,7 +65,8 @@ public class HomePageServlet extends WeatherTrackerBaseServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            int userId = InputUtil.userId(req);
+            Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
+            int userId = optionalUserSession.orElseThrow().getUser().getId();
             BigDecimal lat = InputUtil.getLatitude(req);
             BigDecimal lon = InputUtil.getLongitude(req);
 
