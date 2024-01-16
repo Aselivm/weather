@@ -1,6 +1,7 @@
 package org.primshic.stepan.web.servlets.home;
 
 import lombok.extern.slf4j.Slf4j;
+import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.util.WebContextUtil;
 import org.primshic.stepan.web.auth.session.Session;
 import org.primshic.stepan.web.auth.user.User;
@@ -70,7 +71,10 @@ public class HomePageServlet extends HttpServlet {
         WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         try {
             Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
-            int userId = optionalUserSession.orElseThrow().getUser().getId();
+            int userId = optionalUserSession
+                    .orElseThrow(()->new ApplicationException(ErrorMessage.INTERNAL_ERROR))
+                    .getUser()
+                    .getId();
             BigDecimal lat = InputUtil.getLatitude(req);
             BigDecimal lon = InputUtil.getLongitude(req);
 
