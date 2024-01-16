@@ -1,6 +1,7 @@
 package org.primshic.stepan.web.servlets.account;
 
 import lombok.extern.slf4j.Slf4j;
+import org.primshic.stepan.util.WebContextUtil;
 import org.primshic.stepan.web.auth.session.Session;
 import org.primshic.stepan.web.auth.user.User;
 import org.primshic.stepan.web.auth.user.UserDTO;
@@ -10,19 +11,20 @@ import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.web.auth.session.SessionService;
 import org.primshic.stepan.util.CookieUtil;
 import org.primshic.stepan.util.InputUtil;
-import org.primshic.stepan.web.servlets.WeatherTrackerBaseServlet;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(urlPatterns = "/auth")
 @Slf4j
-public class AuthorizationServlet extends WeatherTrackerBaseServlet {
+public class AuthorizationServlet extends HttpServlet {
     private UserService userService;
 
     private  TemplateEngine templateEngine;
@@ -39,11 +41,13 @@ public class AuthorizationServlet extends WeatherTrackerBaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         templateEngine.process("authorization", context, resp.getWriter());
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         try {
             UserDTO userDTO = InputUtil.authenticate(req);
 

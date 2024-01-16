@@ -1,6 +1,7 @@
 package org.primshic.stepan.web.servlets.home;
 
 import lombok.extern.slf4j.Slf4j;
+import org.primshic.stepan.util.WebContextUtil;
 import org.primshic.stepan.web.auth.session.Session;
 import org.primshic.stepan.web.auth.user.User;
 import org.primshic.stepan.exception.ApplicationException;
@@ -10,12 +11,13 @@ import org.primshic.stepan.weather.openWeatherAPI.WeatherAPIService;
 import org.primshic.stepan.weather.openWeatherAPI.WeatherDTO;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
-import org.primshic.stepan.web.servlets.WeatherTrackerBaseServlet;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,7 +27,7 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/main")
 @Slf4j
-public class HomePageServlet extends WeatherTrackerBaseServlet {
+public class HomePageServlet extends HttpServlet {
 
     private LocationService locationService;
     private WeatherAPIService weatherAPIService;
@@ -42,6 +44,7 @@ public class HomePageServlet extends WeatherTrackerBaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
         try {
             if (optionalUserSession.isPresent()) {
@@ -64,6 +67,7 @@ public class HomePageServlet extends WeatherTrackerBaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         try {
             Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
             int userId = optionalUserSession.orElseThrow().getUser().getId();

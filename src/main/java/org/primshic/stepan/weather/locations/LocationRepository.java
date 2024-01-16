@@ -17,6 +17,8 @@ public class LocationRepository {
 
     private final SessionFactory sessionFactory;
 
+    private static final double EPSILON = 0.01;
+
     public LocationRepository(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -59,10 +61,10 @@ public class LocationRepository {
                     "ORDER BY ABS(lat - :latitude) + ABS(lon - :longitude)";
             Location locationToDelete = (Location) session.createQuery(hqlSelect)
                     .setParameter("userId", userId)
-                    .setParameter("minLat", lat.subtract(new BigDecimal("0.1")))
-                    .setParameter("maxLat", lat.add(new BigDecimal("0.1")))
-                    .setParameter("minLon", lon.subtract(new BigDecimal("0.1")))
-                    .setParameter("maxLon", lon.add(new BigDecimal("0.1")))
+                    .setParameter("minLat", lat.subtract(new BigDecimal(EPSILON)))
+                    .setParameter("maxLat", lat.add(new BigDecimal(EPSILON)))
+                    .setParameter("minLon", lon.subtract(new BigDecimal(EPSILON)))
+                    .setParameter("maxLon", lon.add(new BigDecimal(EPSILON)))
                     .setParameter("latitude", lat)
                     .setParameter("longitude", lon)
                     .setMaxResults(1)

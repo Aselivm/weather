@@ -1,9 +1,9 @@
 package org.primshic.stepan.web.servlets.search;
 
 import lombok.extern.slf4j.Slf4j;
+import org.primshic.stepan.util.WebContextUtil;
 import org.primshic.stepan.web.auth.session.Session;
 import org.primshic.stepan.web.auth.user.User;
-import org.primshic.stepan.web.servlets.WeatherTrackerBaseServlet;
 import org.primshic.stepan.exception.ApplicationException;
 import org.primshic.stepan.exception.ErrorMessage;
 import org.primshic.stepan.weather.locations.Location;
@@ -13,10 +13,12 @@ import org.primshic.stepan.weather.openWeatherAPI.LocationCoordinatesDTO;
 import org.primshic.stepan.util.InputUtil;
 import org.primshic.stepan.util.SessionUtil;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.WebContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,7 +27,7 @@ import java.util.Optional;
 
 @WebServlet(urlPatterns = "/search")
 @Slf4j
-public class SearchServlet extends WeatherTrackerBaseServlet {
+public class SearchServlet extends HttpServlet {
     private LocationService locationService;
     private WeatherAPIService weatherAPIService;
     private TemplateEngine templateEngine;
@@ -40,6 +42,7 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         try {
             String name = InputUtil.locationName(req);
             List<LocationCoordinatesDTO> locationCoordinatesDTOList = weatherAPIService.getLocationListByName(name);
@@ -70,6 +73,7 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebContext context = WebContextUtil.createContext(req, resp, getServletContext());
         Optional<Session> optionalUserSession = SessionUtil.getSessionByReq(req);
         try {
 
@@ -93,8 +97,8 @@ public class SearchServlet extends WeatherTrackerBaseServlet {
     }
 
     private boolean isClose(double value1, double value2) {
-        double epsilon = 0.1;
-        return Math.abs(value1 - value2) < epsilon;
+        final double EPSILON = 0.01;
+        return Math.abs(value1 - value2) < EPSILON;
     }
 
 }

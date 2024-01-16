@@ -3,18 +3,18 @@ package org.primshic.stepan.web.servlets.account;
 import org.primshic.stepan.web.auth.session.Session;
 import org.primshic.stepan.web.auth.session.SessionService;
 import org.primshic.stepan.util.SessionUtil;
-import org.primshic.stepan.web.servlets.WeatherTrackerBaseServlet;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
 @WebServlet(urlPatterns = "/log-out")
-public class LogOutServlet extends WeatherTrackerBaseServlet {
+public class LogOutServlet extends HttpServlet {
     private SessionService sessionService;
 
     @Override
